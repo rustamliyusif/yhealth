@@ -1028,6 +1028,12 @@ abstract class AppLocalizations {
   /// **'No account found with this email.'**
   String get authErrorUserNotFound;
 
+  /// No description provided for @authErrorResetUnavailableOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Password recovery isn't available in offline mode. You can continue as a guest or create a new account.'**
+  String get authErrorResetUnavailableOffline;
+
   /// No description provided for @authErrorWeakPassword.
   ///
   /// In en, this message translates to:

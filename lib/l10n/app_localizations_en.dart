@@ -507,6 +507,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authErrorUserNotFound => 'No account found with this email.';
 
   @override
+  String get authErrorResetUnavailableOffline =>
+      'Password recovery isn\'t available in offline mode. You can continue as a guest or create a new account.';
+
+  @override
   String get authErrorWeakPassword => 'Password must be at least 6 characters.';
 
   @override

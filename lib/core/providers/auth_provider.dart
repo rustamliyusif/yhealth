@@ -81,7 +81,7 @@ class AuthProvider extends ChangeNotifier {
       final normalizedEmail = email.trim().toLowerCase();
       if (users.containsKey(normalizedEmail)) {
         final userData = users[normalizedEmail] as Map<String, dynamic>;
-        if (userData['password'] == password) {
+        if (await _storageService.verifyOfflineUserPassword(normalizedEmail, password)) {
           _userId = userData['id'] as String;
           _userEmail = normalizedEmail;
           _userName = (userData['name'] as String?) ?? 'YHealth User';
@@ -155,11 +155,11 @@ class AuthProvider extends ChangeNotifier {
     try {
       final users = _storageService.getOfflineUsers();
       if (users.containsKey(email.trim().toLowerCase())) {
-        return true;
+        _errorMessage = 'reset_unavailable_offline';
       } else {
         _errorMessage = 'user_not_found';
-        return false;
       }
+      return false;
     } catch (e) {
       _errorMessage = e.toString();
       return false;
@@ -168,16 +168,20 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> continueAsGuest() async {
     _userId = 'local_guest';
-    _userEmail = 'local.user@yhealth.az';
-    _userName = 'YHealth User';
+    _userEmail = '';
+    _userName = '';
+    await _storageService.setUserEmail(_userEmail);
+    await _storageService.setUserName(_userName);
     await _storageService.setCurrentUserId(_userId);
     _status = AuthStatus.authenticated;
     notifyListeners();
   }
 
   Future<void> logout() async {
-    await _storageService.setCurrentUserId(null);
+    await _storageService.clearSessionProfile();
     _userId = null;
+    _userName = '';
+    _userEmail = '';
     _status = AuthStatus.unauthenticated;
     notifyListeners();
   }

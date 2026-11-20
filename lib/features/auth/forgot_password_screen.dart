@@ -67,6 +67,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       String msg = l10n.authErrorDefault;
       if (authProvider.errorMessage == 'user_not_found') {
         msg = l10n.authErrorUserNotFound;
+      } else if (authProvider.errorMessage == 'reset_unavailable_offline') {
+        msg = l10n.authErrorResetUnavailableOffline;
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(msg), backgroundColor: AppColors.error),

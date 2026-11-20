@@ -164,6 +164,7 @@
   "authErrorInvalidEmail": "Please enter a valid email address.",
   "authErrorWrongPassword": "Incorrect password. Please try again.",
   "authErrorUserNotFound": "No account found with this email.",
+  "authErrorResetUnavailableOffline": "Password recovery isn't available in offline mode. You can continue as a guest or create a new account.",
   "authErrorWeakPassword": "Password must be at least 6 characters.",
   "authErrorEmailInUse": "An account already exists with this email address.",
   "authErrorNetwork": "Network connection error occurred. Please check your internet connection.",
