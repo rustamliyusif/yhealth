@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:drift/drift.dart';
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
@@ -10,10 +11,11 @@ import 'storage_service.dart';
 
 class BackupException implements Exception {
   final String code;
-  BackupException(this.code);
+  final String? detail;
+  BackupException(this.code, [this.detail]);
 
   @override
-  String toString() => 'BackupException($code)';
+  String toString() => 'BackupException($code${detail == null ? '' : ': $detail'})';
 }
 
 class BackupService {
@@ -57,21 +59,27 @@ class BackupService {
 
   Future<void> importFromFile(String path) async {
     final Map<String, dynamic> backup;
+    final file = File(path);
     try {
-      backup = jsonDecode(await File(path).readAsString()) as Map<String, dynamic>;
-    } catch (_) {
-      throw BackupException('invalid_file');
+      final content = await file.readAsString();
+      debugPrint('BackupService: importing ${content.length} chars from $path');
+      backup = jsonDecode(content) as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('BackupService: read/parse failed: $e');
+      throw BackupException('invalid_file', 'read: $e');
     }
     await restoreBackup(backup);
   }
 
   Future<void> restoreBackup(Map<String, dynamic> backup) async {
-    if (backup['format'] != format) throw BackupException('invalid_file');
+    if (backup['format'] != format) {
+      throw BackupException('invalid_file', 'format: ${backup['format']}');
+    }
     final version = backup['formatVersion'];
     if (version is! int || version > formatVersion) throw BackupException('unsupported_version');
 
     final tables = backup['tables'];
-    if (tables is! Map<String, dynamic>) throw BackupException('invalid_file');
+    if (tables is! Map<String, dynamic>) throw BackupException('invalid_file', 'tables missing');
 
     List<Map<String, dynamic>> rows(String key) {
       final list = tables[key];
@@ -91,8 +99,9 @@ class BackupService {
       });
     } on BackupException {
       rethrow;
-    } catch (_) {
-      throw BackupException('invalid_file');
+    } catch (e, st) {
+      debugPrint('BackupService: restore failed: $e\n$st');
+      throw BackupException('invalid_file', 'restore: $e');
     }
 
     final prefs = backup['preferences'];

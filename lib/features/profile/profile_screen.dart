@@ -137,7 +137,11 @@ class ProfileScreen extends StatelessWidget {
     } on BackupException catch (e) {
       messenger.showSnackBar(
         SnackBar(
-          content: Text(e.code == 'unsupported_version' ? l10n.backupUnsupportedVersion : l10n.backupInvalidFile),
+          content: Text(
+            '${e.code == 'unsupported_version' ? l10n.backupUnsupportedVersion : l10n.backupInvalidFile}'
+            '${e.detail == null ? '' : '\n${e.detail}'}',
+          ),
+          duration: const Duration(seconds: 10),
           backgroundColor: AppColors.error,
         ),
       );
