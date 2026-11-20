@@ -901,19 +901,22 @@ class AppLocalizationsAz extends AppLocalizations {
   String get backupImportConfirmTitle => 'Data bərpa edilsin?';
 
   @override
-  String get backupImportConfirmDesc => 'Hazırkı data ehtiyat faylındakı data ilə əvəz olunacaq. Bu əməliyyat geri qaytarıla bilməz.';
+  String get backupImportConfirmDesc =>
+      'Hazırkı data ehtiyat faylındakı data ilə əvəz olunacaq. Bu əməliyyat geri qaytarıla bilməz.';
 
   @override
   String get backupRestore => 'Bərpa et';
 
   @override
-  String get backupRestoreSuccess => 'Data bərpa olundu. App indi bağlanacaq, datanı görmək üçün yenidən açın.';
+  String get backupRestoreSuccess =>
+      'Data bərpa olundu. App indi bağlanacaq, datanı görmək üçün yenidən açın.';
 
   @override
   String get backupInvalidFile => 'Bu fayl YHealth ehtiyat nüsxəsi deyil.';
 
   @override
-  String get backupUnsupportedVersion => 'Bu ehtiyat nüsxəsi YHealth-in daha yeni versiyası ilə yaradılıb. Əvvəlcə app-i yeniləyin.';
+  String get backupUnsupportedVersion =>
+      'Bu ehtiyat nüsxəsi YHealth-in daha yeni versiyası ilə yaradılıb. Əvvəlcə app-i yeniləyin.';
 
   @override
   String get backupExportFailed => 'Ehtiyat nüsxəsi yaradıla bilmədi.';

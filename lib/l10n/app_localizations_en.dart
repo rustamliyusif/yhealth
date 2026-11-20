@@ -903,19 +903,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backupImportConfirmTitle => 'Restore data?';
 
   @override
-  String get backupImportConfirmDesc => 'Your current data will be replaced with the data in the backup. This can\'t be undone.';
+  String get backupImportConfirmDesc =>
+      'Your current data will be replaced with the data in the backup. This can\'t be undone.';
 
   @override
   String get backupRestore => 'Restore';
 
   @override
-  String get backupRestoreSuccess => 'Data restored. The app will close now — open it again to see your data.';
+  String get backupRestoreSuccess =>
+      'Data restored. The app will close now — open it again to see your data.';
 
   @override
   String get backupInvalidFile => 'This file isn\'t a YHealth backup.';
 
   @override
-  String get backupUnsupportedVersion => 'This backup was made with a newer version of YHealth. Update the app first.';
+  String get backupUnsupportedVersion =>
+      'This backup was made with a newer version of YHealth. Update the app first.';
 
   @override
   String get backupExportFailed => 'Couldn\'t create the backup.';
