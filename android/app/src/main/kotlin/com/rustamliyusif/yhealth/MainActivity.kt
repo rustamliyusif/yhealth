@@ -13,6 +13,8 @@ import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import java.io.File
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.EventChannel
@@ -23,6 +25,7 @@ class MainActivity : FlutterActivity() {
     private val METHOD_CHANNEL = "com.rustamliyusif.yhealth/step_counter"
     private val EVENT_CHANNEL = "com.rustamliyusif.yhealth/step_counter_stream"
     private val HEALTH_CONNECT_CHANNEL = "com.rustamliyusif.yhealth/health_connect"
+    private val SHARE_CHANNEL = "com.rustamliyusif.yhealth/share"
 
     private var stepEventSink: EventChannel.EventSink? = null
 
@@ -85,6 +88,37 @@ class MainActivity : FlutterActivity() {
                 else -> {
                     result.notImplemented()
                 }
+            }
+        }
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, SHARE_CHANNEL).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "shareFile" -> {
+                    val path = call.argument<String>("path")
+                    val mimeType = call.argument<String>("mimeType") ?: "application/pdf"
+                    val title = call.argument<String>("title") ?: ""
+                    if (path == null) {
+                        result.success(false)
+                        return@setMethodCallHandler
+                    }
+                    try {
+                        val source = File(path)
+                        val shareDir = File(cacheDir, "shared_reports").apply { mkdirs() }
+                        val target = File(shareDir, source.name)
+                        source.copyTo(target, overwrite = true)
+                        val uri = FileProvider.getUriForFile(this, "$packageName.fileprovider", target)
+                        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = mimeType
+                            putExtra(Intent.EXTRA_STREAM, uri)
+                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        }
+                        startActivity(Intent.createChooser(sendIntent, title))
+                        result.success(true)
+                    } catch (e: Exception) {
+                        result.success(false)
+                    }
+                }
+                else -> result.notImplemented()
             }
         }
 

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../../core/models/weekly_report_model.dart';
 import '../../core/providers/weekly_report_provider.dart';
+import '../../core/services/share_service.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_typography.dart';
@@ -43,15 +44,13 @@ class WeeklyReportsScreen extends StatelessWidget {
                 tooltip: l10n.exportPdf,
                 onPressed: () async {
                   final path = await reportProvider.exportPdf(reportProvider.selectedReport!);
-                  if (context.mounted && path != null) {
+                  if (path == null) return;
+                  final shared = await ShareService.sharePdf(path, title: l10n.exportPdf);
+                  if (context.mounted && !shared) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('${l10n.pdfExportSuccess}\n$path'),
+                        content: Text(l10n.pdfExportSuccess),
                         duration: const Duration(seconds: 4),
-                        action: SnackBarAction(
-                          label: 'OK',
-                          onPressed: () {},
-                        ),
                       ),
                     );
                   }
@@ -301,10 +300,12 @@ class WeeklyReportsScreen extends StatelessWidget {
           PremiumButton(
             onPressed: () async {
               final path = await provider.exportPdf(report);
-              if (context.mounted && path != null) {
+              if (path == null) return;
+              final shared = await ShareService.sharePdf(path, title: l10n.exportPdf);
+              if (context.mounted && !shared) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('${l10n.pdfExportSuccess}\n$path'),
+                    content: Text(l10n.pdfExportSuccess),
                     duration: const Duration(seconds: 4),
                   ),
                 );
