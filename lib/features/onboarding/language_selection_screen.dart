@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/language_provider.dart';
-import '../../core/providers/auth_provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_typography.dart';
 import '../../core/widgets/premium_button.dart';
 import '../../core/widgets/yhealth_logo.dart';
 import '../../l10n/app_localizations.dart';
-import '../auth/login_screen.dart';
 import '../navigation/main_navigation_screen.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {
@@ -39,22 +37,15 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
 
   Future<void> _onContinue() async {
     final langProvider = Provider.of<LanguageProvider>(context, listen: false);
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
     await langProvider.completeInitialLanguageSelection(_selectedLanguage);
 
     if (!mounted) return;
     if (widget.isFromSettings) {
       Navigator.of(context).pop();
     } else {
-      if (authProvider.isAuthenticated) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
-        );
-      } else {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const LoginScreen()),
-        );
-      }
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
+      );
     }
   }
 

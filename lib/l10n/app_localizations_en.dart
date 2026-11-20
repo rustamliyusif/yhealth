@@ -883,4 +883,40 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get medicalDisclaimer =>
       'YHealth Weight Coach provides educational lifestyle insights based on physiological formulas. It is not a clinical medical diagnosis or prescription. Always consult a physician for individual health conditions.';
+
+  @override
+  String get backupTitle => 'Backup & restore';
+
+  @override
+  String get backupExport => 'Export data';
+
+  @override
+  String get backupExportDesc => 'Save all your data to a file and share it';
+
+  @override
+  String get backupImport => 'Restore data';
+
+  @override
+  String get backupImportDesc => 'Load data from a YHealth backup file';
+
+  @override
+  String get backupImportConfirmTitle => 'Restore data?';
+
+  @override
+  String get backupImportConfirmDesc => 'Your current data will be replaced with the data in the backup. This can\'t be undone.';
+
+  @override
+  String get backupRestore => 'Restore';
+
+  @override
+  String get backupRestoreSuccess => 'Data restored. The app will close now — open it again to see your data.';
+
+  @override
+  String get backupInvalidFile => 'This file isn\'t a YHealth backup.';
+
+  @override
+  String get backupUnsupportedVersion => 'This backup was made with a newer version of YHealth. Update the app first.';
+
+  @override
+  String get backupExportFailed => 'Couldn\'t create the backup.';
 }

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/auth_provider.dart';
 import '../../core/providers/language_provider.dart';
 import '../../core/providers/theme_provider.dart';
+import '../../core/services/backup_service.dart';
+import '../../core/services/share_service.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_typography.dart';
 import '../../core/widgets/yhealth_logo.dart';
 import '../../l10n/app_localizations.dart';
 import '../onboarding/language_selection_screen.dart';
-import '../auth/login_screen.dart';
 import 'widgets/edit_goals_dialog.dart';
-import 'widgets/firebase_status_sheet.dart';
 import 'device_compatibility_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -88,16 +89,34 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  void _confirmLogout(BuildContext context, AuthProvider auth, AppLocalizations l10n) {
-    showDialog(
+  Future<void> _exportBackup(BuildContext context, AppLocalizations l10n) async {
+    final backup = context.read<BackupService>();
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      final path = await backup.exportToFile();
+      await ShareService.shareFile(path, mimeType: 'application/json', title: l10n.backupExport);
+    } catch (_) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.backupExportFailed), backgroundColor: AppColors.error),
+      );
+    }
+  }
+
+  Future<void> _importBackup(BuildContext context, AppLocalizations l10n) async {
+    final backup = context.read<BackupService>();
+    final messenger = ScaffoldMessenger.of(context);
+    final path = await ShareService.pickFile();
+    if (path == null || !context.mounted) return;
+
+    final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        title: Text(l10n.logoutConfirmTitle, style: const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w700)),
-        content: Text(l10n.logoutConfirmDesc, style: AppTypography.bodyMedium(ctx)),
+        title: Text(l10n.backupImportConfirmTitle, style: const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w700)),
+        content: Text(l10n.backupImportConfirmDesc, style: AppTypography.bodyMedium(ctx)),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
+            onPressed: () => Navigator.of(ctx).pop(false),
             child: Text(l10n.cancel),
           ),
           ElevatedButton(
@@ -105,21 +124,42 @@ class ProfileScreen extends StatelessWidget {
               backgroundColor: AppColors.error,
               foregroundColor: Colors.white,
             ),
-            onPressed: () async {
-              Navigator.of(ctx).pop();
-              await auth.logout();
-              if (context.mounted) {
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const LoginScreen()),
-                  (route) => false,
-                );
-              }
-            },
-            child: Text(l10n.logout),
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(l10n.backupRestore),
           ),
         ],
       ),
     );
+    if (confirmed != true || !context.mounted) return;
+
+    try {
+      await backup.importFromFile(path);
+    } on BackupException catch (e) {
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(e.code == 'unsupported_version' ? l10n.backupUnsupportedVersion : l10n.backupInvalidFile),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+    if (!context.mounted) return;
+
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        content: Text(l10n.backupRestoreSuccess, style: AppTypography.bodyMedium(ctx)),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(l10n.ok),
+          ),
+        ],
+      ),
+    );
+    await SystemNavigator.pop();
   }
 
   @override
@@ -186,7 +226,7 @@ class ProfileScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            auth.userName,
+                            auth.userName.isNotEmpty ? auth.userName : 'YHealth',
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: 18,
@@ -194,15 +234,17 @@ class ProfileScreen extends StatelessWidget {
                               color: AppColors.textPrimaryOf(context),
                             ),
                           ),
-                          const SizedBox(height: 3),
-                          Text(
-                            auth.userEmail,
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize: 13,
-                              color: AppColors.textSecondaryOf(context),
+                          if (auth.userEmail.isNotEmpty) ...[
+                            const SizedBox(height: 3),
+                            Text(
+                              auth.userEmail,
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 13,
+                                color: AppColors.textSecondaryOf(context),
+                              ),
                             ),
-                          ),
+                          ],
                           const SizedBox(height: 6),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
@@ -321,7 +363,6 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // Local Offline Mode & Privacy Card
               Container(
                 decoration: BoxDecoration(
                   color: AppColors.surfaceOf(context),
@@ -329,19 +370,24 @@ class ProfileScreen extends StatelessWidget {
                   border: Border.all(color: AppColors.borderOf(context)),
                   boxShadow: AppDecorations.cardShadow(context),
                 ),
-                child: _buildSettingsTile(
-                  context: context,
-                  icon: auth.isFirebaseConnected ? Icons.cloud_done_rounded : Icons.cloud_off_rounded,
-                  iconColor: auth.isFirebaseConnected ? AppColors.primaryAccentOf(context) : AppColors.primaryAccentOf(context),
-                  title: l10n.firebaseStatusTitle,
-                  subtitle: auth.isFirebaseConnected ? l10n.firebaseConnected : l10n.firebaseOfflineMode,
-                  onTap: () {
-                    showModalBottomSheet(
+                child: Column(
+                  children: [
+                    _buildSettingsTile(
                       context: context,
-                      backgroundColor: Colors.transparent,
-                      builder: (_) => FirebaseStatusSheet(isConnected: auth.isFirebaseConnected),
-                    );
-                  },
+                      icon: Icons.upload_file_rounded,
+                      title: l10n.backupExport,
+                      subtitle: l10n.backupExportDesc,
+                      onTap: () => _exportBackup(context, l10n),
+                    ),
+                    Divider(height: 1, indent: 56, color: AppColors.dividerOf(context)),
+                    _buildSettingsTile(
+                      context: context,
+                      icon: Icons.settings_backup_restore_rounded,
+                      title: l10n.backupImport,
+                      subtitle: l10n.backupImportDesc,
+                      onTap: () => _importBackup(context, l10n),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 16),
@@ -430,20 +476,6 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              // Log Out Button
-              OutlinedButton.icon(
-                onPressed: () => _confirmLogout(context, auth, l10n),
-                icon: const Icon(Icons.logout_rounded, color: AppColors.error, size: 20),
-                label: Text(
-                  l10n.logout,
-                  style: const TextStyle(fontFamily: 'Roboto', color: AppColors.error, fontWeight: FontWeight.w700),
-                ),
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: AppColors.error.withValues(alpha: 0.4)),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                ),
-              ),
               const SizedBox(height: 24),
             ],
           ),

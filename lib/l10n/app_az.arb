@@ -284,5 +284,17 @@
   "typeMessage": "Məşqçinizdən sual soruşun...",
   "weightHistory": "Çəki Tarixçəsi",
   "deleteWeightConfirm": "Bu çəki qeydini silmək istədiyinizdən əminsiniz?",
-  "medicalDisclaimer": "YHealth Çəki Məşqçisi fizioloji formulalara əsaslanan maarifləndirici məlumatlar təqdim edir. Bu, tibbi diaqnoz və ya təyinat deyil. Fərdi sağlamlıq vəziyyətiniz üçün həkiminizlə məsləhətləşin."
+  "medicalDisclaimer": "YHealth Çəki Məşqçisi fizioloji formulalara əsaslanan maarifləndirici məlumatlar təqdim edir. Bu, tibbi diaqnoz və ya təyinat deyil. Fərdi sağlamlıq vəziyyətiniz üçün həkiminizlə məsləhətləşin.",
+  "backupTitle": "Ehtiyat nüsxə və bərpa",
+  "backupExport": "Datanı ixrac et",
+  "backupExportDesc": "Bütün datanı fayla yaz və paylaş",
+  "backupImport": "Datanı bərpa et",
+  "backupImportDesc": "YHealth ehtiyat faylından datanı geri yüklə",
+  "backupImportConfirmTitle": "Data bərpa edilsin?",
+  "backupImportConfirmDesc": "Hazırkı data ehtiyat faylındakı data ilə əvəz olunacaq. Bu əməliyyat geri qaytarıla bilməz.",
+  "backupRestore": "Bərpa et",
+  "backupRestoreSuccess": "Data bərpa olundu. App indi bağlanacaq, datanı görmək üçün yenidən açın.",
+  "backupInvalidFile": "Bu fayl YHealth ehtiyat nüsxəsi deyil.",
+  "backupUnsupportedVersion": "Bu ehtiyat nüsxəsi YHealth-in daha yeni versiyası ilə yaradılıb. Əvvəlcə app-i yeniləyin.",
+  "backupExportFailed": "Ehtiyat nüsxəsi yaradıla bilmədi."
 }

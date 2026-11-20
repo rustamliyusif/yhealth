@@ -27,8 +27,6 @@ class AuthProvider extends ChangeNotifier {
   double _goalDistance = 5.0; // km
   int _goalActiveTime = 30; // minutes
 
-  String? _errorMessage;
-
   AuthProvider(this._storageService, this._firebaseService) {
     _loadInitialState();
   }
@@ -49,8 +47,6 @@ class AuthProvider extends ChangeNotifier {
   double get goalDistance => _goalDistance;
   int get goalActiveTime => _goalActiveTime;
 
-  String? get errorMessage => _errorMessage;
-
   void _loadInitialState() {
     _userName = _storageService.userName;
     _userEmail = _storageService.userEmail;
@@ -64,125 +60,14 @@ class AuthProvider extends ChangeNotifier {
     _goalDistance = _storageService.goalDistance;
     _goalActiveTime = _storageService.goalActiveTime;
 
-    final savedId = _storageService.currentUserId;
-    if (savedId != null) {
-      _userId = savedId;
-      _status = AuthStatus.authenticated;
-    }
-  }
-
-  Future<bool> login(String email, String password) async {
-    _status = AuthStatus.authenticating;
-    _errorMessage = null;
-    notifyListeners();
-
-    try {
-      final users = _storageService.getOfflineUsers();
-      final normalizedEmail = email.trim().toLowerCase();
-      if (users.containsKey(normalizedEmail)) {
-        final userData = users[normalizedEmail] as Map<String, dynamic>;
-        if (await _storageService.verifyOfflineUserPassword(normalizedEmail, password)) {
-          _userId = userData['id'] as String;
-          _userEmail = normalizedEmail;
-          _userName = (userData['name'] as String?) ?? 'YHealth User';
-          await _storageService.setUserEmail(_userEmail);
-          await _storageService.setUserName(_userName);
-          await _storageService.setCurrentUserId(_userId);
-          _status = AuthStatus.authenticated;
-          notifyListeners();
-          return true;
-        } else {
-          _errorMessage = 'wrong_password';
-          _status = AuthStatus.unauthenticated;
-          notifyListeners();
-          return false;
-        }
-      } else {
-        _errorMessage = 'user_not_found';
-        _status = AuthStatus.unauthenticated;
-        notifyListeners();
-        return false;
-      }
-    } catch (e) {
-      _errorMessage = e.toString();
-    }
-
-    _status = AuthStatus.unauthenticated;
-    notifyListeners();
-    return false;
-  }
-
-  Future<bool> register({
-    required String name,
-    required String email,
-    required String password,
-  }) async {
-    _status = AuthStatus.authenticating;
-    _errorMessage = null;
-    notifyListeners();
-
-    try {
-      final users = _storageService.getOfflineUsers();
-      final normalizedEmail = email.trim().toLowerCase();
-      if (users.containsKey(normalizedEmail)) {
-        _errorMessage = 'email_already_in_use';
-        _status = AuthStatus.unauthenticated;
-        notifyListeners();
-        return false;
-      }
-
-      await _storageService.saveOfflineUser(normalizedEmail, password, name.trim());
-      _userId = normalizedEmail;
-      _userEmail = normalizedEmail;
-      _userName = name.trim();
-      await _storageService.setUserEmail(_userEmail);
-      await _storageService.setUserName(_userName);
-      await _storageService.setCurrentUserId(_userId);
-      _status = AuthStatus.authenticated;
-      notifyListeners();
-      return true;
-    } catch (e) {
-      _errorMessage = e.toString();
-    }
-
-    _status = AuthStatus.unauthenticated;
-    notifyListeners();
-    return false;
-  }
-
-  Future<bool> resetPassword(String email) async {
-    _errorMessage = null;
-    try {
-      final users = _storageService.getOfflineUsers();
-      if (users.containsKey(email.trim().toLowerCase())) {
-        _errorMessage = 'reset_unavailable_offline';
-      } else {
-        _errorMessage = 'user_not_found';
-      }
-      return false;
-    } catch (e) {
-      _errorMessage = e.toString();
-      return false;
-    }
-  }
-
-  Future<void> continueAsGuest() async {
-    _userId = 'local_guest';
-    _userEmail = '';
-    _userName = '';
-    await _storageService.setUserEmail(_userEmail);
-    await _storageService.setUserName(_userName);
-    await _storageService.setCurrentUserId(_userId);
+    _userId = _storageService.currentUserId ?? localUserId;
     _status = AuthStatus.authenticated;
-    notifyListeners();
   }
 
-  Future<void> logout() async {
-    await _storageService.clearSessionProfile();
-    _userId = null;
-    _userName = '';
-    _userEmail = '';
-    _status = AuthStatus.unauthenticated;
+  static const String localUserId = 'local_user';
+
+  void reloadFromStorage() {
+    _loadInitialState();
     notifyListeners();
   }
 
