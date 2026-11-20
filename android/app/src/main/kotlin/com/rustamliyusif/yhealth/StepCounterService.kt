@@ -1,4 +1,4 @@
-package com.example.yhealth
+package com.rustamliyusif.yhealth
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -39,8 +39,8 @@ class StepCounterService : Service(), SensorEventListener {
         const val CHANNEL_ID = "yhealth_step_counter_channel"
         const val NOTIFICATION_ID = 1001
 
-        const val ACTION_START = "com.example.yhealth.action.START_STEP_SERVICE"
-        const val ACTION_STOP = "com.example.yhealth.action.STOP_STEP_SERVICE"
+        const val ACTION_START = "com.rustamliyusif.yhealth.action.START_STEP_SERVICE"
+        const val ACTION_STOP = "com.rustamliyusif.yhealth.action.STOP_STEP_SERVICE"
 
         // Live update listener for the active Flutter engine
         var stepUpdateListener: ((Long) -> Unit)? = null

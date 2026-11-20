@@ -1,4 +1,4 @@
-package com.example.yhealth
+package com.rustamliyusif.yhealth
 
 import android.util.Log
 import androidx.work.Configuration

@@ -233,9 +233,9 @@ void main() {
     });
 
     test('Kotlin implementation files for background service and boot receiver exist', () {
-      final serviceFile = File('android/app/src/main/kotlin/com/example/yhealth/StepCounterService.kt');
-      final receiverFile = File('android/app/src/main/kotlin/com/example/yhealth/BootReceiver.kt');
-      final mainActivityFile = File('android/app/src/main/kotlin/com/example/yhealth/MainActivity.kt');
+      final serviceFile = File('android/app/src/main/kotlin/com/rustamliyusif/yhealth/StepCounterService.kt');
+      final receiverFile = File('android/app/src/main/kotlin/com/rustamliyusif/yhealth/BootReceiver.kt');
+      final mainActivityFile = File('android/app/src/main/kotlin/com/rustamliyusif/yhealth/MainActivity.kt');
 
       expect(serviceFile.existsSync(), isTrue);
       expect(receiverFile.existsSync(), isTrue);
@@ -250,8 +250,8 @@ void main() {
       expect(receiverContent.contains('ACTION_BOOT_COMPLETED'), isTrue);
 
       final mainActivityContent = mainActivityFile.readAsStringSync();
-      expect(mainActivityContent.contains('com.example.yhealth/step_counter'), isTrue);
-      expect(mainActivityContent.contains('com.example.yhealth/step_counter_stream'), isTrue);
+      expect(mainActivityContent.contains('com.rustamliyusif.yhealth/step_counter'), isTrue);
+      expect(mainActivityContent.contains('com.rustamliyusif.yhealth/step_counter_stream'), isTrue);
     });
   });
 

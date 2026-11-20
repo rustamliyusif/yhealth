@@ -87,7 +87,7 @@ class FirebaseStatusSheet extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'com.example.yhealth',
+                  'com.rustamliyusif.yhealth',
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.primaryOf(context)),
                 ),
                 const SizedBox(height: 10),

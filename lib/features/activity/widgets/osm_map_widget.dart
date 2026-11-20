@@ -133,7 +133,7 @@ class _OsmMapWidgetState extends State<OsmMapWidget> {
           children: [
             TileLayer(
               urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'com.example.yhealth',
+              userAgentPackageName: 'com.rustamliyusif.yhealth',
               maxZoom: 19,
             ),
             if (widget.polylinePoints.isNotEmpty)

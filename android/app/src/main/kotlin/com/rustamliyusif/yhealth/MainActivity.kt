@@ -1,4 +1,4 @@
-package com.example.yhealth
+package com.rustamliyusif.yhealth
 
 import android.Manifest
 import android.app.ActivityManager
@@ -20,9 +20,9 @@ import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
 
-    private val METHOD_CHANNEL = "com.example.yhealth/step_counter"
-    private val EVENT_CHANNEL = "com.example.yhealth/step_counter_stream"
-    private val HEALTH_CONNECT_CHANNEL = "com.example.yhealth/health_connect"
+    private val METHOD_CHANNEL = "com.rustamliyusif.yhealth/step_counter"
+    private val EVENT_CHANNEL = "com.rustamliyusif.yhealth/step_counter_stream"
+    private val HEALTH_CONNECT_CHANNEL = "com.rustamliyusif.yhealth/health_connect"
 
     private var stepEventSink: EventChannel.EventSink? = null
 

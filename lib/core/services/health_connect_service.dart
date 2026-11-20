@@ -11,7 +11,7 @@ enum HealthConnectStatus {
 
 /// Clean service abstracting Android Health Connect integration.
 class HealthConnectService {
-  static const MethodChannel _channel = MethodChannel('com.example.yhealth/health_connect');
+  static const MethodChannel _channel = MethodChannel('com.rustamliyusif.yhealth/health_connect');
 
   /// Checks Health Connect status on the current Android device.
   Future<HealthConnectStatus> checkAvailability() async {

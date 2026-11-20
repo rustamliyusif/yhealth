@@ -33,11 +33,11 @@
     public <init>(...);
     *;
 }
--keep class com.example.yhealth.WeeklyReportWorker {
+-keep class com.rustamliyusif.yhealth.WeeklyReportWorker {
     public <init>(android.content.Context, androidx.work.WorkerParameters);
     *;
 }
--keep class com.example.yhealth.YHealthApplication {
+-keep class com.rustamliyusif.yhealth.YHealthApplication {
     public <init>();
     *;
 }
