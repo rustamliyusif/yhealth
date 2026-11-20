@@ -107,7 +107,12 @@
     let sortDir = -1;
     let unsubscribe = null;
 
-    const fmtDate = (ts) => ts ? ts.toDate().toLocaleString('az-AZ', { dateStyle: 'medium', timeStyle: 'short' }) : '–';
+    const pad = (n) => String(n).padStart(2, '0');
+    const fmtDate = (ts) => {
+      if (!ts) return '–';
+      const d = ts.toDate();
+      return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    };
     const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
     function render() {
