@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:pedometer/pedometer.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../services/activity_recognition_service.dart';
 import '../services/native_step_service.dart';
@@ -22,18 +21,14 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
   final ActivityRepository? activityRepository;
 
   StreamSubscription<int>? _nativeStepSubscription;
-  StreamSubscription<StepCount>? _fallbackPedometerSubscription;
-  StreamSubscription<PedestrianStatus>? _pedestrianStatusSubscription;
   StreamSubscription<ActivityRecognitionEvent>? _activitySubscription;
   Timer? _midnightCheckTimer;
   Timer? _persistTimer;
   bool _started = false;
 
   int _todayHardwareSteps = 0;
-  int _lastFallbackRawSteps = -1;
   int _simulatedSteps = 0;
   SensorStatus _sensorStatus = SensorStatus.waiting;
-  String _pedestrianState = 'stopped'; // walking, stopped, unknown
   bool _isNativeServiceRunning = false;
   DeviceCompatibilityModel? _compatibility;
 
@@ -68,7 +63,6 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
   int get todaySteps => _todayHardwareSteps + _simulatedSteps;
   int get simulatedSteps => _simulatedSteps;
   SensorStatus get sensorStatus => _sensorStatus;
-  String get pedestrianState => _pedestrianState;
   bool get isSensorActive => _sensorStatus == SensorStatus.active;
   bool get isNativeServiceRunning => _isNativeServiceRunning;
   Map<String, int> get history => _history;
@@ -199,7 +193,6 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
       _todayHardwareSteps = 0;
       _simulatedSteps = 0;
       await _storageService.setSimulatedSteps(0);
-      _lastFallbackRawSteps = -1;
     }
 
     _currentDayKey = today;
@@ -255,7 +248,6 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
       _todayHardwareSteps = 0;
       _simulatedSteps = 0;
       _storageService.setSimulatedSteps(0);
-      _lastFallbackRawSteps = -1;
 
       // 3. Update current date tracker
       _currentDayKey = currentToday;
@@ -345,7 +337,7 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
           },
           onError: (e) {
             debugPrint('Native step stream error: $e');
-            _initFallbackPedometer();
+            _markSensorUnsupported();
           },
         );
 
@@ -386,73 +378,17 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
         _sensorStatus = SensorStatus.active;
         notifyListeners();
       } else {
-        // Fallback for devices without hardware step sensors (e.g. tablet, emulator)
-        _initFallbackPedometer();
+        _markSensorUnsupported();
       }
 
-      // Listen to pedestrian status if available
-      try {
-        _pedestrianStatusSubscription?.cancel();
-        _pedestrianStatusSubscription =
-            Pedometer.pedestrianStatusStream.listen(
-          (status) {
-            _pedestrianState = status.status;
-            _activityRecognitionService
-                .updatePedestrianStatus(status.status);
-            notifyListeners();
-          },
-          onError: (_) {},
-          cancelOnError: false,
-        );
-      } catch (_) {}
     } catch (e) {
       debugPrint('Error starting step counter service: $e');
-      _initFallbackPedometer();
+      _markSensorUnsupported();
     }
   }
 
-  void _initFallbackPedometer() {
-    _fallbackPedometerSubscription?.cancel();
-    try {
-      _fallbackPedometerSubscription = Pedometer.stepCountStream.listen(
-        _onFallbackStepCount,
-        onError: (err) {
-          debugPrint('Fallback pedometer error: $err');
-          _sensorStatus = SensorStatus.unsupported;
-          notifyListeners();
-        },
-        cancelOnError: false,
-      );
-    } catch (_) {
-      _sensorStatus = SensorStatus.unsupported;
-      notifyListeners();
-    }
-  }
-
-  void _onFallbackStepCount(StepCount event) {
-    final raw = event.steps;
-
-    if (_lastFallbackRawSteps < 0) {
-      _lastFallbackRawSteps = raw;
-    } else if (raw < _lastFallbackRawSteps) {
-      // Device rebooted during execution
-      final delta = raw;
-      _todayHardwareSteps += delta;
-      _lastFallbackRawSteps = raw;
-      if (delta > 0) {
-        _activityRecognitionService.recordStepEvent();
-      }
-    } else {
-      final delta = raw - _lastFallbackRawSteps;
-      if (delta > 0) {
-        _todayHardwareSteps += delta;
-        _lastFallbackRawSteps = raw;
-        _activityRecognitionService.recordStepEvent();
-      }
-    }
-
-    _sensorStatus = SensorStatus.active;
-    _recordTodayHistory();
+  void _markSensorUnsupported() {
+    _sensorStatus = SensorStatus.unsupported;
     notifyListeners();
   }
 
@@ -506,8 +442,6 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
     _midnightCheckTimer?.cancel();
     _flushTodayHistory();
     _nativeStepSubscription?.cancel();
-    _fallbackPedometerSubscription?.cancel();
-    _pedestrianStatusSubscription?.cancel();
     _activitySubscription?.cancel();
     _activityRecognitionService.dispose();
     super.dispose();
