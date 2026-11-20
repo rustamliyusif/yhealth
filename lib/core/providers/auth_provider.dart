@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/storage_service.dart';
 import '../services/firebase_service.dart';
+import '../services/cloud_profile_service.dart';
 
 enum AuthStatus {
   unauthenticated,
@@ -11,6 +12,7 @@ enum AuthStatus {
 class AuthProvider extends ChangeNotifier {
   final StorageService _storageService;
   final FirebaseService _firebaseService;
+  final CloudProfileService? _cloudProfileService;
 
   AuthStatus _status = AuthStatus.unauthenticated;
   String? _userId;
@@ -27,13 +29,41 @@ class AuthProvider extends ChangeNotifier {
   double _goalDistance = 5.0; // km
   int _goalActiveTime = 30; // minutes
 
-  AuthProvider(this._storageService, this._firebaseService) {
+  AuthProvider(this._storageService, this._firebaseService, [this._cloudProfileService]) {
     _loadInitialState();
   }
 
   AuthStatus get status => _status;
   bool get isAuthenticated => _status == AuthStatus.authenticated;
   bool get isFirebaseConnected => FirebaseService.isAvailable;
+  bool get shareProfile => _storageService.shareProfile;
+  bool get profileSetupDone => _storageService.profileSetupDone;
+  bool get isCloudAvailable => _cloudProfileService?.isAvailable ?? false;
+
+  Future<void> completeProfileSetup({
+    required String name,
+    int? age,
+    required bool share,
+  }) async {
+    if (name.isNotEmpty) {
+      _userName = name;
+      await _storageService.setUserName(name);
+    }
+    if (age != null) {
+      _userAge = age;
+      await _storageService.setUserAge(age);
+    }
+    await _storageService.setShareProfile(share);
+    await _storageService.setProfileSetupDone(true);
+    notifyListeners();
+    await _cloudProfileService?.sync();
+  }
+
+  Future<void> setShareProfile(bool share) async {
+    await _storageService.setShareProfile(share);
+    notifyListeners();
+    await _cloudProfileService?.sync();
+  }
   String? get userId => _userId;
   String get userName => _userName;
   String get userEmail => _userEmail;
@@ -112,6 +142,9 @@ class AuthProvider extends ChangeNotifier {
       );
     }
     notifyListeners();
+    if (name != null || age != null) {
+      await _cloudProfileService?.sync();
+    }
   }
 
   Future<void> updateGoals({

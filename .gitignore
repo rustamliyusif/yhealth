@@ -54,3 +54,4 @@ key.properties
 android/local.properties
 android/.gradle/
 norton.cer
+android/app/google-services.json

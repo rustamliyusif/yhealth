@@ -5,6 +5,7 @@ import 'core/repositories/activity_repository.dart';
 import 'core/services/database_migration_service.dart';
 import 'core/services/storage_service.dart';
 import 'core/services/backup_service.dart';
+import 'core/services/cloud_profile_service.dart';
 import 'core/services/firebase_service.dart';
 import 'core/providers/language_provider.dart';
 import 'core/providers/auth_provider.dart';
@@ -19,6 +20,7 @@ import 'core/theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
 import 'features/onboarding/language_selection_screen.dart';
 import 'features/navigation/main_navigation_screen.dart';
+import 'features/onboarding/profile_setup_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +37,9 @@ void main() async {
     storageService: storageService,
     activityRepository: activityRepository,
   );
+
+  final cloudProfileService = await CloudProfileService.init(storageService);
+  cloudProfileService.sync();
 
   // Initialize Firebase (safely handles missing credentials with local fallback)
   await FirebaseService.initialize();
@@ -62,7 +67,7 @@ void main() async {
         Provider<BackupService>.value(value: BackupService(appDatabase, storageService)),
         ChangeNotifierProvider(create: (_) => ThemeProvider(storageService)),
         ChangeNotifierProvider(create: (_) => LanguageProvider(storageService)),
-        ChangeNotifierProvider(create: (_) => AuthProvider(storageService, firebaseService)),
+        ChangeNotifierProvider(create: (_) => AuthProvider(storageService, firebaseService, cloudProfileService)),
         ChangeNotifierProvider.value(value: stepCounterProvider),
         ChangeNotifierProvider.value(value: activityProvider),
         ChangeNotifierProvider(create: (_) => HealthProvider(storageService)),
@@ -82,10 +87,13 @@ class YHealthApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final languageProvider = context.watch<LanguageProvider>();
     final themeProvider = context.watch<ThemeProvider>();
+    final profileSetupDone = context.select<AuthProvider, bool>((a) => a.profileSetupDone);
 
     Widget homeScreen;
     if (!languageProvider.hasSelectedInitialLanguage) {
       homeScreen = const LanguageSelectionScreen();
+    } else if (!profileSetupDone) {
+      homeScreen = const ProfileSetupScreen();
     } else {
       homeScreen = const MainNavigationScreen();
     }

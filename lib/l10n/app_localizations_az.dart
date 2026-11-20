@@ -920,4 +920,34 @@ class AppLocalizationsAz extends AppLocalizations {
 
   @override
   String get backupExportFailed => 'Ehtiyat nüsxəsi yaradıla bilmədi.';
+
+  @override
+  String get setupTitle => 'Özünüz haqqında';
+
+  @override
+  String get setupSubtitle =>
+      'Adınız və yaşınız hədəfləri və Coach Leo-nu sizə uyğunlaşdırmağa kömək edir.';
+
+  @override
+  String get setupShareConsent =>
+      'Ad, soyad və yaşımı YHealth tərtibatçısı ilə paylaşmağa razıyam';
+
+  @override
+  String get setupShareDesc =>
+      'Yalnız ad, soyad və yaşınız göndərilir. Sağlamlıq datası və məkan telefonunuzdan çıxmır. Bunu istənilən vaxt Profil bölməsində söndürə bilərsiniz.';
+
+  @override
+  String get setupNameRequired => 'Ad və soyadınızı daxil edin';
+
+  @override
+  String get setupInvalidAge => '5 ilə 120 arasında yaş daxil edin';
+
+  @override
+  String get shareSettingTitle => 'Ad və yaşı paylaş';
+
+  @override
+  String get shareSettingOn => 'YHealth tərtibatçısı ilə paylaşılır';
+
+  @override
+  String get shareSettingOff => 'Paylaşılmır, yalnız bu telefonda qalır';
 }

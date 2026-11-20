@@ -376,6 +376,37 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
+                    SwitchListTile(
+                      value: auth.shareProfile,
+                      onChanged: (value) => auth.setShareProfile(value),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                      secondary: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryAccentOf(context).withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Icon(Icons.badge_outlined, color: AppColors.primaryAccentOf(context), size: 20),
+                      ),
+                      title: Text(
+                        l10n.shareSettingTitle,
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textPrimaryOf(context),
+                        ),
+                      ),
+                      subtitle: Text(
+                        auth.shareProfile ? l10n.shareSettingOn : l10n.shareSettingOff,
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 12.5,
+                          color: AppColors.textSecondaryOf(context),
+                        ),
+                      ),
+                    ),
+                    Divider(height: 1, indent: 56, color: AppColors.dividerOf(context)),
                     _buildSettingsTile(
                       context: context,
                       icon: Icons.upload_file_rounded,

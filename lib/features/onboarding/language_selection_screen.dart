@@ -8,6 +8,8 @@ import '../../core/widgets/premium_button.dart';
 import '../../core/widgets/yhealth_logo.dart';
 import '../../l10n/app_localizations.dart';
 import '../navigation/main_navigation_screen.dart';
+import '../../core/providers/auth_provider.dart';
+import 'profile_setup_screen.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {
   final bool isFromSettings;
@@ -43,8 +45,11 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     if (widget.isFromSettings) {
       Navigator.of(context).pop();
     } else {
+      final setupDone = Provider.of<AuthProvider>(context, listen: false).profileSetupDone;
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
+        MaterialPageRoute(
+          builder: (_) => setupDone ? const MainNavigationScreen() : const ProfileSetupScreen(),
+        ),
       );
     }
   }

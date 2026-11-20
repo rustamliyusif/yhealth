@@ -922,4 +922,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backupExportFailed => 'Couldn\'t create the backup.';
+
+  @override
+  String get setupTitle => 'About you';
+
+  @override
+  String get setupSubtitle =>
+      'Your name and age help personalize your goals and Coach Leo.';
+
+  @override
+  String get setupShareConsent =>
+      'Share my name and age with the YHealth developer';
+
+  @override
+  String get setupShareDesc =>
+      'Only your name and age are sent. Health data and location never leave your phone. You can turn this off anytime in Profile.';
+
+  @override
+  String get setupNameRequired => 'Enter your name';
+
+  @override
+  String get setupInvalidAge => 'Enter an age between 5 and 120';
+
+  @override
+  String get shareSettingTitle => 'Share name & age';
+
+  @override
+  String get shareSettingOn => 'Shared with the YHealth developer';
+
+  @override
+  String get shareSettingOff => 'Not shared — stays on this phone';
 }
