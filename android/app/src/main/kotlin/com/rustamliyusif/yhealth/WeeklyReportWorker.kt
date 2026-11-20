@@ -1,4 +1,4 @@
-package com.example.yhealth
+package com.rustamliyusif.yhealth
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

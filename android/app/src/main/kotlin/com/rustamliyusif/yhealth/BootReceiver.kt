@@ -1,4 +1,4 @@
-package com.example.yhealth
+package com.rustamliyusif.yhealth
 
 import android.content.BroadcastReceiver
 import android.content.Context

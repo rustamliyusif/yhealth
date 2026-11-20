@@ -94,9 +94,9 @@ class DeviceCompatibilityModel {
 
 class NativeStepService {
   static const MethodChannel _methodChannel =
-      MethodChannel('com.example.yhealth/step_counter');
+      MethodChannel('com.rustamliyusif.yhealth/step_counter');
   static const EventChannel _eventChannel =
-      EventChannel('com.example.yhealth/step_counter_stream');
+      EventChannel('com.rustamliyusif.yhealth/step_counter_stream');
 
   Stream<int>? _stepStream;
 
