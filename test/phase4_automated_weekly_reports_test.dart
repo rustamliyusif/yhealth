@@ -484,6 +484,9 @@ void main() {
       final file = File(path);
       expect(await file.exists(), isTrue);
       expect(await file.length(), greaterThan(500));
+
+      final azPath = await PdfReportService.generateAndSaveWeeklyReportPdf(report, languageCode: 'az');
+      expect(await File(azPath).length(), greaterThan(500));
     });
   });
 }

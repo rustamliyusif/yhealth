@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import '../models/weekly_report_model.dart';
+import 'pdf_report_strings.dart';
 
 /// Local service generating high-resolution, privacy-first PDF documents for weekly reports.
 class PdfReportService {
@@ -25,7 +26,11 @@ class PdfReportService {
 
   /// Generates a PDF report document and persists it to local device storage.
   /// Returns the absolute file path of the generated PDF.
-  static Future<String> generateAndSaveWeeklyReportPdf(WeeklyReportModel report) async {
+  static Future<String> generateAndSaveWeeklyReportPdf(
+    WeeklyReportModel report, {
+    String languageCode = 'en',
+  }) async {
+    final t = PdfReportStrings.forLanguage(languageCode);
     final pdf = pw.Document(theme: await _loadUnicodeTheme());
 
     pdf.addPage(
@@ -44,7 +49,7 @@ class PdfReportService {
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
                       pw.Text(
-                        'YHealth - Weekly Report',
+                        t.title,
                         style: pw.TextStyle(
                           fontSize: 22,
                           fontWeight: pw.FontWeight.bold,
@@ -53,7 +58,7 @@ class PdfReportService {
                       ),
                       pw.SizedBox(height: 4),
                       pw.Text(
-                        '${report.startDate}  to  ${report.endDate}   |   Week ${report.weekNumber}, ${report.year}',
+                        t.period(report.startDate, report.endDate, report.weekNumber, report.year),
                         style: const pw.TextStyle(
                           fontSize: 12,
                           color: PdfColors.grey700,
@@ -68,7 +73,7 @@ class PdfReportService {
                       borderRadius: pw.BorderRadius.circular(6),
                     ),
                     child: pw.Text(
-                      'YHEALTH OFFLINE',
+                      t.badge,
                       style: pw.TextStyle(
                         fontSize: 10,
                         fontWeight: pw.FontWeight.bold,
@@ -84,7 +89,7 @@ class PdfReportService {
 
               // KPI Summary Cards Grid
               pw.Text(
-                'Weekly Summary Metrics',
+                t.summaryHeading,
                 style: pw.TextStyle(
                   fontSize: 14,
                   fontWeight: pw.FontWeight.bold,
@@ -94,21 +99,21 @@ class PdfReportService {
               pw.SizedBox(height: 10),
               pw.Row(
                 children: [
-                  _buildKpiCard('Total Steps', '${report.totalSteps}', 'steps', PdfColors.teal50),
+                  _buildKpiCard(t.totalSteps, '${report.totalSteps}', t.steps, PdfColors.teal50),
                   pw.SizedBox(width: 8),
-                  _buildKpiCard('Distance', report.formattedTotalDistance, '', PdfColors.cyan50),
+                  _buildKpiCard(t.distance, report.formattedTotalDistance, '', PdfColors.cyan50),
                   pw.SizedBox(width: 8),
-                  _buildKpiCard('Calories', '${report.totalCalories}', 'kcal', PdfColors.orange50),
+                  _buildKpiCard(t.calories, '${report.totalCalories}', t.kcal, PdfColors.orange50),
                 ],
               ),
               pw.SizedBox(height: 8),
               pw.Row(
                 children: [
-                  _buildKpiCard('Active Time', '${report.totalActiveMinutes}', 'min', PdfColors.amber50),
+                  _buildKpiCard(t.activeTime, '${report.totalActiveMinutes}', t.minutes, PdfColors.amber50),
                   pw.SizedBox(width: 8),
-                  _buildKpiCard('Avg Sleep / Night', report.formattedAvgDailySleep, '', PdfColors.indigo50),
+                  _buildKpiCard(t.avgSleep, t.duration(report.avgDailySleepMinutes), '', PdfColors.indigo50),
                   pw.SizedBox(width: 8),
-                  _buildKpiCard('Goal Completed', '${report.goalMetDays} / 7 days', '(${report.goalCompletionPercent}%)', PdfColors.green50),
+                  _buildKpiCard(t.goalCompleted, t.goalDays(report.goalMetDays), '(${report.goalCompletionPercent}%)', PdfColors.green50),
                 ],
               ),
               pw.SizedBox(height: 16),
@@ -127,11 +132,11 @@ class PdfReportService {
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
                         pw.Text(
-                          'Most Active Day:',
+                          t.mostActiveDay,
                           style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
                         ),
                         pw.Text(
-                          '${report.mostActiveDayDate}  (${report.mostActiveDaySteps} steps)',
+                          '${report.mostActiveDayDate}  (${report.mostActiveDaySteps} ${t.steps})',
                           style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold, color: PdfColors.blueGrey900),
                         ),
                       ],
@@ -140,11 +145,11 @@ class PdfReportService {
                       crossAxisAlignment: pw.CrossAxisAlignment.end,
                       children: [
                         pw.Text(
-                          'vs Previous Week:',
+                          t.vsPreviousWeek,
                           style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
                         ),
                         pw.Text(
-                          'Steps: ${report.formatDeltaPercent(report.stepsChangePercent)}   |   Sleep: ${report.formatDeltaPercent(report.sleepChangePercent)}',
+                          '${t.colSteps}: ${report.formatDeltaPercent(report.stepsChangePercent)}   |   ${t.colSleep}: ${report.formatDeltaPercent(report.sleepChangePercent)}',
                           style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold, color: PdfColors.blueGrey900),
                         ),
                       ],
@@ -156,7 +161,7 @@ class PdfReportService {
 
               // Daily Breakdown Table
               pw.Text(
-                '7-Day Daily Breakdown (Monday - Sunday)',
+                t.breakdownHeading,
                 style: pw.TextStyle(
                   fontSize: 14,
                   fontWeight: pw.FontWeight.bold,
@@ -171,28 +176,28 @@ class PdfReportService {
                   pw.TableRow(
                     decoration: const pw.BoxDecoration(color: PdfColors.blueGrey100),
                     children: [
-                      _buildTableCell('Day', isHeader: true),
-                      _buildTableCell('Date', isHeader: true),
-                      _buildTableCell('Steps', isHeader: true),
-                      _buildTableCell('Dist (km)', isHeader: true),
-                      _buildTableCell('Calories', isHeader: true),
-                      _buildTableCell('Active (m)', isHeader: true),
-                      _buildTableCell('Sleep', isHeader: true),
-                      _buildTableCell('Goal Met', isHeader: true),
+                      _buildTableCell(t.colDay, isHeader: true),
+                      _buildTableCell(t.colDate, isHeader: true),
+                      _buildTableCell(t.colSteps, isHeader: true),
+                      _buildTableCell(t.colDistance, isHeader: true),
+                      _buildTableCell(t.colCalories, isHeader: true),
+                      _buildTableCell(t.colActive, isHeader: true),
+                      _buildTableCell(t.colSleep, isHeader: true),
+                      _buildTableCell(t.colGoal, isHeader: true),
                     ],
                   ),
                   // Table Rows
                   ...report.dailyBreakdowns.map((d) {
                     final sleepStr = d.sleepMinutes > 0
-                        ? '${d.sleepMinutes ~/ 60}h ${d.sleepMinutes % 60}m'
+                        ? t.duration(d.sleepMinutes)
                         : '-';
-                    final goalStr = d.isGoalMet ? 'Yes' : (d.isMissing ? 'No record' : 'No');
+                    final goalStr = d.isGoalMet ? t.yes : (d.isMissing ? t.noRecord : t.no);
                     return pw.TableRow(
                       decoration: pw.BoxDecoration(
                         color: d.isMissing ? PdfColors.grey50 : PdfColors.white,
                       ),
                       children: [
-                        _buildTableCell(d.dayName),
+                        _buildTableCell(t.dayName(d.dayOfWeek, d.dayName)),
                         _buildTableCell(d.date),
                         _buildTableCell(d.isMissing ? '-' : '${d.steps}'),
                         _buildTableCell(d.isMissing ? '-' : d.distanceKm.toStringAsFixed(1)),
@@ -214,11 +219,11 @@ class PdfReportService {
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.Text(
-                    'Generated locally by YHealth. Data is stored strictly on-device without cloud sync.',
+                    t.footer,
                     style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey600),
                   ),
                   pw.Text(
-                    'Generated: ${report.generatedAt.toLocal().toString().split('.')[0]}',
+                    '${t.generated}: ${report.generatedAt.toLocal().toString().split('.')[0]}',
                     style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey600),
                   ),
                 ],

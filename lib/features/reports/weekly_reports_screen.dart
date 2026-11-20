@@ -43,7 +43,10 @@ class WeeklyReportsScreen extends StatelessWidget {
                 icon: const Icon(Icons.picture_as_pdf_outlined, color: Color(0xFF0D9488), size: 20),
                 tooltip: l10n.exportPdf,
                 onPressed: () async {
-                  final path = await reportProvider.exportPdf(reportProvider.selectedReport!);
+                  final path = await reportProvider.exportPdf(
+                    reportProvider.selectedReport!,
+                    languageCode: Localizations.localeOf(context).languageCode,
+                  );
                   if (path == null) return;
                   final shared = await ShareService.sharePdf(path, title: l10n.exportPdf);
                   if (context.mounted && !shared) {
@@ -299,7 +302,10 @@ class WeeklyReportsScreen extends StatelessWidget {
           // PDF Export Button
           PremiumButton(
             onPressed: () async {
-              final path = await provider.exportPdf(report);
+              final path = await provider.exportPdf(
+                report,
+                languageCode: Localizations.localeOf(context).languageCode,
+              );
               if (path == null) return;
               final shared = await ShareService.sharePdf(path, title: l10n.exportPdf);
               if (context.mounted && !shared) {
