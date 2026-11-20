@@ -95,9 +95,9 @@ class WeeklyReportProvider extends ChangeNotifier {
     }
   }
 
-  Future<String?> exportPdf(WeeklyReportModel report) async {
+  Future<String?> exportPdf(WeeklyReportModel report, {String languageCode = 'en'}) async {
     try {
-      final path = await PdfReportService.generateAndSaveWeeklyReportPdf(report);
+      final path = await PdfReportService.generateAndSaveWeeklyReportPdf(report, languageCode: languageCode);
       _exportedPdfPath = path;
       notifyListeners();
       return path;
