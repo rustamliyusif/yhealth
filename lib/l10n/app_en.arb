@@ -284,5 +284,17 @@
   "typeMessage": "Ask your coach anything...",
   "weightHistory": "Weight History",
   "deleteWeightConfirm": "Are you sure you want to delete this weight measurement?",
-  "medicalDisclaimer": "YHealth Weight Coach provides educational lifestyle insights based on physiological formulas. It is not a clinical medical diagnosis or prescription. Always consult a physician for individual health conditions."
+  "medicalDisclaimer": "YHealth Weight Coach provides educational lifestyle insights based on physiological formulas. It is not a clinical medical diagnosis or prescription. Always consult a physician for individual health conditions.",
+  "backupTitle": "Backup & restore",
+  "backupExport": "Export data",
+  "backupExportDesc": "Save all your data to a file and share it",
+  "backupImport": "Restore data",
+  "backupImportDesc": "Load data from a YHealth backup file",
+  "backupImportConfirmTitle": "Restore data?",
+  "backupImportConfirmDesc": "Your current data will be replaced with the data in the backup. This can't be undone.",
+  "backupRestore": "Restore",
+  "backupRestoreSuccess": "Data restored. The app will close now — open it again to see your data.",
+  "backupInvalidFile": "This file isn't a YHealth backup.",
+  "backupUnsupportedVersion": "This backup was made with a newer version of YHealth. Update the app first.",
+  "backupExportFailed": "Couldn't create the backup."
 }

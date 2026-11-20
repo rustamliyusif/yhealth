@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
-import 'package:crypto/crypto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
@@ -175,74 +173,64 @@ class StorageService {
     }
   }
 
-  Map<String, dynamic> getOfflineUsers() {
-    final raw = _prefs.getString(keyOfflineUsers);
-    if (raw == null || raw.isEmpty) return {};
-    try {
-      return jsonDecode(raw) as Map<String, dynamic>;
-    } catch (_) {
-      return {};
+  static const List<String> backupPreferenceKeys = [
+    keyHasSelectedLanguage,
+    keyLanguageCode,
+    keyUserName,
+    keyUserEmail,
+    keyUserAge,
+    keyUserHeight,
+    keyUserWeight,
+    keyMeasurementUnit,
+    keyGoalSteps,
+    keyGoalCalories,
+    keyGoalDistance,
+    keyGoalActiveTime,
+    keySavedRoutes,
+    keyStepHistory,
+    keyThemeMode,
+    keyTargetWeight,
+    keyActivityLevel,
+    keyDietaryPreference,
+  ];
+
+  Map<String, dynamic> exportPreferences() {
+    final result = <String, dynamic>{};
+    for (final key in backupPreferenceKeys) {
+      final value = _prefs.get(key);
+      if (value == null) continue;
+      final String type;
+      if (value is bool) {
+        type = 'bool';
+      } else if (value is int) {
+        type = 'int';
+      } else if (value is double) {
+        type = 'double';
+      } else if (value is String) {
+        type = 'string';
+      } else {
+        continue;
+      }
+      result[key] = {'type': type, 'value': value};
     }
+    return result;
   }
 
-  Future<void> saveOfflineUser(String email, String password, String name) async {
-    final users = getOfflineUsers();
-    final salt = _generateSalt();
-    users[email.toLowerCase()] = {
-      'id': email.toLowerCase(),
-      'email': email.toLowerCase(),
-      'passwordHash': hashPassword(password, salt),
-      'salt': salt,
-      'name': name,
-      'createdAt': DateTime.now().toIso8601String(),
-    };
-    await _prefs.setString(keyOfflineUsers, jsonEncode(users));
-  }
-
-  Future<bool> verifyOfflineUserPassword(String email, String password) async {
-    final users = getOfflineUsers();
-    final key = email.toLowerCase();
-    final user = users[key];
-    if (user is! Map) return false;
-    final userData = Map<String, dynamic>.from(user);
-
-    final hash = userData['passwordHash'] as String?;
-    final salt = userData['salt'] as String?;
-    if (hash != null && salt != null) {
-      return hashPassword(password, salt) == hash;
+  Future<void> importPreferences(Map<String, dynamic> data) async {
+    for (final key in backupPreferenceKeys) {
+      final entry = data[key];
+      if (entry is! Map) continue;
+      final value = entry['value'];
+      switch (entry['type']) {
+        case 'bool':
+          if (value is bool) await _prefs.setBool(key, value);
+        case 'int':
+          if (value is num) await _prefs.setInt(key, value.toInt());
+        case 'double':
+          if (value is num) await _prefs.setDouble(key, value.toDouble());
+        case 'string':
+          if (value is String) await _prefs.setString(key, value);
+      }
     }
-
-    final legacyPassword = userData['password'] as String?;
-    if (legacyPassword == null || legacyPassword != password) return false;
-
-    final newSalt = _generateSalt();
-    userData
-      ..remove('password')
-      ..['passwordHash'] = hashPassword(password, newSalt)
-      ..['salt'] = newSalt;
-    users[key] = userData;
-    await _prefs.setString(keyOfflineUsers, jsonEncode(users));
-    return true;
-  }
-
-  Future<void> clearSessionProfile() async {
-    await _prefs.remove(keyCurrentUserId);
-    await _prefs.remove(keyUserName);
-    await _prefs.remove(keyUserEmail);
-  }
-
-  static String hashPassword(String password, String salt) {
-    var bytes = utf8.encode('$salt:$password');
-    var digest = sha256.convert(bytes);
-    for (var i = 0; i < 10000; i++) {
-      digest = sha256.convert([...digest.bytes, ...bytes]);
-    }
-    return digest.toString();
-  }
-
-  static String _generateSalt() {
-    final random = Random.secure();
-    final bytes = List<int>.generate(16, (_) => random.nextInt(256));
-    return base64UrlEncode(bytes);
   }
 }

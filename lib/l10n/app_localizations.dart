@@ -1034,6 +1034,78 @@ abstract class AppLocalizations {
   /// **'Password recovery isn\'t available in offline mode. You can continue as a guest or create a new account.'**
   String get authErrorResetUnavailableOffline;
 
+  /// No description provided for @backupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup & restore'**
+  String get backupTitle;
+
+  /// No description provided for @backupExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export data'**
+  String get backupExport;
+
+  /// No description provided for @backupExportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Save all your data to a file and share it'**
+  String get backupExportDesc;
+
+  /// No description provided for @backupImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore data'**
+  String get backupImport;
+
+  /// No description provided for @backupImportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Load data from a YHealth backup file'**
+  String get backupImportDesc;
+
+  /// No description provided for @backupImportConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore data?'**
+  String get backupImportConfirmTitle;
+
+  /// No description provided for @backupImportConfirmDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your current data will be replaced with the data in the backup. This can\'t be undone.'**
+  String get backupImportConfirmDesc;
+
+  /// No description provided for @backupRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get backupRestore;
+
+  /// No description provided for @backupRestoreSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Data restored. The app will close now — open it again to see your data.'**
+  String get backupRestoreSuccess;
+
+  /// No description provided for @backupInvalidFile.
+  ///
+  /// In en, this message translates to:
+  /// **'This file isn\'t a YHealth backup.'**
+  String get backupInvalidFile;
+
+  /// No description provided for @backupUnsupportedVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'This backup was made with a newer version of YHealth. Update the app first.'**
+  String get backupUnsupportedVersion;
+
+  /// No description provided for @backupExportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t create the backup.'**
+  String get backupExportFailed;
+
   /// No description provided for @authErrorWeakPassword.
   ///
   /// In en, this message translates to:

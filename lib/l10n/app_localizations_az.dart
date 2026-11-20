@@ -881,4 +881,40 @@ class AppLocalizationsAz extends AppLocalizations {
   @override
   String get medicalDisclaimer =>
       'YHealth Çəki Məşqçisi fizioloji formulalara əsaslanan maarifləndirici məlumatlar təqdim edir. Bu, tibbi diaqnoz və ya təyinat deyil. Fərdi sağlamlıq vəziyyətiniz üçün həkiminizlə məsləhətləşin.';
+
+  @override
+  String get backupTitle => 'Ehtiyat nüsxə və bərpa';
+
+  @override
+  String get backupExport => 'Datanı ixrac et';
+
+  @override
+  String get backupExportDesc => 'Bütün datanı fayla yaz və paylaş';
+
+  @override
+  String get backupImport => 'Datanı bərpa et';
+
+  @override
+  String get backupImportDesc => 'YHealth ehtiyat faylından datanı geri yüklə';
+
+  @override
+  String get backupImportConfirmTitle => 'Data bərpa edilsin?';
+
+  @override
+  String get backupImportConfirmDesc => 'Hazırkı data ehtiyat faylındakı data ilə əvəz olunacaq. Bu əməliyyat geri qaytarıla bilməz.';
+
+  @override
+  String get backupRestore => 'Bərpa et';
+
+  @override
+  String get backupRestoreSuccess => 'Data bərpa olundu. App indi bağlanacaq, datanı görmək üçün yenidən açın.';
+
+  @override
+  String get backupInvalidFile => 'Bu fayl YHealth ehtiyat nüsxəsi deyil.';
+
+  @override
+  String get backupUnsupportedVersion => 'Bu ehtiyat nüsxəsi YHealth-in daha yeni versiyası ilə yaradılıb. Əvvəlcə app-i yeniləyin.';
+
+  @override
+  String get backupExportFailed => 'Ehtiyat nüsxəsi yaradıla bilmədi.';
 }

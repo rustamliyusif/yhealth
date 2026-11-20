@@ -28,6 +28,8 @@ class MainActivity : FlutterActivity() {
     private val SHARE_CHANNEL = "com.rustamliyusif.yhealth/share"
 
     private var stepEventSink: EventChannel.EventSink? = null
+    private var pendingPickResult: MethodChannel.Result? = null
+    private val PICK_FILE_REQUEST = 4201
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -116,6 +118,23 @@ class MainActivity : FlutterActivity() {
                         result.success(true)
                     } catch (e: Exception) {
                         result.success(false)
+                    }
+                }
+                "pickFile" -> {
+                    if (pendingPickResult != null) {
+                        result.success(null)
+                        return@setMethodCallHandler
+                    }
+                    pendingPickResult = result
+                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                        addCategory(Intent.CATEGORY_OPENABLE)
+                        type = "*/*"
+                    }
+                    try {
+                        startActivityForResult(intent, PICK_FILE_REQUEST)
+                    } catch (e: Exception) {
+                        pendingPickResult = null
+                        result.success(null)
                     }
                 }
                 else -> result.notImplemented()
@@ -368,6 +387,28 @@ class MainActivity : FlutterActivity() {
         }
 
         return false
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != PICK_FILE_REQUEST) return
+        val result = pendingPickResult ?: return
+        pendingPickResult = null
+        val uri = data?.data
+        if (resultCode != RESULT_OK || uri == null) {
+            result.success(null)
+            return
+        }
+        try {
+            val target = File(cacheDir, "imported_backup.json")
+            contentResolver.openInputStream(uri)?.use { input ->
+                target.outputStream().use { output -> input.copyTo(output) }
+            }
+            result.success(target.absolutePath)
+        } catch (e: Exception) {
+            result.success(null)
+        }
     }
 
     override fun onDestroy() {

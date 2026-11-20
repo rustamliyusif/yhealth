@@ -4,6 +4,7 @@ import 'core/database/app_database.dart';
 import 'core/repositories/activity_repository.dart';
 import 'core/services/database_migration_service.dart';
 import 'core/services/storage_service.dart';
+import 'core/services/backup_service.dart';
 import 'core/services/firebase_service.dart';
 import 'core/providers/language_provider.dart';
 import 'core/providers/auth_provider.dart';
@@ -17,7 +18,6 @@ import 'core/providers/theme_provider.dart';
 import 'core/theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
 import 'features/onboarding/language_selection_screen.dart';
-import 'features/auth/login_screen.dart';
 import 'features/navigation/main_navigation_screen.dart';
 
 void main() async {
@@ -59,6 +59,7 @@ void main() async {
       providers: [
         Provider<AppDatabase>.value(value: appDatabase),
         Provider<ActivityRepository>.value(value: activityRepository),
+        Provider<BackupService>.value(value: BackupService(appDatabase, storageService)),
         ChangeNotifierProvider(create: (_) => ThemeProvider(storageService)),
         ChangeNotifierProvider(create: (_) => LanguageProvider(storageService)),
         ChangeNotifierProvider(create: (_) => AuthProvider(storageService, firebaseService)),
@@ -80,14 +81,11 @@ class YHealthApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final languageProvider = context.watch<LanguageProvider>();
-    final authProvider = context.watch<AuthProvider>();
     final themeProvider = context.watch<ThemeProvider>();
 
     Widget homeScreen;
     if (!languageProvider.hasSelectedInitialLanguage) {
       homeScreen = const LanguageSelectionScreen();
-    } else if (!authProvider.isAuthenticated) {
-      homeScreen = const LoginScreen();
     } else {
       homeScreen = const MainNavigationScreen();
     }
