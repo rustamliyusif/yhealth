@@ -2,7 +2,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     function isAdmin() {
-      return request.auth != null && request.auth.uid == 'ADMIN_UID';
+      return request.auth != null && request.auth.uid == 'oQzua4tAERYx5xxcopWh4pWo8SI2';
     }
 
     function validProfile() {
