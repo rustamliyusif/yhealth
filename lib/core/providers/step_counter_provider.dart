@@ -120,17 +120,6 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
       }
     }
 
-    // Seed realistic past data for initial display if completely empty
-    if (_history.isEmpty) {
-      final now = DateTime.now();
-      for (int i = 6; i >= 1; i--) {
-        final day = now.subtract(Duration(days: i));
-        final key =
-            "${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}";
-        _history[key] = 6000 + (i * 450) % 3500;
-      }
-      _storageService.saveStepHistory(_history);
-    }
     notifyListeners();
   }
 
