@@ -380,7 +380,6 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
       } else {
         _markSensorUnsupported();
       }
-
     } catch (e) {
       debugPrint('Error starting step counter service: $e');
       _markSensorUnsupported();

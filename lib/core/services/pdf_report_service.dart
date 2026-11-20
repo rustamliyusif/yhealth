@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -7,10 +9,24 @@ import '../models/weekly_report_model.dart';
 
 /// Local service generating high-resolution, privacy-first PDF documents for weekly reports.
 class PdfReportService {
+  static Future<pw.ThemeData?> _loadUnicodeTheme() async {
+    try {
+      final regular = await rootBundle.load('assets/fonts/Roboto-Regular.ttf');
+      final bold = await rootBundle.load('assets/fonts/Roboto-Bold.ttf');
+      return pw.ThemeData.withFont(
+        base: pw.Font.ttf(regular),
+        bold: pw.Font.ttf(bold),
+      );
+    } catch (e) {
+      debugPrint('PdfReportService: Unicode font load failed: $e');
+      return null;
+    }
+  }
+
   /// Generates a PDF report document and persists it to local device storage.
   /// Returns the absolute file path of the generated PDF.
   static Future<String> generateAndSaveWeeklyReportPdf(WeeklyReportModel report) async {
-    final pdf = pw.Document();
+    final pdf = pw.Document(theme: await _loadUnicodeTheme());
 
     pdf.addPage(
       pw.Page(
