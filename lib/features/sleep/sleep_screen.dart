@@ -9,6 +9,8 @@ import '../../core/theme/app_typography.dart';
 import '../../l10n/app_localizations.dart';
 import 'widgets/add_edit_sleep_dialog.dart';
 
+const bool kHealthConnectEnabled = false;
+
 class SleepScreen extends StatelessWidget {
   const SleepScreen({super.key});
 
@@ -29,6 +31,7 @@ class SleepScreen extends StatelessWidget {
           style: AppTypography.headlineMedium(context).copyWith(fontSize: 19),
         ),
         actions: [
+          if (kHealthConnectEnabled)
           Container(
             margin: const EdgeInsets.only(right: 14),
             decoration: BoxDecoration(
@@ -97,9 +100,11 @@ class SleepScreen extends StatelessWidget {
             _buildConsistencyCard(context, sleep, l10n, isDark),
             const SizedBox(height: 18),
 
-            // Health Connect Integration Status Card
-            _buildHealthConnectBanner(context, sleep, l10n, isDark),
-            const SizedBox(height: 24),
+            if (kHealthConnectEnabled) ...[
+              _buildHealthConnectBanner(context, sleep, l10n, isDark),
+              const SizedBox(height: 24),
+            ] else
+              const SizedBox(height: 6),
 
             // Sleep History Section
             Row(
