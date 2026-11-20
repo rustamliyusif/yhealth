@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:math';
+import 'package:crypto/crypto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
@@ -46,12 +48,12 @@ class StorageService {
   }
 
   // User Profile
-  String get userName => _prefs.getString(keyUserName) ?? 'Yusif Aliyev';
+  String get userName => _prefs.getString(keyUserName) ?? '';
   Future<void> setUserName(String name) async {
     await _prefs.setString(keyUserName, name);
   }
 
-  String get userEmail => _prefs.getString(keyUserEmail) ?? 'user@yhealth.az';
+  String get userEmail => _prefs.getString(keyUserEmail) ?? '';
   Future<void> setUserEmail(String email) async {
     await _prefs.setString(keyUserEmail, email);
   }
@@ -185,13 +187,62 @@ class StorageService {
 
   Future<void> saveOfflineUser(String email, String password, String name) async {
     final users = getOfflineUsers();
+    final salt = _generateSalt();
     users[email.toLowerCase()] = {
       'id': email.toLowerCase(),
       'email': email.toLowerCase(),
-      'password': password,
+      'passwordHash': hashPassword(password, salt),
+      'salt': salt,
       'name': name,
       'createdAt': DateTime.now().toIso8601String(),
     };
     await _prefs.setString(keyOfflineUsers, jsonEncode(users));
+  }
+
+  Future<bool> verifyOfflineUserPassword(String email, String password) async {
+    final users = getOfflineUsers();
+    final key = email.toLowerCase();
+    final user = users[key];
+    if (user is! Map) return false;
+    final userData = Map<String, dynamic>.from(user);
+
+    final hash = userData['passwordHash'] as String?;
+    final salt = userData['salt'] as String?;
+    if (hash != null && salt != null) {
+      return hashPassword(password, salt) == hash;
+    }
+
+    final legacyPassword = userData['password'] as String?;
+    if (legacyPassword == null || legacyPassword != password) return false;
+
+    final newSalt = _generateSalt();
+    userData
+      ..remove('password')
+      ..['passwordHash'] = hashPassword(password, newSalt)
+      ..['salt'] = newSalt;
+    users[key] = userData;
+    await _prefs.setString(keyOfflineUsers, jsonEncode(users));
+    return true;
+  }
+
+  Future<void> clearSessionProfile() async {
+    await _prefs.remove(keyCurrentUserId);
+    await _prefs.remove(keyUserName);
+    await _prefs.remove(keyUserEmail);
+  }
+
+  static String hashPassword(String password, String salt) {
+    var bytes = utf8.encode('$salt:$password');
+    var digest = sha256.convert(bytes);
+    for (var i = 0; i < 10000; i++) {
+      digest = sha256.convert([...digest.bytes, ...bytes]);
+    }
+    return digest.toString();
+  }
+
+  static String _generateSalt() {
+    final random = Random.secure();
+    final bytes = List<int>.generate(16, (_) => random.nextInt(256));
+    return base64UrlEncode(bytes);
   }
 }

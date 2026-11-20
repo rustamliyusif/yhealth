@@ -507,6 +507,10 @@ class AppLocalizationsAz extends AppLocalizations {
   String get authErrorUserNotFound => 'Bu e-poçtla bağlı hesab tapılmadı.';
 
   @override
+  String get authErrorResetUnavailableOffline =>
+      'Offline rejimdə şifrə bərpası mümkün deyil. Qonaq kimi davam edə və ya yeni hesab yarada bilərsiniz.';
+
+  @override
   String get authErrorWeakPassword =>
       'Şifrə ən azı 6 simvoldan ibarət olmalıdır.';
 

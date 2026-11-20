@@ -51,12 +51,25 @@ class LocationService {
   }
 
   static Stream<Position> getPositionStream() {
-    return Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(
+    final LocationSettings settings;
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      settings = AndroidSettings(
         accuracy: LocationAccuracy.bestForNavigation,
-        distanceFilter: 3, // Update every 3 meters
-      ),
-    );
+        distanceFilter: 3,
+        foregroundNotificationConfig: const ForegroundNotificationConfig(
+          notificationTitle: 'YHealth',
+          notificationText: 'Recording your route',
+          enableWakeLock: true,
+          setOngoing: true,
+        ),
+      );
+    } else {
+      settings = const LocationSettings(
+        accuracy: LocationAccuracy.bestForNavigation,
+        distanceFilter: 3,
+      );
+    }
+    return Geolocator.getPositionStream(locationSettings: settings);
   }
 
   static double calculateDistanceInMeters(LatLng p1, LatLng p2) {

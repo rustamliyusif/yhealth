@@ -45,11 +45,12 @@ app.*.map.json
 /android/app/release
 
 # Widget Preview related
-.widget_preview/*.apk
+.widget_preview/
+*.apk
 *.aab
 *.jks
 *.keystore
 key.properties
 android/local.properties
 android/.gradle/
-logo_concepts/
+norton.cer

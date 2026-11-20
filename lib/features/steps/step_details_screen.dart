@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/database/app_database.dart';
@@ -272,7 +273,7 @@ class StepDetailsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 18),
 
-            // Test Sensor Simulation Section
+            if (kDebugMode) ...[
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -329,6 +330,7 @@ class StepDetailsScreen extends StatelessWidget {
                 ],
               ),
             ),
+            ],
             const SizedBox(height: 24),
           ],
         ),

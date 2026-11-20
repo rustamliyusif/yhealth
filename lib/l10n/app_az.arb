@@ -164,6 +164,7 @@
   "authErrorInvalidEmail": "Zəhmət olmasa, düzgün e-poçt ünvanı daxil edin.",
   "authErrorWrongPassword": "Şifrə yanlışdır. Yenidən cəhd edin.",
   "authErrorUserNotFound": "Bu e-poçtla bağlı hesab tapılmadı.",
+  "authErrorResetUnavailableOffline": "Offline rejimdə şifrə bərpası mümkün deyil. Qonaq kimi davam edə və ya yeni hesab yarada bilərsiniz.",
   "authErrorWeakPassword": "Şifrə ən azı 6 simvoldan ibarət olmalıdır.",
   "authErrorEmailInUse": "Bu e-poçt ünvanı artıq istifadə olunur.",
   "authErrorNetwork": "İnternet bağlantısı xətası baş verdi. Zəhmət olmasa, şəbəkəni yoxlayın.",
