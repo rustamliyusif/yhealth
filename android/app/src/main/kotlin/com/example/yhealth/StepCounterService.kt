@@ -185,7 +185,6 @@ class StepCounterService : Service(), SensorEventListener {
         var lastSensorValue = prefs.getLong(KEY_LAST_SENSOR_VALUE, -1L)
 
         val currentUptime = SystemClock.elapsedRealtime()
-        val lastUptime = prefs.getLong(KEY_LAST_UPTIME_MS, -1L)
 
         val editor = prefs.edit()
         editor.putLong(KEY_LAST_UPTIME_MS, currentUptime)
@@ -193,6 +192,12 @@ class StepCounterService : Service(), SensorEventListener {
         if (lastDate != todayStr) {
             // Local midnight transition or timezone shift!
             // 1. Permanently archive previous date's steps into historical storage
+            if (lastDate.isNotEmpty() && lastSensorValue >= 0L) {
+                val pending = rawSteps - lastSensorValue
+                if (pending in 1L..50000L) {
+                    todaySteps += pending
+                }
+            }
             if (lastDate.isNotEmpty() && todaySteps > 0L) {
                 editor.putLong(KEY_HISTORY_PREFIX + lastDate, todaySteps)
             }
@@ -212,7 +217,7 @@ class StepCounterService : Service(), SensorEventListener {
                 editor.putLong(KEY_LAST_SENSOR_VALUE, lastSensorValue)
                 editor.putString(KEY_LAST_TRACKING_DATE, todayStr)
                 editor.apply()
-            } else if (rawSteps < lastSensorValue || (lastUptime > 0L && currentUptime < lastUptime)) {
+            } else if (rawSteps < lastSensorValue) {
                 // Device rebooted: hardware sensor counter restarted from 0
                 // Treat rawSteps as the incremental steps walked since reboot
                 val delta = rawSteps

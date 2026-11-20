@@ -26,6 +26,8 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
   StreamSubscription<PedestrianStatus>? _pedestrianStatusSubscription;
   StreamSubscription<ActivityRecognitionEvent>? _activitySubscription;
   Timer? _midnightCheckTimer;
+  Timer? _persistTimer;
+  bool _started = false;
 
   int _todayHardwareSteps = 0;
   int _lastFallbackRawSteps = -1;
@@ -51,9 +53,16 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
     _loadState();
     _checkDailyResetOnStartup();
     _initActivityRecognitionListener();
-    _initPedometerService();
     _startMidnightTimer();
     refreshCompatibility();
+  }
+
+  /// Requests sensor permissions and starts step tracking.
+  /// Called once the user is signed in and the main UI is visible.
+  Future<void> start() async {
+    if (_started) return;
+    _started = true;
+    await _initPedometerService();
   }
 
   int get todaySteps => _todayHardwareSteps + _simulatedSteps;
@@ -216,6 +225,8 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
   void _evaluateMidnightTransition() {
     final currentToday = _getTodayKey();
     if (_currentDayKey != currentToday) {
+      _persistTimer?.cancel();
+      _persistTimer = null;
       // MIDNIGHT REACHED!
       debugPrint(
           'StepCounterProvider: Midnight transition detected from $_currentDayKey to $currentToday');
@@ -256,6 +267,9 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.detached) {
+      _flushTodayHistory();
+    }
     if (state == AppLifecycleState.resumed) {
       _evaluateMidnightTransition();
       _syncFromNativeService();
@@ -444,6 +458,13 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
 
   void _recordTodayHistory() {
     _history[_currentDayKey] = todaySteps;
+    _persistTimer ??= Timer(const Duration(seconds: 15), _flushTodayHistory);
+  }
+
+  void _flushTodayHistory() {
+    _persistTimer?.cancel();
+    _persistTimer = null;
+    _history[_currentDayKey] = todaySteps;
     _storageService.saveStepHistory(_history);
 
     final repo = activityRepository;
@@ -468,14 +489,14 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
     _simulatedSteps += count;
     _activityRecognitionService.recordStepEvent();
     await _storageService.setSimulatedSteps(_simulatedSteps);
-    _recordTodayHistory();
+    _flushTodayHistory();
     notifyListeners();
   }
 
   Future<void> resetSimulatedSteps() async {
     _simulatedSteps = 0;
     await _storageService.setSimulatedSteps(0);
-    _recordTodayHistory();
+    _flushTodayHistory();
     notifyListeners();
   }
 
@@ -483,6 +504,7 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _midnightCheckTimer?.cancel();
+    _flushTodayHistory();
     _nativeStepSubscription?.cancel();
     _fallbackPedometerSubscription?.cancel();
     _pedestrianStatusSubscription?.cancel();
