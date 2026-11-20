@@ -24,6 +24,7 @@ class WeightCoachProvider extends ChangeNotifier {
   List<CoachMessageModel> _messages = [];
   WeeklyReportModel? _latestWeeklyReport;
   bool _isLoading = false;
+  CoachIntent? _lastIntent;
   String? _errorMessage;
 
   WeightCoachProvider(this._repository, this._storageService) {
@@ -118,11 +119,13 @@ class WeightCoachProvider extends ChangeNotifier {
         ? '👋 Salam! Mən sizin YHealth Şəxsi Çəki Məşqçinizəm.\n\n'
             'Cari çəkiniz: **${analysis.currentWeight} kg**, Hədəf: **${analysis.targetWeight} kg**.\n'
             'Sağlam tempdə hədəfinizə təxminən **${analysis.estimatedWeeksToGoal} həftəyə** çatmaq mümkündür.\n\n'
-            'Sizə tərəqqinizin analizi, qidalanma, su qəbulu və addım hədəfləri üzrə yardım etməyə hazıram. Aşağıdakı suallardan birini seçə və ya öz sualınızı yaza bilərsiniz!'
+            'Sizə tərəqqinizin analizi, qidalanma, su qəbulu və addım hədəfləri üzrə yardım etməyə hazıram. Aşağıdakı suallardan birini seçə və ya öz sualınızı yaza bilərsiniz!\n\n'
+            '_Coach Leo ümumi tövsiyələr verir və həkim məsləhətini əvəz etmir._'
         : '👋 Hello! I am your personal YHealth Weight Management Coach.\n\n'
             'Current weight: **${analysis.currentWeight} kg**, Goal: **${analysis.targetWeight} kg**.\n'
             'At a safe, sustainable pace, your goal is reachable in approximately **${analysis.estimatedWeeksToGoal} weeks**.\n\n'
-            'I can guide you through metabolic analysis, balanced nutrition, hydration, and activity pacing. Pick a quick prompt below or type any question!';
+            'I can guide you through metabolic analysis, balanced nutrition, hydration, and activity pacing. Pick a quick prompt below or type any question!\n\n'
+            '_Coach Leo gives general guidance and is not a substitute for medical advice._';
 
     final welcomeMessage = CoachMessageModel(
       id: 'msg_welcome_${DateTime.now().millisecondsSinceEpoch}',
@@ -221,11 +224,15 @@ class WeightCoachProvider extends ChangeNotifier {
     notifyListeners();
 
     // 2. Generate coach response using local rules engine
-    final replyContent = WeightCoachEngine.processQuery(
+    final reply = CoachBrain.respond(
       query: text,
       analysis: currentAnalysis,
       isAzerbaijani: isAz,
+      context: await _buildContext(),
+      previousIntent: _lastIntent,
     );
+    _lastIntent = reply.intent;
+    final replyContent = reply.text;
 
     final coachMsg = CoachMessageModel(
       id: 'msg_coach_${DateTime.now().millisecondsSinceEpoch}',
@@ -238,7 +245,67 @@ class WeightCoachProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<CoachContext> _buildContext() async {
+    final fmt = DateFormat('yyyy-MM-dd');
+    final now = DateTime.now();
+    final today = fmt.format(now);
+    final weekStart = fmt.format(now.subtract(const Duration(days: 6)));
+    final goalSteps = _storageService.goalSteps;
+
+    var todaySteps = 0;
+    var daysTracked = 0;
+    var totalSteps = 0;
+    var goalHits = 0;
+    try {
+      final activities = await _repository.getActivitiesInRange(weekStart, today);
+      for (final day in activities) {
+        if (day.date == today) todaySteps = day.steps;
+        if (day.steps <= 0) continue;
+        daysTracked++;
+        totalSteps += day.steps;
+        if (day.steps >= goalSteps) goalHits++;
+      }
+    } catch (e) {
+      debugPrint('WeightCoachProvider._buildContext: $e');
+    }
+
+    var sleepNights = 0;
+    var sleepTotal = 0;
+    try {
+      final sleeps = await _repository.getSleepRecordsInRange(weekStart, today);
+      for (final night in sleeps) {
+        if (night.durationMinutes <= 0) continue;
+        sleepNights++;
+        sleepTotal += night.durationMinutes;
+      }
+    } catch (e) {
+      debugPrint('WeightCoachProvider._buildContext: $e');
+    }
+
+    double? weightChange;
+    final monthAgo = fmt.format(now.subtract(const Duration(days: 30)));
+    final recent = _weightHistory.where((r) => r.date.compareTo(monthAgo) >= 0).toList()
+      ..sort((a, b) => a.date.compareTo(b.date));
+    final weighIns = recent.length;
+    if (recent.length >= 2) {
+      weightChange = recent.last.weightKg - recent.first.weightKg;
+    }
+
+    return CoachContext(
+      todaySteps: todaySteps,
+      goalSteps: goalSteps,
+      daysTracked7d: daysTracked,
+      avgSteps7d: daysTracked > 0 ? (totalSteps / daysTracked).round() : 0,
+      goalHits7d: goalHits,
+      sleepNights7d: sleepNights,
+      avgSleepMinutes7d: sleepNights > 0 ? (sleepTotal / sleepNights).round() : 0,
+      weightChange30d: weightChange,
+      weighIns30d: weighIns,
+    );
+  }
+
   Future<void> clearChatHistory() async {
+    _lastIntent = null;
     await _repository.clearCoachMessages();
     _messages.clear();
     await _seedWelcomeMessage();
