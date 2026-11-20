@@ -296,5 +296,14 @@
   "backupRestoreSuccess": "Data restored. The app will close now — open it again to see your data.",
   "backupInvalidFile": "This file isn't a YHealth backup.",
   "backupUnsupportedVersion": "This backup was made with a newer version of YHealth. Update the app first.",
-  "backupExportFailed": "Couldn't create the backup."
+  "backupExportFailed": "Couldn't create the backup.",
+  "setupTitle": "About you",
+  "setupSubtitle": "Your name and age help personalize your goals and Coach Leo.",
+  "setupShareConsent": "Share my name and age with the YHealth developer",
+  "setupShareDesc": "Only your name and age are sent. Health data and location never leave your phone. You can turn this off anytime in Profile.",
+  "setupNameRequired": "Enter your name",
+  "setupInvalidAge": "Enter an age between 5 and 120",
+  "shareSettingTitle": "Share name & age",
+  "shareSettingOn": "Shared with the YHealth developer",
+  "shareSettingOff": "Not shared — stays on this phone"
 }

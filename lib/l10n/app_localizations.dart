@@ -1807,6 +1807,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Couldn\'t create the backup.'**
   String get backupExportFailed;
+
+  /// No description provided for @setupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About you'**
+  String get setupTitle;
+
+  /// No description provided for @setupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name and age help personalize your goals and Coach Leo.'**
+  String get setupSubtitle;
+
+  /// No description provided for @setupShareConsent.
+  ///
+  /// In en, this message translates to:
+  /// **'Share my name and age with the YHealth developer'**
+  String get setupShareConsent;
+
+  /// No description provided for @setupShareDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Only your name and age are sent. Health data and location never leave your phone. You can turn this off anytime in Profile.'**
+  String get setupShareDesc;
+
+  /// No description provided for @setupNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name'**
+  String get setupNameRequired;
+
+  /// No description provided for @setupInvalidAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an age between 5 and 120'**
+  String get setupInvalidAge;
+
+  /// No description provided for @shareSettingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share name & age'**
+  String get shareSettingTitle;
+
+  /// No description provided for @shareSettingOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared with the YHealth developer'**
+  String get shareSettingOn;
+
+  /// No description provided for @shareSettingOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Not shared — stays on this phone'**
+  String get shareSettingOff;
 }
 
 class _AppLocalizationsDelegate

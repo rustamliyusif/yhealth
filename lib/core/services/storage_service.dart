@@ -24,6 +24,8 @@ class StorageService {
   static const String keyTargetWeight = 'target_weight';
   static const String keyActivityLevel = 'activity_level';
   static const String keyDietaryPreference = 'dietary_preference';
+  static const String keyShareProfile = 'share_profile';
+  static const String keyProfileSetupDone = 'profile_setup_done';
 
   final SharedPreferences _prefs;
 
@@ -89,6 +91,16 @@ class StorageService {
   String get measurementUnit => _prefs.getString(keyMeasurementUnit) ?? 'metric';
   Future<void> setMeasurementUnit(String unit) async {
     await _prefs.setString(keyMeasurementUnit, unit);
+  }
+
+  bool get shareProfile => _prefs.getBool(keyShareProfile) ?? false;
+  Future<void> setShareProfile(bool value) async {
+    await _prefs.setBool(keyShareProfile, value);
+  }
+
+  bool get profileSetupDone => _prefs.getBool(keyProfileSetupDone) ?? false;
+  Future<void> setProfileSetupDone(bool value) async {
+    await _prefs.setBool(keyProfileSetupDone, value);
   }
 
   // Daily Goals
