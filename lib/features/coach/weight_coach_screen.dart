@@ -29,6 +29,10 @@ class _WeightCoachScreenState extends State<WeightCoachScreen> {
     'How many steps should I walk?',
     'How does sleep affect weight?',
     'I hit a weight plateau',
+    'How was my week?',
+    'How am I doing today?',
+    'How much protein do I need?',
+    'When will I reach my goal?',
   ];
 
   final List<String> _quickPromptsAz = [
@@ -39,6 +43,10 @@ class _WeightCoachScreenState extends State<WeightCoachScreen> {
     'Gündə neçə addım atmalıyam?',
     'Yuxu çəkiyə necə təsir edir?',
     'Çəkim dayanıb (plato)',
+    'Bu həftə necə keçdi?',
+    'Bu gün necəyəm?',
+    'Nə qədər protein lazımdır?',
+    'Hədəfə nə vaxt çatacam?',
   ];
 
   @override
@@ -92,7 +100,7 @@ class _WeightCoachScreenState extends State<WeightCoachScreen> {
                 ),
                 const SizedBox(width: 5),
                 Text(
-                  'Coach Leo • 100% Offline AI',
+                  'Coach Leo • Offline',
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 11,

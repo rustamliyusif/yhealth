@@ -1,6 +1,9 @@
 import 'dart:math';
 import '../models/weight_record_model.dart';
 import '../models/weekly_report_model.dart';
+import 'coach_brain.dart';
+
+export 'coach_brain.dart' show CoachBrain, CoachContext, CoachIntent, CoachReply;
 
 /// Activity level enumeration for energy expenditure calculation.
 enum ActivityLevel {
@@ -304,8 +307,26 @@ class WeightCoachEngine {
     required String query,
     required CoachAnalysisResult analysis,
     required bool isAzerbaijani,
+    CoachContext? context,
+    CoachIntent? previousIntent,
   }) {
-    final q = query.toLowerCase().trim();
+    return CoachBrain.respond(
+      query: query,
+      analysis: analysis,
+      isAzerbaijani: isAzerbaijani,
+      context: context ?? const CoachContext(),
+      previousIntent: previousIntent,
+    ).text;
+  }
+
+  /// Canonical topic answers reused by [CoachBrain]. [topicKey] must be one of:
+  /// analyze, bmi, water, sleep, food, step, plateau, help.
+  static String topicAnswer({
+    required String topicKey,
+    required CoachAnalysisResult analysis,
+    required bool isAzerbaijani,
+  }) {
+    final q = topicKey;
 
     // 1. Progress / Analysis
     if (q.contains('analyze') ||
