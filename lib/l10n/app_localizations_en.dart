@@ -927,13 +927,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setupTitle => 'About you';
 
   @override
-  String get setupSubtitle => 'Your name and age help personalize your goals and Coach Leo.';
+  String get setupSubtitle =>
+      'Your name and age help personalize your goals and Coach Leo.';
 
   @override
-  String get setupShareConsent => 'Share my name and age with the YHealth developer';
+  String get setupShareConsent =>
+      'Share my name and age with the YHealth developer';
 
   @override
-  String get setupShareDesc => 'Only your name and age are sent. Health data and location never leave your phone. You can turn this off anytime in Profile.';
+  String get setupShareDesc =>
+      'Only your name and age are sent. Health data and location never leave your phone. You can turn this off anytime in Profile.';
 
   @override
   String get setupNameRequired => 'Enter your name';

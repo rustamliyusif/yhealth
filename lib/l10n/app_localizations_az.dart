@@ -925,13 +925,16 @@ class AppLocalizationsAz extends AppLocalizations {
   String get setupTitle => 'Özünüz haqqında';
 
   @override
-  String get setupSubtitle => 'Adınız və yaşınız hədəfləri və Coach Leo-nu sizə uyğunlaşdırmağa kömək edir.';
+  String get setupSubtitle =>
+      'Adınız və yaşınız hədəfləri və Coach Leo-nu sizə uyğunlaşdırmağa kömək edir.';
 
   @override
-  String get setupShareConsent => 'Ad, soyad və yaşımı YHealth tərtibatçısı ilə paylaşmağa razıyam';
+  String get setupShareConsent =>
+      'Ad, soyad və yaşımı YHealth tərtibatçısı ilə paylaşmağa razıyam';
 
   @override
-  String get setupShareDesc => 'Yalnız ad, soyad və yaşınız göndərilir. Sağlamlıq datası və məkan telefonunuzdan çıxmır. Bunu istənilən vaxt Profil bölməsində söndürə bilərsiniz.';
+  String get setupShareDesc =>
+      'Yalnız ad, soyad və yaşınız göndərilir. Sağlamlıq datası və məkan telefonunuzdan çıxmır. Bunu istənilən vaxt Profil bölməsində söndürə bilərsiniz.';
 
   @override
   String get setupNameRequired => 'Ad və soyadınızı daxil edin';
