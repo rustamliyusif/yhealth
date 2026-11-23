@@ -168,6 +168,10 @@ class MainActivity : FlutterActivity() {
                     startService(intent)
                     result.success(true)
                 }
+                "updateWidget" -> {
+                    StepWidgetProvider.updateAll(this)
+                    result.success(true)
+                }
                 "getTodaySteps" -> {
                     val steps = StepCounterService.getSavedTodaySteps(this)
                     result.success(steps)

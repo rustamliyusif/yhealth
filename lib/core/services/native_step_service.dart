@@ -136,6 +136,14 @@ class NativeStepService {
     }
   }
 
+  Future<void> updateWidget() async {
+    try {
+      await _methodChannel.invokeMethod<bool>('updateWidget');
+    } catch (e) {
+      debugPrint('NativeStepService.updateWidget error: $e');
+    }
+  }
+
   /// Fetches the current accumulated daily steps from Android persistent storage.
   Future<int> getTodaySteps() async {
     try {

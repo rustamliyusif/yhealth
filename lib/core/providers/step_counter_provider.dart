@@ -401,6 +401,7 @@ class StepCounterProvider extends ChangeNotifier with WidgetsBindingObserver {
     _persistTimer = null;
     _history[_currentDayKey] = todaySteps;
     _storageService.saveStepHistory(_history);
+    _nativeStepService.updateWidget();
 
     final repo = activityRepository;
     if (repo != null) {
