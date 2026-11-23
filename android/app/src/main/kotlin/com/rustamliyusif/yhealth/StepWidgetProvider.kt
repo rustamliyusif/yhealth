@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
+import android.os.Bundle
 import android.widget.RemoteViews
 import java.text.NumberFormat
 import java.util.Locale
@@ -15,9 +16,19 @@ class StepWidgetProvider : AppWidgetProvider() {
         render(context, appWidgetManager, appWidgetIds)
     }
 
+    override fun onAppWidgetOptionsChanged(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetId: Int,
+        newOptions: Bundle
+    ) {
+        render(context, appWidgetManager, intArrayOf(appWidgetId))
+    }
+
     companion object {
         private const val FLUTTER_PREFS = "FlutterSharedPreferences"
-        private const val DEFAULT_GOAL = 8000L
+        private const val DOUBLE_PREFIX = "VGhpcyBpcyB0aGUgcHJlZml4IGZvciBEb3VibGUu"
+        private const val WIDE_MIN_WIDTH_DP = 200
 
         fun updateAll(context: Context) {
             val manager = AppWidgetManager.getInstance(context)
@@ -27,16 +38,28 @@ class StepWidgetProvider : AppWidgetProvider() {
             }
         }
 
-        private fun readGoal(context: Context): Long {
-            val prefs = context.getSharedPreferences(FLUTTER_PREFS, Context.MODE_PRIVATE)
-            val raw = prefs.all["flutter.goal_steps"]
-            val goal = when (raw) {
+        private fun readLong(context: Context, key: String, fallback: Long): Long {
+            val raw = context.getSharedPreferences(FLUTTER_PREFS, Context.MODE_PRIVATE).all["flutter.$key"]
+            val value = when (raw) {
                 is Long -> raw
                 is Int -> raw.toLong()
                 is String -> raw.toLongOrNull()
                 else -> null
             }
-            return if (goal != null && goal > 0) goal else DEFAULT_GOAL
+            return if (value != null && value > 0) value else fallback
+        }
+
+        private fun readDouble(context: Context, key: String, fallback: Double): Double {
+            val raw = context.getSharedPreferences(FLUTTER_PREFS, Context.MODE_PRIVATE).all["flutter.$key"]
+            val value = when (raw) {
+                is Double -> raw
+                is Float -> raw.toDouble()
+                is Long -> raw.toDouble()
+                is Int -> raw.toDouble()
+                is String -> raw.removePrefix(DOUBLE_PREFIX).toDoubleOrNull()
+                else -> null
+            }
+            return if (value != null && value > 0) value else fallback
         }
 
         private fun isAzerbaijani(context: Context): Boolean {
@@ -49,12 +72,23 @@ class StepWidgetProvider : AppWidgetProvider() {
             return nf.format(value).replace(' ', ' ').replace(' ', ' ')
         }
 
+        private fun isWide(manager: AppWidgetManager, id: Int): Boolean {
+            val minWidth = manager.getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0)
+            return minWidth == 0 || minWidth >= WIDE_MIN_WIDTH_DP
+        }
+
         private fun render(context: Context, manager: AppWidgetManager, ids: IntArray) {
             val steps = StepCounterService.getSavedTodaySteps(context)
-            val goal = readGoal(context)
+            val goal = readLong(context, "goal_steps", 8000L)
+            val height = readDouble(context, "user_height", 175.0)
+            val weight = readDouble(context, "user_weight", 70.0)
             val az = isAzerbaijani(context)
+
             val percent = ((steps * 100) / goal).coerceIn(0, 100).toInt()
             val remaining = (goal - steps).coerceAtLeast(0)
+            val distanceKm = steps * (height * 0.414 / 100.0) / 1000.0
+            val calories = Math.round(steps * 0.042 * (weight / 70.0).coerceIn(0.7, 1.5))
+            val activeMinutes = Math.round(steps / 100.0)
 
             val status = when {
                 remaining == 0L -> if (az) "Hədəfə çatdın 🎉" else "Goal reached 🎉"
@@ -71,11 +105,23 @@ class StepWidgetProvider : AppWidgetProvider() {
             )
 
             for (id in ids) {
-                val views = RemoteViews(context.packageName, R.layout.step_widget)
+                val wide = isWide(manager, id)
+                val views = RemoteViews(
+                    context.packageName,
+                    if (wide) R.layout.step_widget_wide else R.layout.step_widget
+                )
                 views.setProgressBar(R.id.widget_progress, 100, percent, false)
                 views.setTextViewText(R.id.widget_steps, format(steps))
                 views.setTextViewText(R.id.widget_goal, "/ ${format(goal)}")
                 views.setTextViewText(R.id.widget_status, status)
+                if (wide) {
+                    views.setTextViewText(R.id.widget_distance, String.format(Locale.US, "%.2f", distanceKm))
+                    views.setTextViewText(R.id.widget_distance_unit, "km")
+                    views.setTextViewText(R.id.widget_calories, format(calories))
+                    views.setTextViewText(R.id.widget_calories_unit, "kcal")
+                    views.setTextViewText(R.id.widget_active, format(activeMinutes))
+                    views.setTextViewText(R.id.widget_active_unit, if (az) "dəq aktiv" else "min active")
+                }
                 views.setOnClickPendingIntent(R.id.widget_root, pendingIntent)
                 manager.updateAppWidget(id, views)
             }
