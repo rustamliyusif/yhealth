@@ -8,6 +8,7 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/rustamliyusif/yhealth/actions/workflows/flutter.yml"><img src="https://github.com/rustamliyusif/yhealth/actions/workflows/flutter.yml/badge.svg" alt="Flutter CI"></a>
   <img src="https://img.shields.io/badge/version-2.0.0-10B981" alt="Version 2.0.0">
   <img src="https://img.shields.io/badge/platform-Android-34D399" alt="Android">
   <img src="https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter" alt="Flutter">

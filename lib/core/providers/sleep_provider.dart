@@ -89,6 +89,8 @@ class SleepProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  static int _idCounter = 0;
+
   Future<void> loadRecords() async {
     try {
       _records = await _activityRepository.getAllSleepRecords(limit: 60);
@@ -144,7 +146,7 @@ class SleepProvider extends ChangeNotifier {
     }
 
     // 3. Create model and persist
-    final id = 'sleep_${DateTime.now().millisecondsSinceEpoch}';
+    final id = 'sleep_${DateTime.now().microsecondsSinceEpoch}_${_idCounter++}';
     final record = SleepRecordModel(
       id: id,
       date: referenceDate,
