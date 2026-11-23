@@ -1877,7 +1877,7 @@ abstract class AppLocalizations {
   /// No description provided for @waterGoalReached.
   ///
   /// In en, this message translates to:
-  /// **'Today's water goal reached 💧'**
+  /// **'Today\'s water goal reached 💧'**
   String get waterGoalReached;
 
   /// No description provided for @waterRemaining.

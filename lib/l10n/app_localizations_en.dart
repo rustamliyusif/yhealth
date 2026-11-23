@@ -960,7 +960,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get waterGoalTitle => 'Daily water goal';
 
   @override
-  String get waterGoalReached => "Today's water goal reached 💧";
+  String get waterGoalReached => 'Today\'s water goal reached 💧';
 
   @override
   String waterRemaining(String amount) {
