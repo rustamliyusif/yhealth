@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/providers/auth_provider.dart';
 import '../../core/providers/step_counter_provider.dart';
 import '../../core/providers/sleep_provider.dart';
+import '../../core/providers/water_provider.dart';
 import '../../core/providers/weekly_report_provider.dart';
 import '../../core/providers/weight_coach_provider.dart';
 import '../../core/services/activity_recognition_service.dart';
@@ -210,6 +211,9 @@ class DashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
+              _buildWaterCard(context, l10n),
+              const SizedBox(height: 16),
+
               // Sleep Tracking Summary Card
               _buildSleepDashboardCard(context, l10n),
               const SizedBox(height: 16),
@@ -301,6 +305,219 @@ class DashboardScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildWaterCard(BuildContext context, AppLocalizations l10n) {
+    final water = context.watch<WaterProvider>();
+    const color = Color(0xFF0EA5E9);
+    final remaining = (water.goalMl - water.todayMl).clamp(0, water.goalMl);
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceOf(context),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.borderOf(context), width: 1),
+        boxShadow: AppDecorations.cardShadow(context),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(Icons.water_drop_rounded, color: color, size: 20),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.waterTitle,
+                      style: AppTypography.labelSmall(context).copyWith(
+                        fontSize: 12,
+                        color: AppColors.textSecondaryOf(context),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '${water.todayMl}',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.textPrimaryOf(context),
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' / ${water.goalMl} ${l10n.mlUnit}',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.textSecondaryOf(context),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.tune_rounded, size: 20, color: AppColors.textSecondaryOf(context)),
+                tooltip: l10n.waterGoalTitle,
+                onPressed: () => _editWaterGoal(context, l10n),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: LinearProgressIndicator(
+              value: water.progress,
+              minHeight: 8,
+              backgroundColor: color.withValues(alpha: 0.12),
+              valueColor: const AlwaysStoppedAnimation<Color>(color),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            water.goalReached ? l10n.waterGoalReached : l10n.waterRemaining('$remaining'),
+            style: TextStyle(
+              fontFamily: 'Roboto',
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: water.goalReached ? AppColors.success : AppColors.textSecondaryOf(context),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              _waterButton(
+                context,
+                icon: Icons.remove_rounded,
+                label: '${WaterProvider.glassMl}',
+                color: AppColors.textSecondaryOf(context),
+                onTap: water.todayMl > 0 ? () => water.add(-WaterProvider.glassMl) : null,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _waterButton(
+                  context,
+                  icon: Icons.add_rounded,
+                  label: '${WaterProvider.glassMl} ${l10n.mlUnit}',
+                  color: color,
+                  onTap: () => water.add(WaterProvider.glassMl),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _waterButton(
+                  context,
+                  icon: Icons.add_rounded,
+                  label: '500 ${l10n.mlUnit}',
+                  color: color,
+                  onTap: () => water.add(500),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _waterButton(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback? onTap,
+  }) {
+    final enabled = onTap != null;
+    final c = enabled ? color : color.withValues(alpha: 0.4);
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+        decoration: BoxDecoration(
+          color: c.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: c.withValues(alpha: 0.25)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 16, color: c),
+            const SizedBox(width: 4),
+            Text(
+              label,
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 12.5,
+                fontWeight: FontWeight.w700,
+                color: c,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _editWaterGoal(BuildContext context, AppLocalizations l10n) async {
+    final water = context.read<WaterProvider>();
+    final controller = TextEditingController(text: '${water.goalMl}');
+    final result = await showDialog<int>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        title: Text(l10n.waterGoalTitle, style: const TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w700)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              controller: controller,
+              keyboardType: TextInputType.number,
+              autofocus: true,
+              decoration: InputDecoration(suffixText: l10n.mlUnit),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              l10n.waterRecommended('${water.recommendedGoalMl}'),
+              style: AppTypography.labelSmall(ctx).copyWith(color: AppColors.textSecondaryOf(ctx)),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(l10n.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(ctx).pop(int.tryParse(controller.text.trim())),
+            child: Text(l10n.save),
+          ),
+        ],
+      ),
+    );
+    if (result != null && result > 0) {
+      await water.setGoal(result);
+    }
   }
 
   void _openQuickSleepLog(BuildContext context) {

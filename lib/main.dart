@@ -13,6 +13,7 @@ import 'core/providers/step_counter_provider.dart';
 import 'core/providers/activity_provider.dart';
 import 'core/providers/health_provider.dart';
 import 'core/providers/sleep_provider.dart';
+import 'core/providers/water_provider.dart';
 import 'core/providers/weekly_report_provider.dart';
 import 'core/providers/weight_coach_provider.dart';
 import 'core/providers/theme_provider.dart';
@@ -72,6 +73,7 @@ void main() async {
         ChangeNotifierProvider.value(value: activityProvider),
         ChangeNotifierProvider(create: (_) => HealthProvider(storageService)),
         ChangeNotifierProvider(create: (_) => SleepProvider(activityRepository)),
+        ChangeNotifierProvider(create: (_) => WaterProvider(storageService)),
         ChangeNotifierProvider(create: (_) => WeeklyReportProvider(activityRepository)),
         ChangeNotifierProvider(create: (_) => WeightCoachProvider(activityRepository, storageService)),
       ],

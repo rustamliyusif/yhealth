@@ -952,4 +952,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareSettingOff => 'Not shared — stays on this phone';
+
+  @override
+  String get waterTitle => 'Water';
+
+  @override
+  String get waterGoalTitle => 'Daily water goal';
+
+  @override
+  String get waterGoalReached => "Today's water goal reached 💧";
+
+  @override
+  String waterRemaining(String amount) {
+    return '$amount ml to go';
+  }
+
+  @override
+  String waterRecommended(String amount) {
+    return 'Recommended for your weight: $amount ml';
+  }
+
+  @override
+  String get mlUnit => 'ml';
 }

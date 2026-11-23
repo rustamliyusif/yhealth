@@ -1861,6 +1861,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not shared — stays on this phone'**
   String get shareSettingOff;
+
+  /// No description provided for @waterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Water'**
+  String get waterTitle;
+
+  /// No description provided for @waterGoalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily water goal'**
+  String get waterGoalTitle;
+
+  /// No description provided for @waterGoalReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Today's water goal reached 💧'**
+  String get waterGoalReached;
+
+  /// No description provided for @waterRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} ml to go'**
+  String waterRemaining(String amount);
+
+  /// No description provided for @waterRecommended.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended for your weight: {amount} ml'**
+  String waterRecommended(String amount);
+
+  /// No description provided for @mlUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'ml'**
+  String get mlUnit;
 }
 
 class _AppLocalizationsDelegate

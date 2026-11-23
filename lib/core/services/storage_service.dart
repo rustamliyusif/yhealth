@@ -26,6 +26,8 @@ class StorageService {
   static const String keyDietaryPreference = 'dietary_preference';
   static const String keyShareProfile = 'share_profile';
   static const String keyProfileSetupDone = 'profile_setup_done';
+  static const String keyWaterLog = 'water_log';
+  static const String keyGoalWater = 'goal_water_ml';
 
   final SharedPreferences _prefs;
 
@@ -157,6 +159,27 @@ class StorageService {
     await _prefs.setString(keyStepHistory, jsonEncode(history));
   }
 
+  // Water
+  Map<String, int> getWaterLog() {
+    final raw = _prefs.getString(keyWaterLog);
+    if (raw == null || raw.isEmpty) return {};
+    try {
+      final decoded = jsonDecode(raw) as Map<String, dynamic>;
+      return decoded.map((key, value) => MapEntry(key, (value as num).toInt()));
+    } catch (_) {
+      return {};
+    }
+  }
+
+  Future<void> saveWaterLog(Map<String, int> log) async {
+    await _prefs.setString(keyWaterLog, jsonEncode(log));
+  }
+
+  int? get goalWaterMl => _prefs.getInt(keyGoalWater);
+  Future<void> setGoalWaterMl(int ml) async {
+    await _prefs.setInt(keyGoalWater, ml);
+  }
+
   // Routes
   List<Map<String, dynamic>> getSavedRoutes() {
     final raw = _prefs.getString(keySavedRoutes);
@@ -204,6 +227,8 @@ class StorageService {
     keyTargetWeight,
     keyActivityLevel,
     keyDietaryPreference,
+    keyWaterLog,
+    keyGoalWater,
   ];
 
   Map<String, dynamic> exportPreferences() {
