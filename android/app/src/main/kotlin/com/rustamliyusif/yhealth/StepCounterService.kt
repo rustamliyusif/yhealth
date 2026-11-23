@@ -209,6 +209,7 @@ class StepCounterService : Service(), SensorEventListener {
             editor.putLong(KEY_LAST_SENSOR_VALUE, lastSensorValue)
             editor.apply()
             updateNotification(todaySteps, force = true)
+            updateWidget(true)
         } else {
             // Same calendar date: compute delta
             if (lastSensorValue < 0L) {
@@ -243,6 +244,7 @@ class StepCounterService : Service(), SensorEventListener {
                 }
             }
             updateNotification(todaySteps, force = false)
+            updateWidget(false)
         }
 
         // Live stream update to Flutter UI is always real-time
@@ -269,11 +271,13 @@ class StepCounterService : Service(), SensorEventListener {
             editor.putLong(KEY_TODAY_STEPS, todaySteps)
             editor.apply()
             updateNotification(todaySteps, force = true)
+            updateWidget(true)
         } else {
             todaySteps += 1L
             editor.putLong(KEY_TODAY_STEPS, todaySteps)
             editor.apply()
             updateNotification(todaySteps, force = false)
+            updateWidget(false)
         }
 
         stepUpdateListener?.invoke(todaySteps)
@@ -350,6 +354,15 @@ class StepCounterService : Service(), SensorEventListener {
 
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
         manager?.notify(NOTIFICATION_ID, buildNotification(steps))
+    }
+
+    private var lastWidgetUpdateTimeMs = 0L
+
+    private fun updateWidget(force: Boolean) {
+        val now = System.currentTimeMillis()
+        if (!force && now - lastWidgetUpdateTimeMs < 30_000L) return
+        lastWidgetUpdateTimeMs = now
+        StepWidgetProvider.updateAll(this)
     }
 
     override fun onDestroy() {
