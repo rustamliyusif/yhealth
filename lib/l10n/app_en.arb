@@ -305,5 +305,25 @@
   "setupInvalidAge": "Enter an age between 5 and 120",
   "shareSettingTitle": "Share name & age",
   "shareSettingOn": "Shared with the YHealth developer",
-  "shareSettingOff": "Not shared — stays on this phone"
+  "shareSettingOff": "Not shared — stays on this phone",
+  "waterTitle": "Water",
+  "waterGoalTitle": "Daily water goal",
+  "waterGoalReached": "Today's water goal reached 💧",
+  "waterRemaining": "{amount} ml to go",
+  "@waterRemaining": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "waterRecommended": "Recommended for your weight: {amount} ml",
+  "@waterRecommended": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "mlUnit": "ml"
 }

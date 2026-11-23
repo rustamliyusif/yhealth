@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../../core/providers/water_provider.dart';
 import '../../core/providers/auth_provider.dart';
 import '../../core/providers/language_provider.dart';
 import '../../core/providers/theme_provider.dart';
@@ -134,6 +135,7 @@ class ProfileScreen extends StatelessWidget {
 
     try {
       await backup.importFromFile(path);
+      if (context.mounted) context.read<WaterProvider>().reload();
     } on BackupException catch (e) {
       messenger.showSnackBar(
         SnackBar(

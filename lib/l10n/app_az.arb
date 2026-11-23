@@ -305,5 +305,11 @@
   "setupInvalidAge": "5 ilə 120 arasında yaş daxil edin",
   "shareSettingTitle": "Ad və yaşı paylaş",
   "shareSettingOn": "YHealth tərtibatçısı ilə paylaşılır",
-  "shareSettingOff": "Paylaşılmır, yalnız bu telefonda qalır"
+  "shareSettingOff": "Paylaşılmır, yalnız bu telefonda qalır",
+  "waterTitle": "Su",
+  "waterGoalTitle": "Gündəlik su hədəfi",
+  "waterGoalReached": "Bugünkü su hədəfi tamamlandı 💧",
+  "waterRemaining": "{amount} ml qalıb",
+  "waterRecommended": "Çəkinə görə tövsiyə: {amount} ml",
+  "mlUnit": "ml"
 }

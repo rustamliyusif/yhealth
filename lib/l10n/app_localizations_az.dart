@@ -950,4 +950,26 @@ class AppLocalizationsAz extends AppLocalizations {
 
   @override
   String get shareSettingOff => 'Paylaşılmır, yalnız bu telefonda qalır';
+
+  @override
+  String get waterTitle => 'Su';
+
+  @override
+  String get waterGoalTitle => 'Gündəlik su hədəfi';
+
+  @override
+  String get waterGoalReached => 'Bugünkü su hədəfi tamamlandı 💧';
+
+  @override
+  String waterRemaining(String amount) {
+    return '$amount ml qalıb';
+  }
+
+  @override
+  String waterRecommended(String amount) {
+    return 'Çəkinə görə tövsiyə: $amount ml';
+  }
+
+  @override
+  String get mlUnit => 'ml';
 }
