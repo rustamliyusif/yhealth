@@ -1173,4 +1173,125 @@ class AppLocalizationsAz extends AppLocalizations {
   String hcSyncResult(int sleep, int weight) {
     return 'Sinxron tamamlandı: $sleep yuxu, $weight çəki əlavə olundu';
   }
+
+  @override
+  String get sleepHistoryTitle => 'Yuxu tarixçəsi';
+
+  @override
+  String get sleepEmptyHistory =>
+      'Hələ yuxu qeydi yoxdur. Başlamaq üçün "Yuxunu qeyd et"-ə bas.';
+
+  @override
+  String get sleepSourceManual => 'Əl ilə';
+
+  @override
+  String get sleepStagesTitle => 'Yuxu fazaları';
+
+  @override
+  String get sleepStagesBadge => 'Saatdan';
+
+  @override
+  String get stageDeep => 'Dərin';
+
+  @override
+  String get stageLight => 'Yüngül';
+
+  @override
+  String get stageAwake => 'Oyaq';
+
+  @override
+  String get sleepStagesHint =>
+      'Yuxu fazaları üçün Health Connect ilə sinxron olan saat lazımdır.';
+
+  @override
+  String get sleepEmptyTitle => 'Yuxunu izlə';
+
+  @override
+  String get sleepEmptyDesc =>
+      'Yatma və oyanma vaxtını qeyd et, sabitlik və müddət trendlərini gör.';
+
+  @override
+  String get sleepOvernight => 'Gecə boyu';
+
+  @override
+  String get editLabel => 'Redaktə et';
+
+  @override
+  String get deleteLabel => 'Sil';
+
+  @override
+  String get sleepDeleteTitle => 'Yuxu qeydini sil';
+
+  @override
+  String get consistencyGathering => 'Məlumat toplanır...';
+
+  @override
+  String get sleepDialogEdit => 'Yuxu qeydini redaktə et';
+
+  @override
+  String get sleepDialogLocal => 'Telefonda saxlanılır';
+
+  @override
+  String get sleepWakeDate => 'Oyanma tarixi';
+
+  @override
+  String get sleepInvalidDuration => 'Yanlış müddət';
+
+  @override
+  String get sleepOvernightSession => 'Gecə yarısını keçən yuxu';
+
+  @override
+  String get sleepSameDay => 'Eyni gün daxilində';
+
+  @override
+  String get sleepQuality => 'Yuxu keyfiyyəti / səmərəlilik';
+
+  @override
+  String get sleepNotes => 'Qeyd (istəyə bağlı)';
+
+  @override
+  String get sleepNotesHint => 'məs. Rahat yatdım, çobanyastığı çayı içdim';
+
+  @override
+  String get saveChanges => 'Dəyişiklikləri saxla';
+
+  @override
+  String sleepRecordsCount(int count) {
+    return '$count qeyd';
+  }
+
+  @override
+  String sleepEfficiency(int value) {
+    return 'Səmərəlilik: $value%';
+  }
+
+  @override
+  String sleepAvg7(String value) {
+    return '7 günlük orta: $value';
+  }
+
+  @override
+  String consistencyHigh(int minutes) {
+    return 'Yüksək sabitlik (±$minutes dəq)';
+  }
+
+  @override
+  String consistencyModerate(int minutes) {
+    return 'Orta sabitlik (±$minutes dəq)';
+  }
+
+  @override
+  String consistencyVariable(int minutes) {
+    return 'Dəyişkən yatma vaxtı (±$minutes dəq)';
+  }
+
+  @override
+  String durationHm(int hours, int minutes) {
+    return '$hours s $minutes dəq';
+  }
+
+  @override
+  String sleepTotal(String value) {
+    return 'Ümumi yuxu: $value';
+  }
 }

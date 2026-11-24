@@ -11,7 +11,7 @@ import '../../l10n/app_localizations.dart';
 import '../profile/health_connect_screen.dart';
 import 'widgets/add_edit_sleep_dialog.dart';
 
-const bool kHealthConnectEnabled = false;
+const bool kHealthConnectEnabled = true;
 
 class SleepScreen extends StatelessWidget {
   const SleepScreen({super.key});
@@ -45,15 +45,18 @@ class SleepScreen extends StatelessWidget {
               icon: Icon(Icons.sync_rounded, color: AppColors.primaryAccentOf(context), size: 22),
               tooltip: l10n.healthConnectSync,
               onPressed: () async {
-                final count = await sleep.syncFromHealthConnect();
+                final hc = context.read<HealthSyncProvider>();
+                if (!hc.connected) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const HealthConnectScreen()),
+                  );
+                  return;
+                }
+                final r = await hc.syncNow();
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(
-                        count > 0
-                            ? '$count sleep session(s) synchronized from Health Connect'
-                            : 'Health Connect is up to date (or manual mode)',
-                      ),
+                      content: Text(l10n.hcSyncResult(r.sleep, r.weight)),
                       behavior: SnackBarBehavior.floating,
                     ),
                   );
@@ -113,7 +116,7 @@ class SleepScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Sleep History',
+                  l10n.sleepHistoryTitle,
                   style: AppTypography.titleMedium(context).copyWith(
                     fontSize: 17,
                     fontWeight: FontWeight.w800,
@@ -126,7 +129,7 @@ class SleepScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    '${sleep.records.length} records',
+                    l10n.sleepRecordsCount(sleep.records.length),
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 12,
@@ -144,7 +147,7 @@ class SleepScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 32),
                   child: Text(
-                    'No sleep records yet. Tap "Log Sleep" to begin.',
+                    l10n.sleepEmptyHistory,
                     style: TextStyle(color: AppColors.textSecondaryOf(context)),
                   ),
                 ),
@@ -210,7 +213,7 @@ class SleepScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
-                  record.isHealthConnect ? 'Health Connect' : 'Manual Entry',
+                  record.isHealthConnect ? 'Health Connect' : l10n.sleepSourceManual,
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 11.5,
@@ -226,7 +229,7 @@ class SleepScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  record.formattedDuration,
+                  l10n.durationHm(record.durationMinutes ~/ 60, record.durationMinutes % 60),
                   style: AppTypography.displayLarge(context).copyWith(
                     fontSize: 44,
                     fontWeight: FontWeight.w900,
@@ -242,7 +245,7 @@ class SleepScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
-                    'Efficiency: ${record.efficiencyPercent}%',
+                    l10n.sleepEfficiency(record.efficiencyPercent),
                     style: const TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 12,
@@ -284,8 +287,8 @@ class SleepScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Sleep Stages (Wearable)',
+                Text(
+                  l10n.sleepStagesTitle,
                   style: TextStyle(fontFamily: 'Roboto', fontSize: 13, fontWeight: FontWeight.w700),
                 ),
                 Container(
@@ -294,8 +297,8 @@ class SleepScreen extends StatelessWidget {
                     color: Colors.green.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: const Text(
-                    'Genuine Wearable Data',
+                  child: Text(
+                    l10n.sleepStagesBadge,
                     style: TextStyle(fontSize: 10, color: Colors.green, fontWeight: FontWeight.w600),
                   ),
                 ),
@@ -304,13 +307,13 @@ class SleepScreen extends StatelessWidget {
             const SizedBox(height: 12),
             Row(
               children: [
-                _buildStageChip('Deep', '${record.deepSleepMinutes ?? 0}m', Colors.deepPurple),
+                _buildStageChip(l10n.stageDeep, '${record.deepSleepMinutes ?? 0}m', Colors.deepPurple),
                 const SizedBox(width: 8),
-                _buildStageChip('Light', '${record.lightSleepMinutes ?? 0}m', Colors.blue),
+                _buildStageChip(l10n.stageLight, '${record.lightSleepMinutes ?? 0}m', Colors.blue),
                 const SizedBox(width: 8),
                 _buildStageChip('REM', '${record.remSleepMinutes ?? 0}m', Colors.cyan),
                 const SizedBox(width: 8),
-                _buildStageChip('Awake', '${record.awakeMinutes ?? 0}m', Colors.amber),
+                _buildStageChip(l10n.stageAwake, '${record.awakeMinutes ?? 0}m', Colors.amber),
               ],
             ),
           ] else ...[
@@ -327,7 +330,7 @@ class SleepScreen extends StatelessWidget {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Sleep stages require a smartwatch/wearable synced via Health Connect. Ordinary phone sensors cannot detect stages.',
+                      l10n.sleepStagesHint,
                       style: TextStyle(fontFamily: 'Roboto', fontSize: 11.5, color: AppColors.textSecondaryOf(context), height: 1.3),
                     ),
                   ),
@@ -361,12 +364,12 @@ class SleepScreen extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Text(
-            'Track Your Sleep Naturally',
+            l10n.sleepEmptyTitle,
             style: AppTypography.headlineMedium(context).copyWith(fontSize: 18),
           ),
           const SizedBox(height: 6),
           Text(
-            'Log your bedtime and wake-up times to track sleep consistency, duration trends, and wellness recovery.',
+            l10n.sleepEmptyDesc,
             textAlign: TextAlign.center,
             style: AppTypography.bodyMedium(context),
           ),
@@ -415,7 +418,7 @@ class SleepScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  sleep.bedtimeConsistencyDescription,
+                  _consistencyText(l10n, sleep.bedtimeStdDevMinutes),
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 13,
@@ -424,7 +427,7 @@ class SleepScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '7-Day Average: ${sleep.formattedAverageDuration}',
+                  l10n.sleepAvg7(_avgText(l10n, sleep.averageDurationHours)),
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 11.5,
@@ -561,8 +564,8 @@ class SleepScreen extends StatelessWidget {
                         color: Colors.indigo.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      child: const Text(
-                        'Overnight',
+                      child: Text(
+                        l10n.sleepOvernight,
                         style: TextStyle(fontSize: 10, color: Colors.indigo, fontWeight: FontWeight.w700),
                       ),
                     ),
@@ -585,7 +588,7 @@ class SleepScreen extends StatelessWidget {
                       children: [
                         Icon(Icons.edit_outlined, size: 18),
                         SizedBox(width: 8),
-                        Text('Edit'),
+                        Text(l10n.editLabel),
                       ],
                     ),
                   ),
@@ -595,7 +598,7 @@ class SleepScreen extends StatelessWidget {
                       children: [
                         Icon(Icons.delete_outline_rounded, color: AppColors.error, size: 18),
                         SizedBox(width: 8),
-                        Text('Delete', style: TextStyle(color: AppColors.error)),
+                        Text(l10n.deleteLabel, style: TextStyle(color: AppColors.error)),
                       ],
                     ),
                   ),
@@ -608,7 +611,7 @@ class SleepScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                record.formattedDuration,
+                l10n.durationHm(record.durationMinutes ~/ 60, record.durationMinutes % 60),
                 style: AppTypography.displayMedium(context).copyWith(
                   fontSize: 22,
                   fontWeight: FontWeight.w800,
@@ -678,6 +681,18 @@ class SleepScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _consistencyText(AppLocalizations l10n, int? std) {
+    if (std == null) return l10n.consistencyGathering;
+    if (std <= 30) return l10n.consistencyHigh(std);
+    if (std <= 60) return l10n.consistencyModerate(std);
+    return l10n.consistencyVariable(std);
+  }
+
+  String _avgText(AppLocalizations l10n, double hours) {
+    final total = (hours * 60).round();
+    return l10n.durationHm(total ~/ 60, total % 60);
   }
 
   Widget _buildStageChip(String label, String value, Color color) {
@@ -756,12 +771,12 @@ class SleepScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete Sleep Record'),
+        title: Text(l10n.sleepDeleteTitle),
         content: Text(l10n.deleteSleepConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -769,7 +784,7 @@ class SleepScreen extends StatelessWidget {
               Navigator.of(ctx).pop();
             },
             style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
-            child: const Text('Delete'),
+            child: Text(l10n.deleteLabel),
           ),
         ],
       ),

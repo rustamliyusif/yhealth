@@ -2275,6 +2275,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sync done: {sleep} sleep, {weight} weight records added'**
   String hcSyncResult(int sleep, int weight);
+
+  /// No description provided for @sleepHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep history'**
+  String get sleepHistoryTitle;
+
+  /// No description provided for @sleepEmptyHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'No sleep records yet. Tap "Log sleep" to begin.'**
+  String get sleepEmptyHistory;
+
+  /// No description provided for @sleepSourceManual.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual entry'**
+  String get sleepSourceManual;
+
+  /// No description provided for @sleepStagesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep stages'**
+  String get sleepStagesTitle;
+
+  /// No description provided for @sleepStagesBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'From wearable'**
+  String get sleepStagesBadge;
+
+  /// No description provided for @stageDeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Deep'**
+  String get stageDeep;
+
+  /// No description provided for @stageLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get stageLight;
+
+  /// No description provided for @stageAwake.
+  ///
+  /// In en, this message translates to:
+  /// **'Awake'**
+  String get stageAwake;
+
+  /// No description provided for @sleepStagesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep stages need a smartwatch synced via Health Connect.'**
+  String get sleepStagesHint;
+
+  /// No description provided for @sleepEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your sleep'**
+  String get sleepEmptyTitle;
+
+  /// No description provided for @sleepEmptyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Log your bedtime and wake-up time to see consistency and duration trends.'**
+  String get sleepEmptyDesc;
+
+  /// No description provided for @sleepOvernight.
+  ///
+  /// In en, this message translates to:
+  /// **'Overnight'**
+  String get sleepOvernight;
+
+  /// No description provided for @editLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get editLabel;
+
+  /// No description provided for @deleteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteLabel;
+
+  /// No description provided for @sleepDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete sleep record'**
+  String get sleepDeleteTitle;
+
+  /// No description provided for @consistencyGathering.
+  ///
+  /// In en, this message translates to:
+  /// **'Gathering data...'**
+  String get consistencyGathering;
+
+  /// No description provided for @sleepDialogEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit sleep record'**
+  String get sleepDialogEdit;
+
+  /// No description provided for @sleepDialogLocal.
+  ///
+  /// In en, this message translates to:
+  /// **'Stored on this phone'**
+  String get sleepDialogLocal;
+
+  /// No description provided for @sleepWakeDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake-up date'**
+  String get sleepWakeDate;
+
+  /// No description provided for @sleepInvalidDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid duration'**
+  String get sleepInvalidDuration;
+
+  /// No description provided for @sleepOvernightSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Overnight session (crosses midnight)'**
+  String get sleepOvernightSession;
+
+  /// No description provided for @sleepSameDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Same-day session'**
+  String get sleepSameDay;
+
+  /// No description provided for @sleepQuality.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep quality / efficiency'**
+  String get sleepQuality;
+
+  /// No description provided for @sleepNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes (optional)'**
+  String get sleepNotes;
+
+  /// No description provided for @sleepNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Restful sleep, drank chamomile tea'**
+  String get sleepNotesHint;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get saveChanges;
+
+  /// No description provided for @sleepRecordsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} records'**
+  String sleepRecordsCount(int count);
+
+  /// No description provided for @sleepEfficiency.
+  ///
+  /// In en, this message translates to:
+  /// **'Efficiency: {value}%'**
+  String sleepEfficiency(int value);
+
+  /// No description provided for @sleepAvg7.
+  ///
+  /// In en, this message translates to:
+  /// **'7-day average: {value}'**
+  String sleepAvg7(String value);
+
+  /// No description provided for @consistencyHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High consistency (±{minutes}m)'**
+  String consistencyHigh(int minutes);
+
+  /// No description provided for @consistencyModerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate consistency (±{minutes}m)'**
+  String consistencyModerate(int minutes);
+
+  /// No description provided for @consistencyVariable.
+  ///
+  /// In en, this message translates to:
+  /// **'Variable bedtimes (±{minutes}m)'**
+  String consistencyVariable(int minutes);
+
+  /// No description provided for @durationHm.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h {minutes}m'**
+  String durationHm(int hours, int minutes);
+
+  /// No description provided for @sleepTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total sleep: {value}'**
+  String sleepTotal(String value);
 }
 
 class _AppLocalizationsDelegate
