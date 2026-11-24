@@ -1113,4 +1113,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get coachTipTitle => 'Today\'s tip';
+
+  @override
+  String get csvExport => 'Export data (CSV)';
+
+  @override
+  String get csvExportDesc =>
+      'Steps, sleep, weight and water by day, opens in Excel';
 }

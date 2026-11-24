@@ -7,6 +7,8 @@ import '../../core/providers/auth_provider.dart';
 import '../../core/providers/language_provider.dart';
 import '../../core/providers/theme_provider.dart';
 import '../../core/services/backup_service.dart';
+import '../../core/services/csv_export_service.dart';
+import '../../core/providers/step_counter_provider.dart';
 import '../../core/services/share_service.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
@@ -90,6 +92,27 @@ class ProfileScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _exportCsv(BuildContext context, AppLocalizations l10n) async {
+    final csv = context.read<CsvExportService>();
+    final steps = context.read<StepCounterProvider>();
+    final messenger = ScaffoldMessenger.of(context);
+    final now = DateTime.now();
+    final todayKey =
+        '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+    try {
+      final path = await csv.exportToFile(
+        liveStepHistory: steps.history,
+        todayKey: todayKey,
+        todaySteps: steps.todaySteps,
+      );
+      await ShareService.shareFile(path, mimeType: 'text/csv', title: l10n.csvExport);
+    } catch (_) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.backupExportFailed), backgroundColor: AppColors.error),
+      );
+    }
   }
 
   Future<void> _exportBackup(BuildContext context, AppLocalizations l10n) async {
@@ -433,6 +456,14 @@ class ProfileScreen extends StatelessWidget {
                       title: l10n.backupExport,
                       subtitle: l10n.backupExportDesc,
                       onTap: () => _exportBackup(context, l10n),
+                    ),
+                    Divider(height: 1, indent: 56, color: AppColors.dividerOf(context)),
+                    _buildSettingsTile(
+                      context: context,
+                      icon: Icons.table_chart_outlined,
+                      title: l10n.csvExport,
+                      subtitle: l10n.csvExportDesc,
+                      onTap: () => _exportCsv(context, l10n),
                     ),
                     Divider(height: 1, indent: 56, color: AppColors.dividerOf(context)),
                     _buildSettingsTile(

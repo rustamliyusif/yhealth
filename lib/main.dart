@@ -5,6 +5,7 @@ import 'core/repositories/activity_repository.dart';
 import 'core/services/database_migration_service.dart';
 import 'core/services/storage_service.dart';
 import 'core/services/backup_service.dart';
+import 'core/services/csv_export_service.dart';
 import 'core/services/cloud_profile_service.dart';
 import 'core/services/firebase_service.dart';
 import 'core/providers/language_provider.dart';
@@ -67,6 +68,7 @@ void main() async {
         Provider<AppDatabase>.value(value: appDatabase),
         Provider<ActivityRepository>.value(value: activityRepository),
         Provider<BackupService>.value(value: BackupService(appDatabase, storageService)),
+        Provider<CsvExportService>.value(value: CsvExportService(appDatabase, storageService)),
         ChangeNotifierProvider(create: (_) => ThemeProvider(storageService)),
         ChangeNotifierProvider(create: (_) => LanguageProvider(storageService)),
         ChangeNotifierProvider(create: (_) => AuthProvider(storageService, firebaseService, cloudProfileService)),
