@@ -32,6 +32,8 @@ class StorageService {
   static const String keyReminderMove = 'reminder_move';
   static const String keyQuietStart = 'quiet_start';
   static const String keyQuietEnd = 'quiet_end';
+  static const String keyHealthConnectEnabled = 'health_connect_enabled';
+  static const String keyHealthConnectLastSync = 'health_connect_last_sync';
 
   final SharedPreferences _prefs;
 
@@ -203,6 +205,17 @@ class StorageService {
   int get quietEnd => _prefs.getInt(keyQuietEnd) ?? 8 * 60;
   Future<void> setQuietEnd(int minutes) async {
     await _prefs.setInt(keyQuietEnd, minutes);
+  }
+
+  // Health Connect
+  bool get healthConnectEnabled => _prefs.getBool(keyHealthConnectEnabled) ?? false;
+  Future<void> setHealthConnectEnabled(bool value) async {
+    await _prefs.setBool(keyHealthConnectEnabled, value);
+  }
+
+  String? get healthConnectLastSync => _prefs.getString(keyHealthConnectLastSync);
+  Future<void> setHealthConnectLastSync(String value) async {
+    await _prefs.setString(keyHealthConnectLastSync, value);
   }
 
   // Routes

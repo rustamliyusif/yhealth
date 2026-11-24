@@ -33,6 +33,62 @@ class HealthConnectService {
     }
   }
 
+  Future<({int granted, int total})> permissionStatus() async {
+    try {
+      final map = await _channel.invokeMethod<Map<dynamic, dynamic>>('permissionStatus');
+      return (granted: (map?['granted'] as int?) ?? 0, total: (map?['total'] as int?) ?? 4);
+    } catch (e) {
+      debugPrint('HealthConnectService.permissionStatus error: $e');
+      return (granted: 0, total: 4);
+    }
+  }
+
+  Future<int> requestPermissions() async {
+    try {
+      return await _channel.invokeMethod<int>('requestPermissions') ?? 0;
+    } catch (e) {
+      debugPrint('HealthConnectService.requestPermissions error: $e');
+      return 0;
+    }
+  }
+
+  Future<List<({String id, DateTime time, double kg})>> fetchWeights({
+    required DateTime startTime,
+    required DateTime endTime,
+  }) async {
+    try {
+      final result = await _channel.invokeMethod<List<dynamic>>('readWeights', {
+        'startTime': startTime.millisecondsSinceEpoch,
+        'endTime': endTime.millisecondsSinceEpoch,
+      });
+      return (result ?? const [])
+          .whereType<Map>()
+          .map((m) => (
+                id: m['id'] as String,
+                time: DateTime.fromMillisecondsSinceEpoch((m['timeMs'] as num).toInt()),
+                kg: (m['kg'] as num).toDouble(),
+              ))
+          .toList();
+    } catch (e) {
+      debugPrint('HealthConnectService.fetchWeights error: $e');
+      return [];
+    }
+  }
+
+  Future<int> writeSteps(Map<String, int> days) => _write('writeSteps', days);
+
+  Future<int> writeHydration(Map<String, int> days) => _write('writeHydration', days);
+
+  Future<int> _write(String method, Map<String, int> days) async {
+    if (days.isEmpty) return 0;
+    try {
+      return await _channel.invokeMethod<int>(method, {'days': days}) ?? 0;
+    } catch (e) {
+      debugPrint('HealthConnectService.$method error: $e');
+      return 0;
+    }
+  }
+
   /// Opens the Health Connect settings or Google Play Store to install.
   Future<bool> openHealthConnectSettings() async {
     try {

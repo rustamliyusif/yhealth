@@ -19,6 +19,8 @@ import '../onboarding/language_selection_screen.dart';
 import 'widgets/edit_goals_dialog.dart';
 import 'device_compatibility_screen.dart';
 import 'reminders_screen.dart';
+import 'health_connect_screen.dart';
+import '../../core/providers/health_sync_provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -328,6 +330,23 @@ class ProfileScreen extends StatelessWidget {
                         showDialog(
                           context: context,
                           builder: (_) => EditGoalsDialog(authProvider: auth),
+                        );
+                      },
+                    ),
+                    Divider(height: 1, indent: 56, color: AppColors.dividerOf(context)),
+
+                    _buildSettingsTile(
+                      context: context,
+                      icon: Icons.health_and_safety_rounded,
+                      iconColor: const Color(0xFF14B8A6),
+                      title: 'Health Connect',
+                      subtitle: context.watch<HealthSyncProvider>().connected
+                          ? l10n.hcConnected(
+                              HealthConnectScreen.formatLastSync(l10n, context.watch<HealthSyncProvider>().lastSync))
+                          : l10n.hcNotConnected,
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const HealthConnectScreen()),
                         );
                       },
                     ),

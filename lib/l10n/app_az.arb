@@ -357,5 +357,22 @@
   "badgesEarned": "{earned}/{total} nişan",
   "coachTipTitle": "Günün məsləhəti",
   "csvExport": "Məlumatları ixrac et (CSV)",
-  "csvExportDesc": "Addım, yuxu, çəki və su günlər üzrə, Excel-də açılır"
+  "csvExportDesc": "Addım, yuxu, çəki və su günlər üzrə, Excel-də açılır",
+  "hcNotConnected": "Qoşulmayıb",
+  "hcNotInstalled": "Health Connect quraşdırılmayıb",
+  "hcUnsupported": "Bu telefon Health Connect-i dəstəkləmir",
+  "hcConnect": "Qoşul",
+  "hcOpenShort": "Aç",
+  "hcSyncNow": "İndi sinxron et",
+  "hcOpenSettings": "Health Connect ayarları",
+  "hcInstall": "Health Connect-i quraşdır",
+  "hcReadSleep": "Yuxu → YHealth",
+  "hcReadWeight": "Çəki → YHealth",
+  "hcWriteSteps": "Addımlar → Health Connect",
+  "hcWriteWater": "Su → Health Connect",
+  "hcPermissionDenied": "İcazə verilmədi",
+  "hcNever": "hələ yox",
+  "hcSamsungHint": "Samsung Health-dən yuxu və çəki gəlsin deyə: Samsung Health → Ayarlar → Health Connect, paylaşmaya icazə ver.",
+  "hcConnected": "Qoşulub • son sinxron: {time}",
+  "hcSyncResult": "Sinxron tamamlandı: {sleep} yuxu, {weight} çəki əlavə olundu"
 }

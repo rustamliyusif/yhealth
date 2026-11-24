@@ -1120,4 +1120,60 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get csvExportDesc =>
       'Steps, sleep, weight and water by day, opens in Excel';
+
+  @override
+  String get hcNotConnected => 'Not connected';
+
+  @override
+  String get hcNotInstalled => 'Health Connect is not installed';
+
+  @override
+  String get hcUnsupported => 'This phone doesn\'t support Health Connect';
+
+  @override
+  String get hcConnect => 'Connect';
+
+  @override
+  String get hcOpenShort => 'Open';
+
+  @override
+  String get hcSyncNow => 'Sync now';
+
+  @override
+  String get hcOpenSettings => 'Health Connect settings';
+
+  @override
+  String get hcInstall => 'Install Health Connect';
+
+  @override
+  String get hcReadSleep => 'Sleep → YHealth';
+
+  @override
+  String get hcReadWeight => 'Weight → YHealth';
+
+  @override
+  String get hcWriteSteps => 'Steps → Health Connect';
+
+  @override
+  String get hcWriteWater => 'Water → Health Connect';
+
+  @override
+  String get hcPermissionDenied => 'Permission was not granted';
+
+  @override
+  String get hcNever => 'not yet';
+
+  @override
+  String get hcSamsungHint =>
+      'To get sleep and weight from Samsung Health: Samsung Health → Settings → Health Connect, and allow sharing.';
+
+  @override
+  String hcConnected(String time) {
+    return 'Connected • last sync: $time';
+  }
+
+  @override
+  String hcSyncResult(int sleep, int weight) {
+    return 'Sync done: $sleep sleep, $weight weight records added';
+  }
 }

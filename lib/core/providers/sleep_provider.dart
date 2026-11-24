@@ -212,7 +212,7 @@ class SleepProvider extends ChangeNotifier {
     }
 
     final now = DateTime.now();
-    final twoWeeksAgo = now.subtract(const Duration(days: 14));
+    final twoWeeksAgo = now.subtract(const Duration(days: 30));
 
     final sessions = await _healthConnectService.fetchSleepSessions(
       startTime: twoWeeksAgo,
@@ -221,6 +221,7 @@ class SleepProvider extends ChangeNotifier {
 
     int importedCount = 0;
     for (final session in sessions) {
+      if (await _activityRepository.getSleepRecordById(session.id) != null) continue;
       final overlaps = await _activityRepository.getOverlappingSleepRecords(
         bedtime: session.bedtime,
         wakeTime: session.wakeTime,

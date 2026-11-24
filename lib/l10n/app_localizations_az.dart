@@ -1117,4 +1117,60 @@ class AppLocalizationsAz extends AppLocalizations {
   @override
   String get csvExportDesc =>
       'Addım, yuxu, çəki və su günlər üzrə, Excel-də açılır';
+
+  @override
+  String get hcNotConnected => 'Qoşulmayıb';
+
+  @override
+  String get hcNotInstalled => 'Health Connect quraşdırılmayıb';
+
+  @override
+  String get hcUnsupported => 'Bu telefon Health Connect-i dəstəkləmir';
+
+  @override
+  String get hcConnect => 'Qoşul';
+
+  @override
+  String get hcOpenShort => 'Aç';
+
+  @override
+  String get hcSyncNow => 'İndi sinxron et';
+
+  @override
+  String get hcOpenSettings => 'Health Connect ayarları';
+
+  @override
+  String get hcInstall => 'Health Connect-i quraşdır';
+
+  @override
+  String get hcReadSleep => 'Yuxu → YHealth';
+
+  @override
+  String get hcReadWeight => 'Çəki → YHealth';
+
+  @override
+  String get hcWriteSteps => 'Addımlar → Health Connect';
+
+  @override
+  String get hcWriteWater => 'Su → Health Connect';
+
+  @override
+  String get hcPermissionDenied => 'İcazə verilmədi';
+
+  @override
+  String get hcNever => 'hələ yox';
+
+  @override
+  String get hcSamsungHint =>
+      'Samsung Health-dən yuxu və çəki gəlsin deyə: Samsung Health → Ayarlar → Health Connect, paylaşmaya icazə ver.';
+
+  @override
+  String hcConnected(String time) {
+    return 'Qoşulub • son sinxron: $time';
+  }
+
+  @override
+  String hcSyncResult(int sleep, int weight) {
+    return 'Sinxron tamamlandı: $sleep yuxu, $weight çəki əlavə olundu';
+  }
 }

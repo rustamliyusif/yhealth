@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/models/sleep_record_model.dart';
+import '../../core/providers/health_sync_provider.dart';
 import '../../core/providers/sleep_provider.dart';
 import '../../core/services/health_connect_service.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_typography.dart';
 import '../../l10n/app_localizations.dart';
+import '../profile/health_connect_screen.dart';
 import 'widgets/add_edit_sleep_dialog.dart';
 
 const bool kHealthConnectEnabled = false;
@@ -443,8 +445,10 @@ class SleepScreen extends StatelessWidget {
     AppLocalizations l10n,
     bool isDark,
   ) {
-    final status = sleep.healthConnectStatus;
-    final isAvailable = status == HealthConnectStatus.available;
+    final hc = context.watch<HealthSyncProvider>();
+    final status = hc.status;
+    final connected = hc.connected;
+    final isAvailable = connected;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -481,11 +485,9 @@ class SleepScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  isAvailable
-                      ? 'Connected • Wearable sleep sync active'
-                      : (status == HealthConnectStatus.notInstalled
-                          ? 'Available for installation via Google Play'
-                          : 'Manual offline logging active'),
+                  connected
+                      ? l10n.hcConnected(HealthConnectScreen.formatLastSync(l10n, hc.lastSync))
+                      : (status == HealthConnectStatus.notInstalled ? l10n.hcNotInstalled : l10n.hcNotConnected),
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 12,
@@ -495,10 +497,12 @@ class SleepScreen extends StatelessWidget {
               ],
             ),
           ),
-          if (status == HealthConnectStatus.notInstalled || isAvailable)
+          if (status != HealthConnectStatus.unsupported)
             TextButton(
-              onPressed: () => sleep.openHealthConnectSettings(),
-              child: Text(isAvailable ? 'Settings' : 'Install'),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const HealthConnectScreen()),
+              ),
+              child: Text(connected ? l10n.hcOpenShort : l10n.hcConnect),
             ),
         ],
       ),

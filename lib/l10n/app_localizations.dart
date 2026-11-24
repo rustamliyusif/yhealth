@@ -2173,6 +2173,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Steps, sleep, weight and water by day, opens in Excel'**
   String get csvExportDesc;
+
+  /// No description provided for @hcNotConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Not connected'**
+  String get hcNotConnected;
+
+  /// No description provided for @hcNotInstalled.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Connect is not installed'**
+  String get hcNotInstalled;
+
+  /// No description provided for @hcUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone doesn\'t support Health Connect'**
+  String get hcUnsupported;
+
+  /// No description provided for @hcConnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get hcConnect;
+
+  /// No description provided for @hcOpenShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get hcOpenShort;
+
+  /// No description provided for @hcSyncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get hcSyncNow;
+
+  /// No description provided for @hcOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Connect settings'**
+  String get hcOpenSettings;
+
+  /// No description provided for @hcInstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Install Health Connect'**
+  String get hcInstall;
+
+  /// No description provided for @hcReadSleep.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep → YHealth'**
+  String get hcReadSleep;
+
+  /// No description provided for @hcReadWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight → YHealth'**
+  String get hcReadWeight;
+
+  /// No description provided for @hcWriteSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps → Health Connect'**
+  String get hcWriteSteps;
+
+  /// No description provided for @hcWriteWater.
+  ///
+  /// In en, this message translates to:
+  /// **'Water → Health Connect'**
+  String get hcWriteWater;
+
+  /// No description provided for @hcPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission was not granted'**
+  String get hcPermissionDenied;
+
+  /// No description provided for @hcNever.
+  ///
+  /// In en, this message translates to:
+  /// **'not yet'**
+  String get hcNever;
+
+  /// No description provided for @hcSamsungHint.
+  ///
+  /// In en, this message translates to:
+  /// **'To get sleep and weight from Samsung Health: Samsung Health → Settings → Health Connect, and allow sharing.'**
+  String get hcSamsungHint;
+
+  /// No description provided for @hcConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected • last sync: {time}'**
+  String hcConnected(String time);
+
+  /// No description provided for @hcSyncResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync done: {sleep} sleep, {weight} weight records added'**
+  String hcSyncResult(int sleep, int weight);
 }
 
 class _AppLocalizationsDelegate
