@@ -2155,6 +2155,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{earned}/{total} badges'**
   String badgesEarned(int earned, int total);
+
+  /// No description provided for @coachTipTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s tip'**
+  String get coachTipTitle;
 }
 
 class _AppLocalizationsDelegate
