@@ -354,5 +354,6 @@
   "badgeWater7": "Su həftəsi",
   "badgeWater7Desc": "Su hədəfinə 7 gün çat",
   "streakBest": "Ən uzun: {count}",
-  "badgesEarned": "{earned}/{total} nişan"
+  "badgesEarned": "{earned}/{total} nişan",
+  "coachTipTitle": "Günün məsləhəti"
 }

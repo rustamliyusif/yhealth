@@ -1110,4 +1110,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String badgesEarned(int earned, int total) {
     return '$earned/$total badges';
   }
+
+  @override
+  String get coachTipTitle => 'Today\'s tip';
 }

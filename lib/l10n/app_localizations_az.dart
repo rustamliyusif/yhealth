@@ -1107,4 +1107,7 @@ class AppLocalizationsAz extends AppLocalizations {
   String badgesEarned(int earned, int total) {
     return '$earned/$total nişan';
   }
+
+  @override
+  String get coachTipTitle => 'Günün məsləhəti';
 }

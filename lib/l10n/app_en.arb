@@ -385,5 +385,6 @@
         "type": "int"
       }
     }
-  }
+  },
+  "coachTipTitle": "Today's tip"
 }
