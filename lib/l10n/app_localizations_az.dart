@@ -989,7 +989,8 @@ class AppLocalizationsAz extends AppLocalizations {
   String get reminderMoveTitle => 'Hərəkət';
 
   @override
-  String get reminderMoveDesc => '1 saat hərəkətsizlikdən sonra və axşam hədəfə az qalanda';
+  String get reminderMoveDesc =>
+      '1 saat hərəkətsizlikdən sonra və axşam hədəfə az qalanda';
 
   @override
   String get quietHoursTitle => 'Sakit saatlar';
@@ -1010,5 +1011,100 @@ class AppLocalizationsAz extends AppLocalizations {
   String get reminderTestSent => 'Sınaq bildirişi göndərildi';
 
   @override
-  String get remindersFootnote => 'Xatırlatmalar telefonda işləyir, app bağlı olanda da.';
+  String get remindersFootnote =>
+      'Xatırlatmalar telefonda işləyir, app bağlı olanda da.';
+
+  @override
+  String get achievementsTitle => 'Nailiyyətlər';
+
+  @override
+  String get streakLabel => 'gün ardıcıl';
+
+  @override
+  String get streakBestLabel => 'ən uzun seriya';
+
+  @override
+  String get totalStepsLabel => 'ümumi addım';
+
+  @override
+  String get streakTodayDone => 'Bugünkü hədəf tamamdır ✅';
+
+  @override
+  String get streakTodayPending => 'Seriyanı qorumaq üçün bu gün hədəfə çat';
+
+  @override
+  String get badgeFirstGoal => 'İlk hədəf';
+
+  @override
+  String get badgeFirstGoalDesc => 'Gündəlik addım hədəfinə bir dəfə çat';
+
+  @override
+  String get badgeStreak3 => '3 günlük seriya';
+
+  @override
+  String get badgeStreak3Desc => 'Hədəfə 3 gün ardıcıl çat';
+
+  @override
+  String get badgeStreak7 => 'Həftə qəhrəmanı';
+
+  @override
+  String get badgeStreak7Desc => 'Hədəfə 7 gün ardıcıl çat';
+
+  @override
+  String get badgeStreak30 => 'Dayanılmaz';
+
+  @override
+  String get badgeStreak30Desc => 'Hədəfə 30 gün ardıcıl çat';
+
+  @override
+  String get badgeDay10k => '10K gün';
+
+  @override
+  String get badgeDay10kDesc => 'Bir gündə 10 000 addım at';
+
+  @override
+  String get badgeDay20k => '20K gün';
+
+  @override
+  String get badgeDay20kDesc => 'Bir gündə 20 000 addım at';
+
+  @override
+  String get badgeTotal100k => '100K klubu';
+
+  @override
+  String get badgeTotal100kDesc => 'Cəmi 100 000 addım';
+
+  @override
+  String get badgeTotal500k => 'Yarım milyon';
+
+  @override
+  String get badgeTotal500kDesc => 'Cəmi 500 000 addım';
+
+  @override
+  String get badgeTotal1m => 'Milyonçu';
+
+  @override
+  String get badgeTotal1mDesc => 'Cəmi 1 000 000 addım';
+
+  @override
+  String get badgeWater1 => 'Su balansı';
+
+  @override
+  String get badgeWater1Desc => 'Su hədəfinə bir dəfə çat';
+
+  @override
+  String get badgeWater7 => 'Su həftəsi';
+
+  @override
+  String get badgeWater7Desc => 'Su hədəfinə 7 gün çat';
+
+  @override
+  String streakBest(int count) {
+    return 'Ən uzun: $count';
+  }
+
+  @override
+  String badgesEarned(int earned, int total) {
+    return '$earned/$total nişan';
+  }
 }

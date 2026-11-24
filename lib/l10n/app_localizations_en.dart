@@ -985,13 +985,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reminderWaterTitle => 'Water';
 
   @override
-  String get reminderWaterDesc => 'Only when you fall behind your daily water goal';
+  String get reminderWaterDesc =>
+      'Only when you fall behind your daily water goal';
 
   @override
   String get reminderMoveTitle => 'Movement';
 
   @override
-  String get reminderMoveDesc => 'After an inactive hour, plus an evening nudge near your step goal';
+  String get reminderMoveDesc =>
+      'After an inactive hour, plus an evening nudge near your step goal';
 
   @override
   String get quietHoursTitle => 'Quiet hours';
@@ -1012,5 +1014,100 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reminderTestSent => 'Test reminder sent';
 
   @override
-  String get remindersFootnote => 'Reminders run on your phone, even when the app is closed.';
+  String get remindersFootnote =>
+      'Reminders run on your phone, even when the app is closed.';
+
+  @override
+  String get achievementsTitle => 'Achievements';
+
+  @override
+  String get streakLabel => 'day streak';
+
+  @override
+  String get streakBestLabel => 'best streak';
+
+  @override
+  String get totalStepsLabel => 'total steps';
+
+  @override
+  String get streakTodayDone => 'Today\'s goal done ✅';
+
+  @override
+  String get streakTodayPending => 'Reach your goal today to keep it going';
+
+  @override
+  String get badgeFirstGoal => 'First goal';
+
+  @override
+  String get badgeFirstGoalDesc => 'Reach your daily step goal once';
+
+  @override
+  String get badgeStreak3 => '3-day streak';
+
+  @override
+  String get badgeStreak3Desc => 'Hit your goal 3 days in a row';
+
+  @override
+  String get badgeStreak7 => 'Week warrior';
+
+  @override
+  String get badgeStreak7Desc => 'Hit your goal 7 days in a row';
+
+  @override
+  String get badgeStreak30 => 'Unstoppable';
+
+  @override
+  String get badgeStreak30Desc => 'Hit your goal 30 days in a row';
+
+  @override
+  String get badgeDay10k => '10K day';
+
+  @override
+  String get badgeDay10kDesc => 'Walk 10,000 steps in one day';
+
+  @override
+  String get badgeDay20k => '20K day';
+
+  @override
+  String get badgeDay20kDesc => 'Walk 20,000 steps in one day';
+
+  @override
+  String get badgeTotal100k => '100K club';
+
+  @override
+  String get badgeTotal100kDesc => '100,000 steps in total';
+
+  @override
+  String get badgeTotal500k => 'Half a million';
+
+  @override
+  String get badgeTotal500kDesc => '500,000 steps in total';
+
+  @override
+  String get badgeTotal1m => 'Millionaire';
+
+  @override
+  String get badgeTotal1mDesc => '1,000,000 steps in total';
+
+  @override
+  String get badgeWater1 => 'Hydrated';
+
+  @override
+  String get badgeWater1Desc => 'Reach your water goal once';
+
+  @override
+  String get badgeWater7 => 'Water week';
+
+  @override
+  String get badgeWater7Desc => 'Reach your water goal on 7 days';
+
+  @override
+  String streakBest(int count) {
+    return 'Best: $count';
+  }
+
+  @override
+  String badgesEarned(int earned, int total) {
+    return '$earned/$total badges';
+  }
 }

@@ -1975,6 +1975,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reminders run on your phone, even when the app is closed.'**
   String get remindersFootnote;
+
+  /// No description provided for @achievementsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get achievementsTitle;
+
+  /// No description provided for @streakLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'day streak'**
+  String get streakLabel;
+
+  /// No description provided for @streakBestLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'best streak'**
+  String get streakBestLabel;
+
+  /// No description provided for @totalStepsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'total steps'**
+  String get totalStepsLabel;
+
+  /// No description provided for @streakTodayDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s goal done ✅'**
+  String get streakTodayDone;
+
+  /// No description provided for @streakTodayPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach your goal today to keep it going'**
+  String get streakTodayPending;
+
+  /// No description provided for @badgeFirstGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'First goal'**
+  String get badgeFirstGoal;
+
+  /// No description provided for @badgeFirstGoalDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach your daily step goal once'**
+  String get badgeFirstGoalDesc;
+
+  /// No description provided for @badgeStreak3.
+  ///
+  /// In en, this message translates to:
+  /// **'3-day streak'**
+  String get badgeStreak3;
+
+  /// No description provided for @badgeStreak3Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hit your goal 3 days in a row'**
+  String get badgeStreak3Desc;
+
+  /// No description provided for @badgeStreak7.
+  ///
+  /// In en, this message translates to:
+  /// **'Week warrior'**
+  String get badgeStreak7;
+
+  /// No description provided for @badgeStreak7Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hit your goal 7 days in a row'**
+  String get badgeStreak7Desc;
+
+  /// No description provided for @badgeStreak30.
+  ///
+  /// In en, this message translates to:
+  /// **'Unstoppable'**
+  String get badgeStreak30;
+
+  /// No description provided for @badgeStreak30Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hit your goal 30 days in a row'**
+  String get badgeStreak30Desc;
+
+  /// No description provided for @badgeDay10k.
+  ///
+  /// In en, this message translates to:
+  /// **'10K day'**
+  String get badgeDay10k;
+
+  /// No description provided for @badgeDay10kDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Walk 10,000 steps in one day'**
+  String get badgeDay10kDesc;
+
+  /// No description provided for @badgeDay20k.
+  ///
+  /// In en, this message translates to:
+  /// **'20K day'**
+  String get badgeDay20k;
+
+  /// No description provided for @badgeDay20kDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Walk 20,000 steps in one day'**
+  String get badgeDay20kDesc;
+
+  /// No description provided for @badgeTotal100k.
+  ///
+  /// In en, this message translates to:
+  /// **'100K club'**
+  String get badgeTotal100k;
+
+  /// No description provided for @badgeTotal100kDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'100,000 steps in total'**
+  String get badgeTotal100kDesc;
+
+  /// No description provided for @badgeTotal500k.
+  ///
+  /// In en, this message translates to:
+  /// **'Half a million'**
+  String get badgeTotal500k;
+
+  /// No description provided for @badgeTotal500kDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'500,000 steps in total'**
+  String get badgeTotal500kDesc;
+
+  /// No description provided for @badgeTotal1m.
+  ///
+  /// In en, this message translates to:
+  /// **'Millionaire'**
+  String get badgeTotal1m;
+
+  /// No description provided for @badgeTotal1mDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'1,000,000 steps in total'**
+  String get badgeTotal1mDesc;
+
+  /// No description provided for @badgeWater1.
+  ///
+  /// In en, this message translates to:
+  /// **'Hydrated'**
+  String get badgeWater1;
+
+  /// No description provided for @badgeWater1Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach your water goal once'**
+  String get badgeWater1Desc;
+
+  /// No description provided for @badgeWater7.
+  ///
+  /// In en, this message translates to:
+  /// **'Water week'**
+  String get badgeWater7;
+
+  /// No description provided for @badgeWater7Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach your water goal on 7 days'**
+  String get badgeWater7Desc;
+
+  /// No description provided for @streakBest.
+  ///
+  /// In en, this message translates to:
+  /// **'Best: {count}'**
+  String streakBest(int count);
+
+  /// No description provided for @badgesEarned.
+  ///
+  /// In en, this message translates to:
+  /// **'{earned}/{total} badges'**
+  String badgesEarned(int earned, int total);
 }
 
 class _AppLocalizationsDelegate

@@ -16,6 +16,7 @@ import 'widgets/circular_step_progress.dart';
 import 'widgets/stat_card.dart';
 import 'widgets/daily_goal_card.dart';
 import 'widgets/weekly_step_bar_chart.dart';
+import 'achievements_screen.dart';
 import '../steps/step_details_screen.dart';
 import '../profile/device_compatibility_screen.dart';
 import '../sleep/sleep_screen.dart';
@@ -209,6 +210,9 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 16),
+
+              const StreakCard(),
               const SizedBox(height: 16),
 
               _buildWaterCard(context, l10n),
