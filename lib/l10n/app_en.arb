@@ -386,5 +386,7 @@
       }
     }
   },
-  "coachTipTitle": "Today's tip"
+  "coachTipTitle": "Today's tip",
+  "csvExport": "Export data (CSV)",
+  "csvExportDesc": "Steps, sleep, weight and water by day, opens in Excel"
 }

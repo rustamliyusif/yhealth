@@ -2161,6 +2161,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Today\'s tip'**
   String get coachTipTitle;
+
+  /// No description provided for @csvExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export data (CSV)'**
+  String get csvExport;
+
+  /// No description provided for @csvExportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps, sleep, weight and water by day, opens in Excel'**
+  String get csvExportDesc;
 }
 
 class _AppLocalizationsDelegate

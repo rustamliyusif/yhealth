@@ -1110,4 +1110,11 @@ class AppLocalizationsAz extends AppLocalizations {
 
   @override
   String get coachTipTitle => 'Günün məsləhəti';
+
+  @override
+  String get csvExport => 'Məlumatları ixrac et (CSV)';
+
+  @override
+  String get csvExportDesc =>
+      'Addım, yuxu, çəki və su günlər üzrə, Excel-də açılır';
 }
