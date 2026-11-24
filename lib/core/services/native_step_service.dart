@@ -136,6 +136,14 @@ class NativeStepService {
     }
   }
 
+  Future<void> testReminder() async {
+    try {
+      await _methodChannel.invokeMethod<bool>('testReminder');
+    } catch (e) {
+      debugPrint('NativeStepService.testReminder error: $e');
+    }
+  }
+
   Future<void> updateWidget() async {
     try {
       await _methodChannel.invokeMethod<bool>('updateWidget');

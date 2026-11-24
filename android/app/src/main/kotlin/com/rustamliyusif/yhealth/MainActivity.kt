@@ -168,6 +168,10 @@ class MainActivity : FlutterActivity() {
                     startService(intent)
                     result.success(true)
                 }
+                "testReminder" -> {
+                    ReminderManager.sendTest(this)
+                    result.success(true)
+                }
                 "updateWidget" -> {
                     StepWidgetProvider.updateAll(this)
                     result.success(true)

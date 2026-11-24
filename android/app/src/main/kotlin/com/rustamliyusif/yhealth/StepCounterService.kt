@@ -14,7 +14,9 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.os.SystemClock
 import androidx.core.app.NotificationCompat
 import java.text.SimpleDateFormat
@@ -37,6 +39,7 @@ class StepCounterService : Service(), SensorEventListener {
         const val SENSOR_TYPE_NONE = "none"
 
         const val CHANNEL_ID = "yhealth_step_counter_channel"
+        private const val REMINDER_TICK_MS = 10 * 60 * 1000L
         const val NOTIFICATION_ID = 1001
 
         const val ACTION_START = "com.rustamliyusif.yhealth.action.START_STEP_SERVICE"
@@ -95,6 +98,20 @@ class StepCounterService : Service(), SensorEventListener {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as? SensorManager
         setupSensors()
         createNotificationChannel()
+        reminderManager = ReminderManager(this)
+    }
+
+    private var reminderManager: ReminderManager? = null
+    private val reminderHandler = Handler(Looper.getMainLooper())
+    private val reminderTick = object : Runnable {
+        override fun run() {
+            lastReminderCheckMs = System.currentTimeMillis()
+            try {
+                reminderManager?.check(getSavedTodaySteps(this@StepCounterService), lastReminderCheckMs)
+            } catch (_: Exception) {
+            }
+            reminderHandler.postDelayed(this, REMINDER_TICK_MS)
+        }
     }
 
     private fun setupSensors() {
@@ -133,6 +150,8 @@ class StepCounterService : Service(), SensorEventListener {
 
         startForegroundNotification()
         registerSensorListener()
+        reminderHandler.removeCallbacks(reminderTick)
+        reminderHandler.postDelayed(reminderTick, 60_000L)
 
         // Service is sticky so Android OS can automatically restart it if killed under memory pressure
         return START_STICKY
@@ -357,15 +376,24 @@ class StepCounterService : Service(), SensorEventListener {
     }
 
     private var lastWidgetUpdateTimeMs = 0L
+    private var lastReminderCheckMs = 0L
 
     private fun updateWidget(force: Boolean) {
         val now = System.currentTimeMillis()
         if (!force && now - lastWidgetUpdateTimeMs < 30_000L) return
         lastWidgetUpdateTimeMs = now
         StepWidgetProvider.updateAll(this)
+        if (now - lastReminderCheckMs >= 5 * 60 * 1000L) {
+            lastReminderCheckMs = now
+            try {
+                reminderManager?.check(getSavedTodaySteps(this), now)
+            } catch (_: Exception) {
+            }
+        }
     }
 
     override fun onDestroy() {
+        reminderHandler.removeCallbacks(reminderTick)
         unregisterSensorListener()
         super.onDestroy()
     }

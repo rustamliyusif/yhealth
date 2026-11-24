@@ -1897,6 +1897,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'ml'**
   String get mlUnit;
+
+  /// No description provided for @remindersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get remindersTitle;
+
+  /// No description provided for @remindersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Water, movement, quiet hours'**
+  String get remindersSubtitle;
+
+  /// No description provided for @reminderWaterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Water'**
+  String get reminderWaterTitle;
+
+  /// No description provided for @reminderWaterDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Only when you fall behind your daily water goal'**
+  String get reminderWaterDesc;
+
+  /// No description provided for @reminderMoveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Movement'**
+  String get reminderMoveTitle;
+
+  /// No description provided for @reminderMoveDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'After an inactive hour, plus an evening nudge near your step goal'**
+  String get reminderMoveDesc;
+
+  /// No description provided for @quietHoursTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet hours'**
+  String get quietHoursTitle;
+
+  /// No description provided for @quietHoursDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'No reminders during this time'**
+  String get quietHoursDesc;
+
+  /// No description provided for @quietFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get quietFrom;
+
+  /// No description provided for @quietTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get quietTo;
+
+  /// No description provided for @reminderTest.
+  ///
+  /// In en, this message translates to:
+  /// **'Send test reminder'**
+  String get reminderTest;
+
+  /// No description provided for @reminderTestSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Test reminder sent'**
+  String get reminderTestSent;
+
+  /// No description provided for @remindersFootnote.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders run on your phone, even when the app is closed.'**
+  String get remindersFootnote;
 }
 
 class _AppLocalizationsDelegate

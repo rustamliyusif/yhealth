@@ -325,5 +325,18 @@
       }
     }
   },
-  "mlUnit": "ml"
+  "mlUnit": "ml",
+  "remindersTitle": "Reminders",
+  "remindersSubtitle": "Water, movement, quiet hours",
+  "reminderWaterTitle": "Water",
+  "reminderWaterDesc": "Only when you fall behind your daily water goal",
+  "reminderMoveTitle": "Movement",
+  "reminderMoveDesc": "After an inactive hour, plus an evening nudge near your step goal",
+  "quietHoursTitle": "Quiet hours",
+  "quietHoursDesc": "No reminders during this time",
+  "quietFrom": "From",
+  "quietTo": "To",
+  "reminderTest": "Send test reminder",
+  "reminderTestSent": "Test reminder sent",
+  "remindersFootnote": "Reminders run on your phone, even when the app is closed."
 }
