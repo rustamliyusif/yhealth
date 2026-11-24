@@ -1179,7 +1179,7 @@ class AppLocalizationsAz extends AppLocalizations {
 
   @override
   String get sleepEmptyHistory =>
-      'Hələ yuxu qeydi yoxdur. Başlamaq üçün "Yuxunu qeyd et"-ə bas.';
+      'Hələ yuxu qeydi yoxdur. Başlamaq üçün \"Yuxunu qeyd et\"-ə bas.';
 
   @override
   String get sleepSourceManual => 'Əl ilə';

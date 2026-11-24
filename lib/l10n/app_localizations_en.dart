@@ -1182,7 +1182,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sleepEmptyHistory =>
-      'No sleep records yet. Tap "Log sleep" to begin.';
+      'No sleep records yet. Tap \"Log sleep\" to begin.';
 
   @override
   String get sleepSourceManual => 'Manual entry';
@@ -1275,22 +1275,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String consistencyHigh(int minutes) {
-    return 'High consistency (±$minutesm)';
+    return 'High consistency (±${minutes}m)';
   }
 
   @override
   String consistencyModerate(int minutes) {
-    return 'Moderate consistency (±$minutesm)';
+    return 'Moderate consistency (±${minutes}m)';
   }
 
   @override
   String consistencyVariable(int minutes) {
-    return 'Variable bedtimes (±$minutesm)';
+    return 'Variable bedtimes (±${minutes}m)';
   }
 
   @override
   String durationHm(int hours, int minutes) {
-    return '$hoursh $minutesm';
+    return '${hours}h ${minutes}m';
   }
 
   @override

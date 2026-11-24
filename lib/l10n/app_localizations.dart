@@ -2285,7 +2285,7 @@ abstract class AppLocalizations {
   /// No description provided for @sleepEmptyHistory.
   ///
   /// In en, this message translates to:
-  /// **'No sleep records yet. Tap "Log sleep" to begin.'**
+  /// **'No sleep records yet. Tap \"Log sleep\" to begin.'**
   String get sleepEmptyHistory;
 
   /// No description provided for @sleepSourceManual.
