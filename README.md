@@ -9,7 +9,7 @@
 
 <p align="center">
   <a href="https://github.com/rustamliyusif/yhealth/actions/workflows/flutter.yml"><img src="https://github.com/rustamliyusif/yhealth/actions/workflows/flutter.yml/badge.svg" alt="Flutter CI"></a>
-  <img src="https://img.shields.io/badge/version-2.0.0-10B981" alt="Version 2.0.0">
+  <img src="https://img.shields.io/badge/version-2.2.0-10B981" alt="Version 2.2.0">
   <img src="https://img.shields.io/badge/platform-Android-34D399" alt="Android">
   <img src="https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter" alt="Flutter">
   <img src="https://img.shields.io/badge/dil-AZ%20%7C%20EN-0B2619" alt="AZ | EN">
@@ -17,7 +17,7 @@
 
 ---
 
-YHealth addımlarını, gəzinti marşrutlarını, yuxunu və çəkini izləyən Android tətbiqidir. Bütün sağlamlıq datası yalnız istifadəçinin telefonunda saxlanılır: hesab açmaq tələb olunmur, bulud sinxronizasiyası və izləmə yoxdur.
+YHealth addımlarını, gəzinti marşrutlarını, yuxunu, çəkini və su qəbulunu izləyən Android tətbiqidir. Bütün sağlamlıq datası yalnız istifadəçinin telefonunda saxlanılır: hesab açmaq tələb olunmur, bulud sinxronizasiyası və izləmə yoxdur.
 
 ![Addım sayğacı](docs/screenshots/steps.jpg)
 
@@ -26,12 +26,17 @@ YHealth addımlarını, gəzinti marşrutlarını, yuxunu və çəkini izləyən
 | | |
 |---|---|
 | 👟 **Addım sayğacı** | Telefonun öz sensoru (`STEP_COUNTER` / `STEP_DETECTOR`) ilə native foreground service vasitəsilə arxa fonda işləyir. Telefon yenidən başladıqdan sonra da davam edir. |
+| 📱 **Ana ekran widget-i** | Addım halqası, məsafə, kalori və aktiv dəqiqələr. App bağlı olanda da yenilənir. |
+| 💧 **Su** | Bir toxunuşla +250/+500 ml, çəkiyə görə avtomatik hədəf. |
+| 🔔 **Ağıllı xatırlatmalar** | Yalnız lazım olanda: su hədəfindən geri qalanda və ya 1 saat hərəkətsizlikdən sonra. Sakit saatlar ayarlanır. |
+| 🔥 **Seriya və nişanlar** | Hədəfə ardıcıl günlər, 11 nişan və irəliləyiş. |
 | 🗺️ **GPS marşrut** | Gəzinti və qaçışlar xəritədə yazılır. Ekran sönəndə də marşrut dayanmır. |
 | 🌙 **Yuxu** | Yuxu qeydləri, orta müddət və rejim ardıcıllığı. |
 | ⚖️ **Çəki və hədəflər** | BMI, BMR/TDEE hesablaması və təhlükəsiz tempdə hədəf planı. |
-| 🤖 **Coach Leo** | 25-dən çox mövzuda məsləhət verən oflayn köməkçi. Cavablarda istifadəçinin son 7 günlük addım, yuxu və çəki datasından istifadə edir. Təhlükəli mövzularda həkimə yönləndirir. |
+| 🤖 **Coach Leo** | 25-dən çox mövzuda məsləhət verən oflayn köməkçi. Cavablarda istifadəçinin son 7 günlük addım, yuxu və çəki datasından istifadə edir. Təhlükəli mövzularda həkimə yönləndirir. Ana ekranda gündəlik datadan asılı "günün məsləhəti". |
+| ❤️ **Health Connect** | Yuxu (fazalar ilə) və çəki Health Connect-dən oxunur; addımlar və su Health Connect-ə yazılır. |
 | 📊 **Həftəlik hesabat** | Avtomatik həftəlik xülasə və tətbiqin dilində PDF ixracı. |
-| 💾 **Ehtiyat nüsxə** | Bütün data bir JSON faylına ixrac olunur və istənilən vaxt bərpa edilə bilir. |
+| 💾 **Ehtiyat nüsxə və CSV** | Bütün data JSON faylına ixrac olunur və bərpa edilə bilir. Günlük addım, yuxu, çəki və su CSV kimi Excel üçün ixrac olunur. |
 | 🌐 **İki dil, iki rejim** | Azərbaycan və ingilis dilləri, işıqlı və qaranlıq tema. |
 
 <p align="center">
@@ -43,7 +48,7 @@ YHealth addımlarını, gəzinti marşrutlarını, yuxunu və çəkini izləyən
 
 ## Məxfilik
 
-- Addım, marşrut, yuxu və çəki datası **telefondan çıxmır**.
+- Addım, marşrut, yuxu, çəki və su datası **telefondan çıxmır**. Health Connect ilə mübadilə də telefonun daxilində baş verir.
 - İlk açılışda istifadəçi **könüllü olaraq** yalnız ad, soyad və yaşını tərtibatçı ilə paylaşmağa razılıq verə bilər. Razılıq default olaraq söndürülüdür və Profil bölməsindən istənilən vaxt geri götürülə bilər. Geri götürüləndə qeyd buluddan silinir.
 - Paylaşılan məlumat Firebase Firestore-da saxlanılır. [`firestore.rules`](firestore.rules) qaydaları hər istifadəçinin yalnız öz qeydini yazmasına icazə verir, siyahını isə yalnız admin oxuya bilir.
 
@@ -53,7 +58,7 @@ YHealth addımlarını, gəzinti marşrutlarını, yuxunu və çəkini izləyən
 |---|---|
 | App | Flutter, Dart, Provider |
 | Lokal baza | Drift (SQLite), SharedPreferences |
-| Native | Kotlin foreground service, MethodChannel / EventChannel |
+| Native | Kotlin foreground service, App Widget, Health Connect, MethodChannel / EventChannel |
 | Xəritə və GPS | flutter_map (OpenStreetMap), geolocator |
 | Hesabat | pdf (Roboto şrifti ilə Unicode dəstəyi) |
 | Bulud (könüllü) | Firebase Auth (anonim), Cloud Firestore |
@@ -102,7 +107,7 @@ lib/
 │   └── theme/         # Rənglər, tipoqrafiya
 ├── features/          # Ekranlar: dashboard, steps, activity, sleep, coach, reports, profile
 └── l10n/              # Azərbaycan və ingilis dilləri
-android/app/src/main/kotlin/   # StepCounterService, BootReceiver, MainActivity
+android/app/src/main/kotlin/   # StepCounterService, StepWidgetProvider, ReminderManager, HealthConnectBridge
 admin-panel/                   # Netlify admin panel
 ```
 

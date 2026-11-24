@@ -137,7 +137,7 @@
   "firebaseSetupGuide": "Firebase quraşdırma məlumatı",
   "firebaseGuideDesc": "Həqiqi Firebase Authentication və Cloud Firestore xidmətlərini qoşmaq üçün endirdiyiniz google-services.json faylını android/app/ qovluğuna yerləşdirin və tətbiqi yenidən qurun.",
   "aboutYHealth": "YHealth haqqında",
-  "appVersion": "Versiya 1.0.0",
+  "appVersion": "Versiya {version}",
   "privacyPhilosophy": "Minimalist dizayn, sakitləşdirici rənglər, arzuolunmaz izləmələrə yox.",
 
   "loginTitle": "Yenidən xoş gəlmisiniz",
