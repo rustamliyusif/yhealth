@@ -2003,7 +2003,7 @@ abstract class AppLocalizations {
   /// No description provided for @streakTodayDone.
   ///
   /// In en, this message translates to:
-  /// **'Today's goal done ✅'**
+  /// **'Today\'s goal done ✅'**
   String get streakTodayDone;
 
   /// No description provided for @streakTodayPending.

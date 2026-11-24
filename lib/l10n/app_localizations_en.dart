@@ -1030,7 +1030,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get totalStepsLabel => 'total steps';
 
   @override
-  String get streakTodayDone => "Today's goal done ✅";
+  String get streakTodayDone => 'Today\'s goal done ✅';
 
   @override
   String get streakTodayPending => 'Reach your goal today to keep it going';
