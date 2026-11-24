@@ -582,23 +582,23 @@ class SleepScreen extends StatelessWidget {
                   }
                 },
                 itemBuilder: (context) => [
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: 'edit',
                     child: Row(
                       children: [
-                        Icon(Icons.edit_outlined, size: 18),
-                        SizedBox(width: 8),
+                        const Icon(Icons.edit_outlined, size: 18),
+                        const SizedBox(width: 8),
                         Text(l10n.editLabel),
                       ],
                     ),
                   ),
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: 'delete',
                     child: Row(
                       children: [
-                        Icon(Icons.delete_outline_rounded, color: AppColors.error, size: 18),
-                        SizedBox(width: 8),
-                        Text(l10n.deleteLabel, style: TextStyle(color: AppColors.error)),
+                        const Icon(Icons.delete_outline_rounded, color: AppColors.error, size: 18),
+                        const SizedBox(width: 8),
+                        Text(l10n.deleteLabel, style: const TextStyle(color: AppColors.error)),
                       ],
                     ),
                   ),
