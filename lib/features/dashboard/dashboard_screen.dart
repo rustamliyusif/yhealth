@@ -797,7 +797,7 @@ class DashboardScreen extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          lastNight.formattedDuration,
+                          l10n.durationHm(lastNight.durationMinutes ~/ 60, lastNight.durationMinutes % 60),
                           style: TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 16,

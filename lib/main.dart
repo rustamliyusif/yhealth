@@ -16,6 +16,7 @@ import 'core/providers/health_provider.dart';
 import 'core/providers/sleep_provider.dart';
 import 'core/providers/water_provider.dart';
 import 'core/providers/reminder_provider.dart';
+import 'core/providers/health_sync_provider.dart';
 import 'core/providers/weekly_report_provider.dart';
 import 'core/providers/weight_coach_provider.dart';
 import 'core/providers/theme_provider.dart';
@@ -58,6 +59,8 @@ void main() async {
     firebaseService,
     activityRepository,
   );
+  final sleepProvider = SleepProvider(activityRepository);
+  final weightCoachProvider = WeightCoachProvider(activityRepository, storageService);
   activityProvider.onSpeedUpdate = (speed) {
     stepCounterProvider.updateGpsSpeed(speed);
   };
@@ -75,11 +78,15 @@ void main() async {
         ChangeNotifierProvider.value(value: stepCounterProvider),
         ChangeNotifierProvider.value(value: activityProvider),
         ChangeNotifierProvider(create: (_) => HealthProvider(storageService)),
-        ChangeNotifierProvider(create: (_) => SleepProvider(activityRepository)),
+        ChangeNotifierProvider.value(value: sleepProvider),
         ChangeNotifierProvider(create: (_) => WaterProvider(storageService)),
         ChangeNotifierProvider(create: (_) => ReminderProvider(storageService)),
         ChangeNotifierProvider(create: (_) => WeeklyReportProvider(activityRepository)),
-        ChangeNotifierProvider(create: (_) => WeightCoachProvider(activityRepository, storageService)),
+        ChangeNotifierProvider.value(value: weightCoachProvider),
+        ChangeNotifierProvider(
+          lazy: false,
+          create: (_) => HealthSyncProvider(storageService, stepCounterProvider, sleepProvider, weightCoachProvider),
+        ),
       ],
       child: const YHealthApp(),
     ),

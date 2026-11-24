@@ -19,6 +19,11 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class MainActivity : FlutterActivity() {
 
@@ -30,6 +35,19 @@ class MainActivity : FlutterActivity() {
     private var stepEventSink: EventChannel.EventSink? = null
     private var pendingPickResult: MethodChannel.Result? = null
     private val PICK_FILE_REQUEST = 4201
+    private val HC_PERMISSION_REQUEST = 4202
+    private var pendingHcPermissionResult: MethodChannel.Result? = null
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
+    private fun runHc(result: MethodChannel.Result, block: suspend () -> Any?) {
+        scope.launch {
+            try {
+                result.success(block())
+            } catch (e: Exception) {
+                result.error("health_connect", e.message, null)
+            }
+        }
+    }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -43,19 +61,45 @@ class MainActivity : FlutterActivity() {
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, HEALTH_CONNECT_CHANNEL).setMethodCallHandler { call, result ->
             when (call.method) {
                 "checkAvailability" -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                        result.success("available")
-                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        val isInstalled = try {
-                            packageManager.getPackageInfo("com.google.android.apps.healthdata", 0)
-                            true
+                    result.success(
+                        try {
+                            HealthConnectBridge.status(this)
                         } catch (e: Exception) {
-                            false
+                            "unsupported"
                         }
-                        if (isInstalled) result.success("available") else result.success("not_installed")
+                    )
+                }
+                "permissionStatus" -> runHc(result) {
+                    val granted = HealthConnectBridge.grantedCount(this)
+                    mapOf("granted" to granted, "total" to HealthConnectBridge.PERMISSIONS.size)
+                }
+                "requestPermissions" -> {
+                    if (pendingHcPermissionResult != null) {
+                        result.error("busy", "Permission request in progress", null)
                     } else {
-                        result.success("unsupported")
+                        try {
+                            pendingHcPermissionResult = result
+                            startActivityForResult(HealthConnectBridge.permissionIntent(this), HC_PERMISSION_REQUEST)
+                        } catch (e: Exception) {
+                            pendingHcPermissionResult = null
+                            result.error("health_connect", e.message, null)
+                        }
                     }
+                }
+                "readWeights" -> runHc(result) {
+                    HealthConnectBridge.readWeights(
+                        this,
+                        (call.argument<Number>("startTime") ?: 0).toLong(),
+                        (call.argument<Number>("endTime") ?: System.currentTimeMillis()).toLong()
+                    )
+                }
+                "writeSteps" -> runHc(result) {
+                    val days = (call.argument<Map<String, Number>>("days") ?: emptyMap()).mapValues { it.value.toLong() }
+                    HealthConnectBridge.writeSteps(this, days)
+                }
+                "writeHydration" -> runHc(result) {
+                    val days = (call.argument<Map<String, Number>>("days") ?: emptyMap()).mapValues { it.value.toLong() }
+                    HealthConnectBridge.writeHydration(this, days)
                 }
                 "openHealthConnectSettings" -> {
                     try {
@@ -83,9 +127,12 @@ class MainActivity : FlutterActivity() {
                         result.success(false)
                     }
                 }
-                "readSleepSessions" -> {
-                    // Safe stub returning empty list when permissions or hardware sleep records are not present
-                    result.success(listOf<Map<String, Any?>>())
+                "readSleepSessions" -> runHc(result) {
+                    HealthConnectBridge.readSleep(
+                        this,
+                        (call.argument<Number>("startTime") ?: 0).toLong(),
+                        (call.argument<Number>("endTime") ?: System.currentTimeMillis()).toLong()
+                    )
                 }
                 else -> {
                     result.notImplemented()
@@ -400,6 +447,18 @@ class MainActivity : FlutterActivity() {
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == HC_PERMISSION_REQUEST) {
+            val hcResult = pendingHcPermissionResult ?: return
+            pendingHcPermissionResult = null
+            hcResult.success(
+                try {
+                    HealthConnectBridge.parsePermissionResult(resultCode, data)
+                } catch (e: Exception) {
+                    0
+                }
+            )
+            return
+        }
         if (requestCode != PICK_FILE_REQUEST) return
         val result = pendingPickResult ?: return
         pendingPickResult = null
@@ -421,6 +480,7 @@ class MainActivity : FlutterActivity() {
 
     override fun onDestroy() {
         StepCounterService.stepUpdateListener = null
+        scope.cancel()
         super.onDestroy()
     }
 }

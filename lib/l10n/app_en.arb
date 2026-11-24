@@ -388,5 +388,132 @@
   },
   "coachTipTitle": "Today's tip",
   "csvExport": "Export data (CSV)",
-  "csvExportDesc": "Steps, sleep, weight and water by day, opens in Excel"
+  "csvExportDesc": "Steps, sleep, weight and water by day, opens in Excel",
+  "hcNotConnected": "Not connected",
+  "hcNotInstalled": "Health Connect is not installed",
+  "hcUnsupported": "This phone doesn't support Health Connect",
+  "hcConnect": "Connect",
+  "hcOpenShort": "Open",
+  "hcSyncNow": "Sync now",
+  "hcOpenSettings": "Health Connect settings",
+  "hcInstall": "Install Health Connect",
+  "hcReadSleep": "Sleep → YHealth",
+  "hcReadWeight": "Weight → YHealth",
+  "hcWriteSteps": "Steps → Health Connect",
+  "hcWriteWater": "Water → Health Connect",
+  "hcPermissionDenied": "Permission was not granted",
+  "hcNever": "not yet",
+  "hcSamsungHint": "To get sleep and weight from Samsung Health: Samsung Health → Settings → Health Connect, and allow sharing.",
+  "hcConnected": "Connected • last sync: {time}",
+  "@hcConnected": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "hcSyncResult": "Sync done: {sleep} sleep, {weight} weight records added",
+  "@hcSyncResult": {
+    "placeholders": {
+      "sleep": {
+        "type": "int"
+      },
+      "weight": {
+        "type": "int"
+      }
+    }
+  },
+  "sleepHistoryTitle": "Sleep history",
+  "sleepEmptyHistory": "No sleep records yet. Tap \"Log sleep\" to begin.",
+  "sleepSourceManual": "Manual entry",
+  "sleepStagesTitle": "Sleep stages",
+  "sleepStagesBadge": "From wearable",
+  "stageDeep": "Deep",
+  "stageLight": "Light",
+  "stageAwake": "Awake",
+  "sleepStagesHint": "Sleep stages need a smartwatch synced via Health Connect.",
+  "sleepEmptyTitle": "Track your sleep",
+  "sleepEmptyDesc": "Log your bedtime and wake-up time to see consistency and duration trends.",
+  "sleepOvernight": "Overnight",
+  "editLabel": "Edit",
+  "deleteLabel": "Delete",
+  "sleepDeleteTitle": "Delete sleep record",
+  "consistencyGathering": "Gathering data...",
+  "sleepDialogEdit": "Edit sleep record",
+  "sleepDialogLocal": "Stored on this phone",
+  "sleepWakeDate": "Wake-up date",
+  "sleepInvalidDuration": "Invalid duration",
+  "sleepOvernightSession": "Overnight session (crosses midnight)",
+  "sleepSameDay": "Same-day session",
+  "sleepQuality": "Sleep quality / efficiency",
+  "sleepNotes": "Notes (optional)",
+  "sleepNotesHint": "e.g. Restful sleep, drank chamomile tea",
+  "saveChanges": "Save changes",
+  "sleepRecordsCount": "{count} records",
+  "@sleepRecordsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sleepEfficiency": "Efficiency: {value}%",
+  "@sleepEfficiency": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "sleepAvg7": "7-day average: {value}",
+  "@sleepAvg7": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "consistencyHigh": "High consistency (±{minutes}m)",
+  "@consistencyHigh": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "consistencyModerate": "Moderate consistency (±{minutes}m)",
+  "@consistencyModerate": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "consistencyVariable": "Variable bedtimes (±{minutes}m)",
+  "@consistencyVariable": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "durationHm": "{hours}h {minutes}m",
+  "@durationHm": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "sleepTotal": "Total sleep: {value}",
+  "@sleepTotal": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  }
 }

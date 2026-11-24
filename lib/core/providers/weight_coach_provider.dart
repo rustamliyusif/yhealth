@@ -165,6 +165,32 @@ class WeightCoachProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<int> importWeights(List<({String id, DateTime time, double kg})> items) async {
+    var imported = 0;
+    for (final item in items) {
+      if (item.kg <= 0) continue;
+      if (await _repository.getWeightRecordById(item.id) != null) continue;
+      await _repository.saveWeightRecord(WeightRecordModel(
+        id: item.id,
+        date: DateFormat('yyyy-MM-dd').format(item.time),
+        weightKg: double.parse(item.kg.toStringAsFixed(1)),
+        bmi: WeightCoachEngine.calculateBmi(item.kg, _heightCm),
+        notes: 'Health Connect',
+        createdAt: item.time,
+      ));
+      imported++;
+    }
+    if (imported == 0) return 0;
+    _weightHistory = await _repository.getAllWeightRecords();
+    final latest = [..._weightHistory]..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    if (latest.isNotEmpty && latest.first.id.startsWith('hc_')) {
+      _currentWeight = latest.first.weightKg;
+      await _storageService.setUserWeight(_currentWeight);
+    }
+    notifyListeners();
+    return imported;
+  }
+
   Future<void> updateTargetWeight(double targetKg) async {
     _targetWeight = targetKg;
     await _storageService.setTargetWeight(targetKg);

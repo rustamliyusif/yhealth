@@ -1120,4 +1120,181 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get csvExportDesc =>
       'Steps, sleep, weight and water by day, opens in Excel';
+
+  @override
+  String get hcNotConnected => 'Not connected';
+
+  @override
+  String get hcNotInstalled => 'Health Connect is not installed';
+
+  @override
+  String get hcUnsupported => 'This phone doesn\'t support Health Connect';
+
+  @override
+  String get hcConnect => 'Connect';
+
+  @override
+  String get hcOpenShort => 'Open';
+
+  @override
+  String get hcSyncNow => 'Sync now';
+
+  @override
+  String get hcOpenSettings => 'Health Connect settings';
+
+  @override
+  String get hcInstall => 'Install Health Connect';
+
+  @override
+  String get hcReadSleep => 'Sleep → YHealth';
+
+  @override
+  String get hcReadWeight => 'Weight → YHealth';
+
+  @override
+  String get hcWriteSteps => 'Steps → Health Connect';
+
+  @override
+  String get hcWriteWater => 'Water → Health Connect';
+
+  @override
+  String get hcPermissionDenied => 'Permission was not granted';
+
+  @override
+  String get hcNever => 'not yet';
+
+  @override
+  String get hcSamsungHint =>
+      'To get sleep and weight from Samsung Health: Samsung Health → Settings → Health Connect, and allow sharing.';
+
+  @override
+  String hcConnected(String time) {
+    return 'Connected • last sync: $time';
+  }
+
+  @override
+  String hcSyncResult(int sleep, int weight) {
+    return 'Sync done: $sleep sleep, $weight weight records added';
+  }
+
+  @override
+  String get sleepHistoryTitle => 'Sleep history';
+
+  @override
+  String get sleepEmptyHistory =>
+      'No sleep records yet. Tap \"Log sleep\" to begin.';
+
+  @override
+  String get sleepSourceManual => 'Manual entry';
+
+  @override
+  String get sleepStagesTitle => 'Sleep stages';
+
+  @override
+  String get sleepStagesBadge => 'From wearable';
+
+  @override
+  String get stageDeep => 'Deep';
+
+  @override
+  String get stageLight => 'Light';
+
+  @override
+  String get stageAwake => 'Awake';
+
+  @override
+  String get sleepStagesHint =>
+      'Sleep stages need a smartwatch synced via Health Connect.';
+
+  @override
+  String get sleepEmptyTitle => 'Track your sleep';
+
+  @override
+  String get sleepEmptyDesc =>
+      'Log your bedtime and wake-up time to see consistency and duration trends.';
+
+  @override
+  String get sleepOvernight => 'Overnight';
+
+  @override
+  String get editLabel => 'Edit';
+
+  @override
+  String get deleteLabel => 'Delete';
+
+  @override
+  String get sleepDeleteTitle => 'Delete sleep record';
+
+  @override
+  String get consistencyGathering => 'Gathering data...';
+
+  @override
+  String get sleepDialogEdit => 'Edit sleep record';
+
+  @override
+  String get sleepDialogLocal => 'Stored on this phone';
+
+  @override
+  String get sleepWakeDate => 'Wake-up date';
+
+  @override
+  String get sleepInvalidDuration => 'Invalid duration';
+
+  @override
+  String get sleepOvernightSession => 'Overnight session (crosses midnight)';
+
+  @override
+  String get sleepSameDay => 'Same-day session';
+
+  @override
+  String get sleepQuality => 'Sleep quality / efficiency';
+
+  @override
+  String get sleepNotes => 'Notes (optional)';
+
+  @override
+  String get sleepNotesHint => 'e.g. Restful sleep, drank chamomile tea';
+
+  @override
+  String get saveChanges => 'Save changes';
+
+  @override
+  String sleepRecordsCount(int count) {
+    return '$count records';
+  }
+
+  @override
+  String sleepEfficiency(int value) {
+    return 'Efficiency: $value%';
+  }
+
+  @override
+  String sleepAvg7(String value) {
+    return '7-day average: $value';
+  }
+
+  @override
+  String consistencyHigh(int minutes) {
+    return 'High consistency (±${minutes}m)';
+  }
+
+  @override
+  String consistencyModerate(int minutes) {
+    return 'Moderate consistency (±${minutes}m)';
+  }
+
+  @override
+  String consistencyVariable(int minutes) {
+    return 'Variable bedtimes (±${minutes}m)';
+  }
+
+  @override
+  String durationHm(int hours, int minutes) {
+    return '${hours}h ${minutes}m';
+  }
+
+  @override
+  String sleepTotal(String value) {
+    return 'Total sleep: $value';
+  }
 }

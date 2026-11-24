@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/models/sleep_record_model.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../core/theme/app_colors.dart';
 
 class AddEditSleepDialog extends StatefulWidget {
@@ -73,6 +74,7 @@ class _AddEditSleepDialogState extends State<AddEditSleepDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isEditing = widget.initialRecord != null;
     final durationMins = _calculateDurationMinutes();
     final isDurationValid = durationMins > 0;
@@ -104,7 +106,7 @@ class _AddEditSleepDialogState extends State<AddEditSleepDialog> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        isEditing ? 'Edit Sleep Record' : 'Log Sleep Session',
+                        isEditing ? l10n.sleepDialogEdit : l10n.logSleep,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
@@ -112,7 +114,7 @@ class _AddEditSleepDialogState extends State<AddEditSleepDialog> {
                         ),
                       ),
                       Text(
-                        'Offline Local Storage',
+                        l10n.sleepDialogLocal,
                         style: TextStyle(
                           fontSize: 12,
                           color: AppColors.textSecondaryOf(context),
@@ -127,7 +129,7 @@ class _AddEditSleepDialogState extends State<AddEditSleepDialog> {
 
             // Reference / Morning Date
             Text(
-              'Morning Wake-up Date',
+              l10n.sleepWakeDate,
               style: TextStyle(
                 fontSize: 12.5,
                 fontWeight: FontWeight.w600,
@@ -182,7 +184,7 @@ class _AddEditSleepDialogState extends State<AddEditSleepDialog> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Bedtime',
+                        l10n.bedtime,
                         style: TextStyle(
                           fontSize: 12.5,
                           fontWeight: FontWeight.w600,
@@ -234,7 +236,7 @@ class _AddEditSleepDialogState extends State<AddEditSleepDialog> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Wake-up Time',
+                        l10n.wakeTime,
                         style: TextStyle(
                           fontSize: 12.5,
                           fontWeight: FontWeight.w600,
@@ -312,8 +314,8 @@ class _AddEditSleepDialogState extends State<AddEditSleepDialog> {
                       children: [
                         Text(
                           isDurationValid
-                              ? 'Total Sleep: ${hours}h ${mins}m'
-                              : 'Invalid duration',
+                              ? l10n.sleepTotal(l10n.durationHm(hours, mins))
+                              : l10n.sleepInvalidDuration,
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
@@ -324,8 +326,8 @@ class _AddEditSleepDialogState extends State<AddEditSleepDialog> {
                         ),
                         Text(
                           _bedtime.hour >= 12
-                              ? 'Overnight session (crosses midnight)'
-                              : 'Same-day session',
+                              ? l10n.sleepOvernightSession
+                              : l10n.sleepSameDay,
                           style: TextStyle(
                             fontSize: 11.5,
                             color: AppColors.textSecondaryOf(context),
@@ -344,7 +346,7 @@ class _AddEditSleepDialogState extends State<AddEditSleepDialog> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Sleep Quality / Efficiency',
+                  l10n.sleepQuality,
                   style: TextStyle(
                     fontSize: 12.5,
                     fontWeight: FontWeight.w600,
@@ -379,8 +381,8 @@ class _AddEditSleepDialogState extends State<AddEditSleepDialog> {
             TextField(
               controller: _notesController,
               decoration: InputDecoration(
-                labelText: 'Notes (optional)',
-                hintText: 'e.g. Restful sleep, drank chamomile tea',
+                labelText: l10n.sleepNotes,
+                hintText: l10n.sleepNotesHint,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
               ),
               maxLines: 2,
@@ -401,7 +403,7 @@ class _AddEditSleepDialogState extends State<AddEditSleepDialog> {
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text(
-                    'Cancel',
+                    l10n.cancel,
                     style: TextStyle(color: AppColors.textSecondaryOf(context)),
                   ),
                 ),
@@ -428,7 +430,7 @@ class _AddEditSleepDialogState extends State<AddEditSleepDialog> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   ),
-                  child: Text(isEditing ? 'Save Changes' : 'Log Sleep'),
+                  child: Text(isEditing ? l10n.saveChanges : l10n.logSleep),
                 ),
               ],
             ),

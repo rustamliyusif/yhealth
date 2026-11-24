@@ -44,6 +44,20 @@ class SleepProvider extends ChangeNotifier {
   }
 
   /// Calculates bedtime consistency score based on standard deviation of bedtimes over last 7 days.
+  int? get bedtimeStdDevMinutes {
+    if (_records.length < 3) return null;
+    final recent = _records.take(7).toList();
+    final minutesList = recent.map((r) {
+      final hour = r.bedtime.hour;
+      final minute = r.bedtime.minute;
+      return hour >= 12 ? (hour - 20) * 60 + minute : (hour + 4) * 60 + minute;
+    }).toList();
+    final mean = minutesList.reduce((a, b) => a + b) / minutesList.length;
+    final variance =
+        minutesList.map((m) => pow(m - mean, 2)).reduce((a, b) => a + b) / minutesList.length;
+    return sqrt(variance).round();
+  }
+
   String get bedtimeConsistencyDescription {
     if (_records.length < 3) return 'Gathering data...';
 
@@ -212,7 +226,7 @@ class SleepProvider extends ChangeNotifier {
     }
 
     final now = DateTime.now();
-    final twoWeeksAgo = now.subtract(const Duration(days: 14));
+    final twoWeeksAgo = now.subtract(const Duration(days: 30));
 
     final sessions = await _healthConnectService.fetchSleepSessions(
       startTime: twoWeeksAgo,
@@ -221,6 +235,7 @@ class SleepProvider extends ChangeNotifier {
 
     int importedCount = 0;
     for (final session in sessions) {
+      if (await _activityRepository.getSleepRecordById(session.id) != null) continue;
       final overlaps = await _activityRepository.getOverlappingSleepRecords(
         bedtime: session.bedtime,
         wakeTime: session.wakeTime,
