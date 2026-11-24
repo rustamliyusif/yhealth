@@ -429,7 +429,9 @@ class AppLocalizationsAz extends AppLocalizations {
   String get aboutYHealth => 'YHealth haqqında';
 
   @override
-  String get appVersion => 'Versiya 1.0.0';
+  String appVersion(String version) {
+    return 'Versiya $version';
+  }
 
   @override
   String get privacyPhilosophy =>

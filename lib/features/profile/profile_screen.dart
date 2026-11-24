@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../../core/app_info.dart';
 import '../../core/providers/water_provider.dart';
 import '../../core/providers/reminder_provider.dart';
 import '../../core/providers/auth_provider.dart';
@@ -555,7 +556,7 @@ class ProfileScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
-                            l10n.appVersion,
+                            l10n.appVersion(AppInfo.version),
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: 11.5,

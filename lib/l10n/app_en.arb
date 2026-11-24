@@ -137,7 +137,14 @@
   "firebaseSetupGuide": "Firebase Setup Information",
   "firebaseGuideDesc": "To connect real Firebase Authentication and Cloud Firestore, place your downloaded google-services.json file inside the android/app/ directory and rebuild.",
   "aboutYHealth": "About YHealth",
-  "appVersion": "Version 1.0.0",
+  "appVersion": "Version {version}",
+  "@appVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "privacyPhilosophy": "Minimalist design, calm aesthetics, zero unwanted tracking.",
 
   "loginTitle": "Welcome Back",

@@ -430,7 +430,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aboutYHealth => 'About YHealth';
 
   @override
-  String get appVersion => 'Version 1.0.0';
+  String appVersion(String version) {
+    return 'Version $version';
+  }
 
   @override
   String get privacyPhilosophy =>
