@@ -311,5 +311,18 @@
   "waterGoalReached": "Bugünkü su hədəfi tamamlandı 💧",
   "waterRemaining": "{amount} ml qalıb",
   "waterRecommended": "Çəkinə görə tövsiyə: {amount} ml",
-  "mlUnit": "ml"
+  "mlUnit": "ml",
+  "remindersTitle": "Xatırlatmalar",
+  "remindersSubtitle": "Su, hərəkət, sakit saatlar",
+  "reminderWaterTitle": "Su",
+  "reminderWaterDesc": "Yalnız gündəlik su hədəfindən geri qalanda",
+  "reminderMoveTitle": "Hərəkət",
+  "reminderMoveDesc": "1 saat hərəkətsizlikdən sonra və axşam hədəfə az qalanda",
+  "quietHoursTitle": "Sakit saatlar",
+  "quietHoursDesc": "Bu vaxt heç bir xatırlatma gəlmir",
+  "quietFrom": "Başlanğıc",
+  "quietTo": "Son",
+  "reminderTest": "Sınaq bildirişi göndər",
+  "reminderTestSent": "Sınaq bildirişi göndərildi",
+  "remindersFootnote": "Xatırlatmalar telefonda işləyir, app bağlı olanda da."
 }

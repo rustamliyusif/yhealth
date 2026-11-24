@@ -974,4 +974,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mlUnit => 'ml';
+
+  @override
+  String get remindersTitle => 'Reminders';
+
+  @override
+  String get remindersSubtitle => 'Water, movement, quiet hours';
+
+  @override
+  String get reminderWaterTitle => 'Water';
+
+  @override
+  String get reminderWaterDesc => 'Only when you fall behind your daily water goal';
+
+  @override
+  String get reminderMoveTitle => 'Movement';
+
+  @override
+  String get reminderMoveDesc => 'After an inactive hour, plus an evening nudge near your step goal';
+
+  @override
+  String get quietHoursTitle => 'Quiet hours';
+
+  @override
+  String get quietHoursDesc => 'No reminders during this time';
+
+  @override
+  String get quietFrom => 'From';
+
+  @override
+  String get quietTo => 'To';
+
+  @override
+  String get reminderTest => 'Send test reminder';
+
+  @override
+  String get reminderTestSent => 'Test reminder sent';
+
+  @override
+  String get remindersFootnote => 'Reminders run on your phone, even when the app is closed.';
 }

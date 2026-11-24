@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/water_provider.dart';
+import '../../core/providers/reminder_provider.dart';
 import '../../core/providers/auth_provider.dart';
 import '../../core/providers/language_provider.dart';
 import '../../core/providers/theme_provider.dart';
@@ -15,6 +16,7 @@ import '../../l10n/app_localizations.dart';
 import '../onboarding/language_selection_screen.dart';
 import 'widgets/edit_goals_dialog.dart';
 import 'device_compatibility_screen.dart';
+import 'reminders_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -135,7 +137,10 @@ class ProfileScreen extends StatelessWidget {
 
     try {
       await backup.importFromFile(path);
-      if (context.mounted) context.read<WaterProvider>().reload();
+      if (context.mounted) {
+        context.read<WaterProvider>().reload();
+        context.read<ReminderProvider>().reload();
+      }
     } on BackupException catch (e) {
       messenger.showSnackBar(
         SnackBar(
@@ -300,6 +305,19 @@ class ProfileScreen extends StatelessWidget {
                         showDialog(
                           context: context,
                           builder: (_) => EditGoalsDialog(authProvider: auth),
+                        );
+                      },
+                    ),
+                    Divider(height: 1, indent: 56, color: AppColors.dividerOf(context)),
+
+                    _buildSettingsTile(
+                      context: context,
+                      icon: Icons.notifications_active_rounded,
+                      title: l10n.remindersTitle,
+                      subtitle: l10n.remindersSubtitle,
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const RemindersScreen()),
                         );
                       },
                     ),

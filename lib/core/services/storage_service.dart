@@ -28,6 +28,10 @@ class StorageService {
   static const String keyProfileSetupDone = 'profile_setup_done';
   static const String keyWaterLog = 'water_log';
   static const String keyGoalWater = 'goal_water_ml';
+  static const String keyReminderWater = 'reminder_water';
+  static const String keyReminderMove = 'reminder_move';
+  static const String keyQuietStart = 'quiet_start';
+  static const String keyQuietEnd = 'quiet_end';
 
   final SharedPreferences _prefs;
 
@@ -180,6 +184,27 @@ class StorageService {
     await _prefs.setInt(keyGoalWater, ml);
   }
 
+  // Reminders
+  bool get reminderWater => _prefs.getBool(keyReminderWater) ?? true;
+  Future<void> setReminderWater(bool value) async {
+    await _prefs.setBool(keyReminderWater, value);
+  }
+
+  bool get reminderMove => _prefs.getBool(keyReminderMove) ?? true;
+  Future<void> setReminderMove(bool value) async {
+    await _prefs.setBool(keyReminderMove, value);
+  }
+
+  int get quietStart => _prefs.getInt(keyQuietStart) ?? 22 * 60;
+  Future<void> setQuietStart(int minutes) async {
+    await _prefs.setInt(keyQuietStart, minutes);
+  }
+
+  int get quietEnd => _prefs.getInt(keyQuietEnd) ?? 8 * 60;
+  Future<void> setQuietEnd(int minutes) async {
+    await _prefs.setInt(keyQuietEnd, minutes);
+  }
+
   // Routes
   List<Map<String, dynamic>> getSavedRoutes() {
     final raw = _prefs.getString(keySavedRoutes);
@@ -229,6 +254,10 @@ class StorageService {
     keyDietaryPreference,
     keyWaterLog,
     keyGoalWater,
+    keyReminderWater,
+    keyReminderMove,
+    keyQuietStart,
+    keyQuietEnd,
   ];
 
   Map<String, dynamic> exportPreferences() {

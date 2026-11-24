@@ -26,8 +26,6 @@ class StepWidgetProvider : AppWidgetProvider() {
     }
 
     companion object {
-        private const val FLUTTER_PREFS = "FlutterSharedPreferences"
-        private const val DOUBLE_PREFIX = "VGhpcyBpcyB0aGUgcHJlZml4IGZvciBEb3VibGUu"
         private const val WIDE_MIN_WIDTH_DP = 200
 
         fun updateAll(context: Context) {
@@ -38,36 +36,7 @@ class StepWidgetProvider : AppWidgetProvider() {
             }
         }
 
-        private fun readLong(context: Context, key: String, fallback: Long): Long {
-            val raw = context.getSharedPreferences(FLUTTER_PREFS, Context.MODE_PRIVATE).all["flutter.$key"]
-            val value = when (raw) {
-                is Long -> raw
-                is Int -> raw.toLong()
-                is String -> raw.toLongOrNull()
-                else -> null
-            }
-            return if (value != null && value > 0) value else fallback
-        }
-
-        private fun readDouble(context: Context, key: String, fallback: Double): Double {
-            val raw = context.getSharedPreferences(FLUTTER_PREFS, Context.MODE_PRIVATE).all["flutter.$key"]
-            val value = when (raw) {
-                is Double -> raw
-                is Float -> raw.toDouble()
-                is Long -> raw.toDouble()
-                is Int -> raw.toDouble()
-                is String -> raw.removePrefix(DOUBLE_PREFIX).toDoubleOrNull()
-                else -> null
-            }
-            return if (value != null && value > 0) value else fallback
-        }
-
-        private fun isAzerbaijani(context: Context): Boolean {
-            val prefs = context.getSharedPreferences(FLUTTER_PREFS, Context.MODE_PRIVATE)
-            return (prefs.getString("flutter.language_code", "az") ?: "az") == "az"
-        }
-
-        private fun format(value: Long): String {
+        fun format(value: Long): String {
             val nf = NumberFormat.getIntegerInstance(Locale.FRANCE)
             return nf.format(value).replace(' ', ' ').replace(' ', ' ')
         }
@@ -79,10 +48,10 @@ class StepWidgetProvider : AppWidgetProvider() {
 
         private fun render(context: Context, manager: AppWidgetManager, ids: IntArray) {
             val steps = StepCounterService.getSavedTodaySteps(context)
-            val goal = readLong(context, "goal_steps", 8000L)
-            val height = readDouble(context, "user_height", 175.0)
-            val weight = readDouble(context, "user_weight", 70.0)
-            val az = isAzerbaijani(context)
+            val goal = FlutterPrefs.long(context, "goal_steps")?.takeIf { it > 0 } ?: 8000L
+            val height = FlutterPrefs.double(context, "user_height")?.takeIf { it > 0 } ?: 175.0
+            val weight = FlutterPrefs.double(context, "user_weight")?.takeIf { it > 0 } ?: 70.0
+            val az = FlutterPrefs.isAzerbaijani(context)
 
             val percent = ((steps * 100) / goal).coerceIn(0, 100).toInt()
             val remaining = (goal - steps).coerceAtLeast(0)

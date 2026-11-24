@@ -972,4 +972,43 @@ class AppLocalizationsAz extends AppLocalizations {
 
   @override
   String get mlUnit => 'ml';
+
+  @override
+  String get remindersTitle => 'Xatırlatmalar';
+
+  @override
+  String get remindersSubtitle => 'Su, hərəkət, sakit saatlar';
+
+  @override
+  String get reminderWaterTitle => 'Su';
+
+  @override
+  String get reminderWaterDesc => 'Yalnız gündəlik su hədəfindən geri qalanda';
+
+  @override
+  String get reminderMoveTitle => 'Hərəkət';
+
+  @override
+  String get reminderMoveDesc => '1 saat hərəkətsizlikdən sonra və axşam hədəfə az qalanda';
+
+  @override
+  String get quietHoursTitle => 'Sakit saatlar';
+
+  @override
+  String get quietHoursDesc => 'Bu vaxt heç bir xatırlatma gəlmir';
+
+  @override
+  String get quietFrom => 'Başlanğıc';
+
+  @override
+  String get quietTo => 'Son';
+
+  @override
+  String get reminderTest => 'Sınaq bildirişi göndər';
+
+  @override
+  String get reminderTestSent => 'Sınaq bildirişi göndərildi';
+
+  @override
+  String get remindersFootnote => 'Xatırlatmalar telefonda işləyir, app bağlı olanda da.';
 }
